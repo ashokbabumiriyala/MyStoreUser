@@ -1,0 +1,15 @@
+ion-icon[slot="start"] {
+    margin-right: unset;
+    margin-inline-end: 20px;
+}
+
+.signup {
+    .ion-ele {
+        border-radius: 15px;
+        border: 1px solid;
+        border-width: thick;
+        --background: transparent;
+        border: 1px solid;
+        margin-bottom: 5px;
+    }
+}

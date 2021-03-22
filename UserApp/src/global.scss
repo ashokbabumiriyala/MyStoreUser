@@ -24,3 +24,37 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --iconcolor: orangered;
+    --btnbg: darkorange;
+}
+
+.before-login-bg {
+    --background: url('./assets/images/bg.jpeg');
+}
+
+.after-login-bg {
+    --background: url('./assets/images/login-bg.jpeg');
+}
+
+ion-icon {
+    color: var(--iconcolor);
+}
+
+ion-button {
+    --background: var(--btnbg);
+}
+
+.page-title {
+    text-align: center;
+    margin: 0px auto;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-family: lato sans-serif;
+    color: var(--btnbg);
+    text-decoration: underline;
+    
+}
