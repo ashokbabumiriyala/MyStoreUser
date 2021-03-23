@@ -1,0 +1,29 @@
+.ion-ele {
+    border-radius: 15px;
+    border: 1px solid;
+    border-width: thin;
+    --background: transparent;
+    margin-bottom: 5px;
+}
+.units {
+    white-space: break-spaces;
+}
+.addr-icon {
+    margin: auto;
+}
+.service {
+    color: var(--black);
+    border: 1px solid darkgreen;
+    margin-bottom: 10px;
+    border-radius: 15px;
+	--background:transparent;
+    font-family: cursive;
+}
+.service-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+.service-name {
+    margin: 5px auto;
+}

@@ -1,0 +1,32 @@
+.ion-ele {
+    border-radius: 15px;
+    border: 1px solid;
+    border-width: thin;
+    --background: transparent;
+    margin-bottom: 5px;
+}
+.units {
+    display: flex;
+    align-items: center;
+    ion-input {
+    border: 1px solid var(--iconcolor);
+    width: 100px;
+    border-radius: 5px;
+    margin-left: 5px;
+    }
+}
+.product {
+    color: var(--black);
+    border: 1px solid darkgreen;
+    margin-bottom: 10px;
+    border-radius: 15px;
+	--background:transparent
+}
+.product-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+.product-name {
+    margin: 5px auto;
+}

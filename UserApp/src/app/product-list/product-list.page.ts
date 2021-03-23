@@ -5,11 +5,17 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './product-list.page.html',
   styleUrls: ['./product-list.page.scss'],
 })
-export class ProductListPage implements OnInit {
+export class ProductListPage  {
 
-  constructor() { }
-
-  ngOnInit() {
+  private currentNumber = 0;
+  constructor () { }
+  
+  private increment () {
+    this.currentNumber++;
   }
+  
+  private decrement () {
+    this.currentNumber--;
+}
 
 }

@@ -1,9 +1,134 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>service-info</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content class="login-form ion-padding after-login-bg">
+  <!-- <h2 class="page-title">Services</h2> -->
+  <ion-searchbar placeholder="search for product/service/store"></ion-searchbar>
+  <ion-card class="ion-no-margin service" (click)="getProducts()">
+    <ion-row>
+      <ion-col size="3">
+        <img class="service-img" src="../assets/images/dump/service-1.jpg">
+      </ion-col>
+      <ion-col size="9">
+        <h3 class="service-name">Global</h3>
+        <ion-grid>
+          <ion-row>
+            <!-- <ion-col size="6">
+              <p class="ion-no-margin">Price: Rs-1000/-</p>
+            </ion-col> -->
+            <ion-col>
+              <p class="ion-no-margin">Distance: 1.2KM</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <p class="ion-no-margin">
+              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
+              <ion-label class="ion-no-margin units">Address: Kukatpally, Hyderabad, Telangana. </ion-label>
+            </p>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card class="ion-no-margin service" (click)="getProducts()">
+    <ion-row>
+      <ion-col size="3">
+        <img class="service-img" src="../assets/images/dump/service-2.jpg">
+      </ion-col>
+      <ion-col size="9">
+        <h3 class="service-name">Ayurveda spa</h3>
+        <ion-grid>
+          <ion-row>
+            <!-- <ion-col size="6">
+              <p class="ion-no-margin">Price: Rs-2500/-</p>
+            </ion-col> -->
+            <ion-col>
+              <p class="ion-no-margin">Distance: 3KM</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <p class="ion-no-margin">
+              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
+              <ion-label class="ion-no-margin units">Address: Abids, Hyderabad, Telangana. </ion-label>
+            </p>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card class="ion-no-margin service" (click)="getProducts()">
+    <ion-row>
+      <ion-col size="3">
+        <img class="service-img" src="../assets/images/dump/service-3.png">
+      </ion-col>
+      <ion-col size="9">
+        <h3 class="service-name">Hospital</h3>
+        <ion-grid>
+          <ion-row>
+            <!-- <ion-col size="6">
+              <p class="ion-no-margin">Price: Rs-400/-</p>
+            </ion-col> -->
+            <ion-col>
+              <p class="ion-no-margin">Distance: 5.2KM</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <p class="ion-no-margin">
+              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
+              <ion-label class="ion-no-margin units">Address: JNTU, Hyderabad, Telangana state.</ion-label>
+            </p>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card class="ion-no-margin service" (click)="getProducts()">
+    <ion-row>
+      <ion-col size="3">
+        <img class="service-img" src="../assets/images/dump/service-4.jpg">
+      </ion-col>
+      <ion-col size="9">
+        <h3 class="service-name">Plumber</h3>
+        <ion-grid>
+          <ion-row>
+            <!-- <ion-col size="6">
+              <p class="ion-no-margin">Price: Rs-2000/-</p>
+            </ion-col> -->
+            <ion-col>
+              <p class="ion-no-margin">Distance: 0.5KM</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <p class="ion-no-margin">
+              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
+              <ion-label class="ion-no-margin units">Address: Balanagar, Hyderabad, Telangana.</ion-label>
+            </p>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card class="ion-no-margin service" (click)="getProducts()">
+    <ion-row>
+      <ion-col size="3">
+        <img class="service-img" src="../assets/images/dump/service-5.jpg">
+      </ion-col>
+      <ion-col size="9">
+        <h3 class="service-name">Electrician</h3>
+        <ion-grid>
+          <ion-row>
+            <!-- <ion-col size="6">
+              <p class="ion-no-margin">Price: Rs-500/-</p>
+            </ion-col> -->
+            <ion-col>
+              <p class="ion-no-margin">Distance: 1KM</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <p class="ion-no-margin">
+              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
+              <ion-label class="ion-no-margin units">Address:ESI, Hyderabad, Telangana.</ion-label>
+            </p>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-card>
 </ion-content>

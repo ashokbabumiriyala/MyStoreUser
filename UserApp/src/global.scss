@@ -58,3 +58,10 @@ ion-button {
     text-decoration: underline;
     
 }
+ion-searchbar ion-icon {
+    right: 16px !important;
+    left: auto !important;
+  }
+ion-searchbar input {
+   padding-left: 20px !important;
+  }

@@ -1,0 +1,29 @@
+.ion-ele {
+    border-radius: 15px;
+    border: 1px solid;
+    border-width: thin;
+    --background: transparent;
+    margin-bottom: 5px;
+}
+.units {
+    white-space: break-spaces;
+}
+.addr-icon {
+    margin: auto;
+}
+.product {
+    color: var(--black);
+    border: 1px solid darkgreen;
+    margin-bottom: 10px;
+    border-radius: 15px;
+	--background:transparent;
+    font-family:cursive;
+}
+.product-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+.product-name {
+    margin: 5px auto;
+}
