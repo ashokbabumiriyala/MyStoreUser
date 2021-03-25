@@ -42,7 +42,11 @@ const routes: Routes = [
   {
     path: 'product-list',
     loadChildren: () => import('./product-list/product-list.module').then( m => m.ProductListPageModule)
+  },  {
+    path: 'maps',
+    loadChildren: () => import('./Shared/maps/maps.module').then( m => m.MapsPageModule)
   }
+
 ];
 
 @NgModule({

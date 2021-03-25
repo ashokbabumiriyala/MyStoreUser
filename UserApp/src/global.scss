@@ -63,5 +63,15 @@ ion-searchbar ion-icon {
     left: auto !important;
   }
 ion-searchbar input {
-   padding-left: 20px !important;
+    padding-left: 20px !important;
+    font-size: 13px !important;
+    border: 1px solid #bbb !important;
+    border-radius: 10px !important;
+  }
+  * {
+      font-family: cursive;
+  }
+  .map{
+    --width: 98%  !important;
+    --height: 82% !important;
   }

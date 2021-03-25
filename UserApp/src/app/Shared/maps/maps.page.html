@@ -1,0 +1,21 @@
+<ion-content class="login-form ion-padding after-login-bg">
+  <h2 class="page-title" (click)="dismiss()">Tele-Port</h2>
+  <ion-list class="location">
+    <ion-radio-group [(ngModel)]="selectedRadio">
+      <ion-item>
+        <ion-label>Use this address</ion-label>
+        <ion-radio slot="start" value="primary" (click)="updateRadio($event)"></ion-radio>
+      </ion-item>
+      <ion-item>
+        Suraj, H-No:1-75 ,Near Post Office, Banglore, Karnataka, India- 560002.
+      </ion-item>
+      <ion-item>
+        <ion-label>Use different address</ion-label>
+        <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <div *ngIf="mapImage" #map id="map">
+    <img class="product-img" src="../assets/images/dump/maps.jpeg">
+  </div>
+</ion-content>

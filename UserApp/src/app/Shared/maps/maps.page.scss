@@ -1,0 +1,11 @@
+google-map {
+    #map {
+        height: 100% !important;
+    }
+}
+.location {
+    background: transparent !important;
+    ion-item {
+        --background: transparent !important;
+    }
+}

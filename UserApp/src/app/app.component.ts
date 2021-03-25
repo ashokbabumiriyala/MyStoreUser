@@ -1,19 +1,26 @@
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { MapsPage } from './Shared/maps/maps.page';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  styleUrls: ['app.component.scss']  
 })
 export class AppComponent {
   showHead:boolean = true;
   public appPages = [
-    { title: 'Inbox', url: '/folder/Inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/Outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/Favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/Archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
+    { title: 'Profile', url: '/folder/Inbox', icon: 'person-outline' },
+    { title: 'product Orders', url: '/folder/Outbox', icon: 'aperture-outline' },
+    { title: 'Service Orders', url: '/folder/Favorites', icon: 'color-filter-outline' },
+    { title: 'Raise A Complaint', url: '/folder/Favorites', icon: 'chatbox-ellipses-outline' }
   ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() {}
+  constructor(public modalController: ModalController) {}
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: MapsPage,
+      cssClass: 'map',
+    });
+    return await modal.present();
+  }
 }
