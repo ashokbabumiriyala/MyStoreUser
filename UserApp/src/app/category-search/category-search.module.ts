@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CategorySearchPageRoutingModule } from './category-search-routing.module';
+import {CategorySearchPageRoutingModule } from './category-search-routing.module';
 
-import { CategorySearchPage } from './category-search.page';
+import {CategorySearchPage } from './category-search.page';
 
 @NgModule({
   imports: [
