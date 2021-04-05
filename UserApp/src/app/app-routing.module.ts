@@ -45,6 +45,10 @@ const routes: Routes = [
   },  {
     path: 'maps',
     loadChildren: () => import('./Shared/maps/maps.module').then( m => m.MapsPageModule)
+  },
+  {
+    path: 'cart',
+    loadChildren: () => import('./Shared/cart/cart.module').then( m => m.CartPageModule)
   }
 
 ];

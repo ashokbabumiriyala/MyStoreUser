@@ -23,7 +23,7 @@
                 <ion-title class="ion-text-center">
                     <ion-img class="app-img" src="../assets/images/logo.png"></ion-img>
                 </ion-title>
-                <ion-icon class="ion-margin-end cart" name="cart-outline" slot="end"></ion-icon>
+                <ion-icon class="ion-margin-end cart" name="cart-outline" slot="end" (click)="cartModal()"></ion-icon>
             </ion-toolbar>
         </ion-header>
         <ion-router-outlet id="main-content" [ngClass]="showHead ? 'main-content' : ''"></ion-router-outlet>
