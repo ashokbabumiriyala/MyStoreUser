@@ -56,7 +56,7 @@ export class AppComponent {
         const wrapperAnimation = this.animationCtrl.create()
           .beforeStyles({ 'opacity': 1 })
           .addElement(baseEl.querySelector('.modal-wrapper')!)
-          .fromTo('transform', 'translateX(100%)', 'translateX(15%)');
+          .fromTo('transform', 'translateX(100%)', 'translateX(1%)');
   
         return this.animationCtrl.create()
           .addElement(baseEl)

@@ -1,14 +1,57 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-center">Cart</ion-title>
     <ion-buttons slot="primary">
-      <ion-button>
+      <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="cart">
-Java
+<ion-content padding>
+  <h2 class="page-title">Cart</h2>
+  <div *ngIf="isEmptyCart" class="empty-cart">
+    <div class="empty-results">
+      <h3 text-center>
+        <ion-icon name="cart"></ion-icon>
+      </h3>
+      <p text-center>
+        Your cart is empty
+      </p>
+    </div>
+  </div>
+  <div *ngIf="!isEmptyCart" class="cart-itm-wrap">
+    <ion-card class="cart-list"   *ngFor="let itm of  cartItems">
+      <ion-card-content>
+        <ion-row>
+          <ion-col size="2">
+                <img  src="{{'../assets/images/dump/'+itm.thumb}}">
+          </ion-col>
+          <ion-col size="4">
+            <h3 text-left>{{itm.name}}</h3>
+            <div class="itm-footer">
+              <span class="price">
+                {{itm.price | currency:'INR':true}}
+              </span>
+            </div>
+            <!-- <h3>Total Price:  {{itm.price * itm.count | currency:'INR':true}}</h3> -->
+          </ion-col>
+          <ion-col size="4" class="ion-padding-top">
+            <p class="ion-no-margin units">
+              <ion-icon class="plus-minus" name="remove-circle" (click)="decrement(itm)" item-right></ion-icon>
+              <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="itm.count"></ion-input>
+              <ion-icon class="plus-minus" name="add-circle" (click)="increment(itm)" item-right></ion-icon>
+            </p>
+          </ion-col>
+          <ion-col size="1" class="ion-padding-top">
+            <ion-icon class="delete" name="trash-outline" (click)="removeItem(itm)"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    <ion-row class="btm-btn">
+      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom">Continue Shopping</ion-button>
+      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom">Proceed To Checkout</ion-button>
+    </ion-row>
+  </div>
 </ion-content>
