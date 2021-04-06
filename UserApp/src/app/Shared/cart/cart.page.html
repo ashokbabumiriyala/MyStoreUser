@@ -31,10 +31,10 @@
             <h3 text-left>{{itm.name}}</h3>
             <div class="itm-footer">
               <span class="price">
-                {{itm.price | currency:'INR':true}}
+                {{itm.price | currency:'INR'}}
               </span>
             </div>
-            <!-- <h3>Total Price:  {{itm.price * itm.count | currency:'INR':true}}</h3> -->
+            <!-- <h3>Total Price:  {{itm.price * itm.count | currency:'INR'}}</h3> -->
           </ion-col>
           <ion-col size="4" class="ion-padding-top">
             <p class="ion-no-margin units">
@@ -50,8 +50,8 @@
       </ion-card-content>
     </ion-card>
     <ion-row class="btm-btn">
-      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom">Continue Shopping</ion-button>
-      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom">Proceed To Checkout</ion-button>
+      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom" (click)="navigateTo('category-search')">Continue Shopping</ion-button>
+      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom" (click)="navigateTo('checkout')">Proceed To Checkout</ion-button>
     </ion-row>
   </div>
 </ion-content>

@@ -1,0 +1,36 @@
+.checkout {
+    a.small-text {
+        text-decoration: none;
+    }
+}
+
+.ion-ele {
+    border-radius: 15px;
+    border: 1px solid;
+    border-width: thin;
+    --background: transparent;
+    margin-bottom: 5px;
+}
+.address-group {
+    background: transparent;
+    .ion-add {
+        --background: transparent;
+    }
+}
+.cart-list {
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    height: 90px;
+    background: transparent;
+   ion-card-content {
+       padding: 10px !important;
+       .delete {
+           font-size: 28px;
+           margin-left: 7px;
+       }
+       img {
+           width: 100%;
+           height: 100%;
+       }
+   }
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -13,7 +14,7 @@ export class CartPage implements OnInit {
   isCartItemLoaded: boolean = false;
   isEmptyCart: boolean = true;
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController, private router: Router) { }
   ngOnInit() {
     this.loadCartItems();
   }
@@ -48,5 +49,10 @@ export class CartPage implements OnInit {
   removeItem(itm) {
     var ind = this.cartItems.indexOf(itm);
     this.cartItems.splice(ind, 1);
+  }
+  navigateTo(ele) {
+    var route = '/'+ele;
+    this.router.navigate([route]);
+    this.dismiss();
   }
 }
