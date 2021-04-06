@@ -30,29 +30,29 @@ export class ProductInfoPage implements OnInit {
         lat: 12.93,
         lng: 77.59,
       },
-      title: 'Jaya Nagar'
+      title: 'IKEY'
 
     },
     {
       position: {
-        lat: 12.951845,
-        lng: 77.699577,
+        lat: 12.961025,
+        lng: 77.512688,
       },
-      title: 'Marathahalli'
+      title: 'Forever-21'
     },
     {
       position: {
         lat: 12.925453,
         lng: 77.546761,
       },
-      title: 'Banashankari'
+      title: 'Walamart'
     },
     {
       position: {
         lat: 12.902802,
         lng: 77.580009,
       },
-      title: 'JP Nagar'
+      title: 'Big Bazar'
     },
   ];
 
@@ -69,13 +69,54 @@ export class ProductInfoPage implements OnInit {
   }
   displayListView:boolean;
   ngOnInit() {
-    this.style=[
+    this.style=
+    [
       {
-        "featureType": "landscape.natural.landcover",
-        "elementType": "geometry.fill",
+        "elementType": "geometry",
         "stylers": [
           {
-            "color": "#ff3d51"
+            "color": "#f5f5f5"
+          }
+        ]
+      },
+      {
+        "elementType": "geometry.stroke",
+        "stylers": [
+          {
+            "visibility": "on"
+          }
+        ]
+      },
+      {
+        "elementType": "labels.icon",
+        "stylers": [
+          {
+            "visibility": "off"
+          }
+        ]
+      },
+      {
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#616161"
+          }
+        ]
+      },
+      {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+          {
+            "color": "#f5f5f5"
+          }
+        ]
+      },
+      {
+        "featureType": "administrative.land_parcel",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#bdbdbd"
           }
         ]
       },
@@ -89,11 +130,137 @@ export class ProductInfoPage implements OnInit {
         ]
       },
       {
+        "featureType": "landscape.natural.landcover",
+        "elementType": "geometry.fill",
+        "stylers": [
+          {
+            "color": "#ff4500"
+          }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#eeeeee"
+          }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#757575"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#e5e5e5"
+          }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#9e9e9e"
+          }
+        ]
+      },
+      {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#ffffff"
+          }
+        ]
+      },
+      {
+        "featureType": "road.arterial",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#757575"
+          }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#dadada"
+          }
+        ]
+      },
+      {
         "featureType": "road.highway",
         "elementType": "geometry.fill",
         "stylers": [
           {
             "color": "#ff4500"
+          }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#616161"
+          }
+        ]
+      },
+      {
+        "featureType": "road.local",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#9e9e9e"
+          }
+        ]
+      },
+      {
+        "featureType": "transit.line",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#e5e5e5"
+          }
+        ]
+      },
+      {
+        "featureType": "transit.station",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#eeeeee"
+          }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+          {
+            "color": "#c9c9c9"
+          }
+        ]
+      },
+      {
+        "featureType": "water",
+        "elementType": "labels.text.fill",
+        "stylers": [
+          {
+            "color": "#9e9e9e"
           }
         ]
       }
@@ -149,12 +316,22 @@ export class ProductInfoPage implements OnInit {
     return new google.maps.Marker({
       position: marker.position,
       map: this.map,
-      title: marker.title,
-     
+      // title: marker.title,
+      label: {
+        color: 'red',
+        fontWeight: 'bold',
+        text: marker.title
+      },
       // fillColor:"blue" 
       // icon=google.Symbol(fill_color='blue')
       icon: {
         url: url,
+
+        labelOrigin: new google.maps.Point(10, 45),
+       
+        // size: new google.maps.Size(22, 40),
+        // origin: new google.maps.Point(0, 0),
+        // anchor: new google.maps.Point(11, 40),
         //scaledSize: new google.maps.Size(38, 38)
       }
     });

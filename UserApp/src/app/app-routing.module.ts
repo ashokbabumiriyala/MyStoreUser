@@ -49,6 +49,10 @@ const routes: Routes = [
   {
     path: 'cart',
     loadChildren: () => import('./Shared/cart/cart.module').then( m => m.CartPageModule)
+  },
+  {
+    path: 'checkout',
+    loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
   }
 
 ];
