@@ -2,7 +2,7 @@
   <h2 class="page-title">Checkout</h2>
   <form>
     <ion-list class="address-group">
-      <ion-radio-group value="default" (ionChange)="selectedAddr($event)">
+      <ion-radio-group value="default">
         <ion-list-header>
           <ion-label>Delivery Address</ion-label>
         </ion-list-header>
@@ -10,13 +10,13 @@
           <ion-radio slot="start" value="default" ></ion-radio>
           <p>{{defaultAddress}}</p>
         </ion-item>
-        <ion-item class="ion-add">
+        <!-- <ion-item class="ion-add">
           <ion-label>Add Address</ion-label>
           <ion-radio slot="start" value="new"></ion-radio>
-        </ion-item>
+        </ion-item> -->
       </ion-radio-group>
     </ion-list>
-    <ion-list class="address-group" *ngIf="!default">
+    <!-- <ion-list class="address-group" *ngIf="!default">
     <ion-item class="ion-ele">
       <ion-label position="floating">Address</ion-label>
       <ion-textarea  placeholder="Enter Address here..."></ion-textarea>
@@ -33,7 +33,11 @@
       <ion-label position="floating">Pincode</ion-label>
       <ion-input></ion-input>
     </ion-item>
-  </ion-list>
+  </ion-list> -->
+  <ion-row>
+    <ion-col size="3">Store:</ion-col>
+    <ion-col>IKEA, Hi-tech City</ion-col>
+    </ion-row>
   <ion-card class="cart-list"   *ngFor="let itm of  cartItems">
     <ion-card-content>
       <ion-row>
@@ -42,7 +46,7 @@
         </ion-col>
         <ion-col size="7">
           <h3 text-left>{{itm.name}} - <span class="price">{{itm.price | currency:'INR'}}</span></h3>
-          <h3>Count - {{itm.count}}</h3>
+          <h3>Count - {{itm.count}} &nbsp;&nbsp; Units - {{itm.units}}</h3>
           <h3>Total Price:  {{itm.price * itm.count | currency:'INR'}}</h3>
         </ion-col>
         <ion-col size="2" class="ion-padding-top">

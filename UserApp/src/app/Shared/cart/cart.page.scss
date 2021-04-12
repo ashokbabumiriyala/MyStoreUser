@@ -71,5 +71,14 @@ page-cart {
 .btm-btn {
      ion-button {
      margin: 5px auto;
+     font-size: 9px;
+     ion-icon {
+          font-size: 32px;
      }
+     }
+}
+.cart-itm-wrap {
+     height: auto;
+     max-height: 444px;
+     overflow-y: auto;
 }

@@ -50,14 +50,18 @@ export class AppComponent {
     async cartModal () {
       const enterAnimation = (baseEl: any) => {
         const backdropAnimation = this.animationCtrl.create()
+        .beforeStyles({ 'width': '100vw','height': 'auto','min-height': '85vh',
+          'margin-top': '16%','margin-bottom': '10%'})
           .addElement(baseEl.querySelector('ion-backdrop')!)
           .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');         
 
         const wrapperAnimation = this.animationCtrl.create()
-          .beforeStyles({ 'opacity': 1 })
+          .beforeStyles({ 'opacity': 1,'width': '90vw','position': 'absolute',
+          'right': '0px','left': 'auto','height': 'auto','min-height': '85vh',
+          'margin-top': '6%','margin-bottom':' 0%' })
           .addElement(baseEl.querySelector('.modal-wrapper')!)
           .fromTo('transform', 'translateX(100%)', 'translateX(1%)');
-  
+
         return this.animationCtrl.create()
           .addElement(baseEl)
           .easing('ease-out')

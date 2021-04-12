@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar>
     <ion-buttons slot="primary">
       <ion-button (click)="dismiss()">
@@ -6,10 +6,17 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content padding>
-  <h2 class="page-title">Cart</h2>
+  <ion-row>
+    <ion-col size="10">
+      <h2 class="page-title">Cart</h2>
+    </ion-col>
+    <ion-col size="2">
+      <ion-icon class="plus-minus" name="close-circle-outline" (click)="dismiss()"></ion-icon>
+    </ion-col>
+  </ion-row>
   <div *ngIf="isEmptyCart" class="empty-cart">
     <div class="empty-results">
       <h3 text-center>
@@ -20,12 +27,18 @@
       </p>
     </div>
   </div>
+  <ion-row class="btm-btn">
+    <ion-button type="submit" shape="round"  class="ion-margin-bottom"
+      (click)="navigateTo('category-search')">Continue <ion-icon name="cart-outline" color="#FFF"></ion-icon></ion-button>
+    <ion-button type="submit" shape="round" class="ion-margin-bottom" (click)="navigateTo('checkout')">
+      Proceed To Checkout</ion-button>
+  </ion-row>
   <div *ngIf="!isEmptyCart" class="cart-itm-wrap">
-    <ion-card class="cart-list"   *ngFor="let itm of  cartItems">
+    <ion-card class="cart-list" *ngFor="let itm of  cartItems">
       <ion-card-content>
         <ion-row>
           <ion-col size="2">
-                <img  src="{{'../assets/images/dump/'+itm.thumb}}">
+            <img src="{{'../assets/images/dump/'+itm.thumb}}">
           </ion-col>
           <ion-col size="4">
             <h3 text-left>{{itm.name}}</h3>
@@ -49,9 +62,5 @@
         </ion-row>
       </ion-card-content>
     </ion-card>
-    <ion-row class="btm-btn">
-      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom" (click)="navigateTo('category-search')">Continue Shopping</ion-button>
-      <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom" (click)="navigateTo('checkout')">Proceed To Checkout</ion-button>
-    </ion-row>
   </div>
 </ion-content>

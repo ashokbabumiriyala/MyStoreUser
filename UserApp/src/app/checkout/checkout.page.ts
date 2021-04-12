@@ -14,11 +14,11 @@ export class CheckoutPage implements OnInit {
   ngOnInit() {
     this.defaultAddress = "JNTU, Hyderabad, Telangana, India-500038";
     this.cartItems = [
-      { name: 'Santoor', price: 30, count: 1, thumb: 'merchantProduct-1.jpeg' },
-      { name: 'Lays', price: 50, count: 5, thumb: 'merchantProduct-2.jpeg' },
-      { name: 'Biscuits', price: 50, count: 10, thumb: 'merchantProduct-3.jpeg' },
-      { name: 'Ground Nuts', price: 100, count: 1, thumb: 'merchantProduct-4.jpeg' },
-      { name: 'Oil', price: 150, count: 1, thumb: 'merchantProduct-5.jpeg' }
+      { name: 'Santoor', price: 30, count: 1, thumb: 'merchantProduct-1.jpeg',units: 'item'},
+      { name: 'Lays', price: 50, count: 5, thumb: 'merchantProduct-2.jpeg',units: 'item' },
+      { name: 'Biscuits', price: 50, count: 10, thumb: 'merchantProduct-3.jpeg',units: 'item' },
+      { name: 'Ground Nuts', price: 100, count: 1, thumb: 'merchantProduct-4.jpeg',units: 'Kg' },
+      { name: 'Oil', price: 150, count: 1, thumb: 'merchantProduct-5.jpeg',units: 'Ltrs' }
     ];
   }
   removeItem(itm) {
