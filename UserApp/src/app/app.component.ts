@@ -21,11 +21,12 @@ export class AppComponent {
     async presentModal() {
       const enterAnimation = (baseEl: any) => {
         const backdropAnimation = this.animationCtrl.create()
+          // .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '16%'})
           .addElement(baseEl.querySelector('ion-backdrop')!)
           .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');         
 
         const wrapperAnimation = this.animationCtrl.create()
-          .beforeStyles({ 'opacity': 1 })
+          .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '6%'})
           .addElement(baseEl.querySelector('.modal-wrapper')!)
           .fromTo('transform', 'scale(0)', 'scale(1)');
   
