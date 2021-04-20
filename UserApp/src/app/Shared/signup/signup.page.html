@@ -1,5 +1,7 @@
 <ion-content class="ion-padding after-login-bg">
-  <h2 class="page-title"> SignUp</h2>
+  <h2 *ngIf="!editProfile" class="page-title"> SignUp</h2>
+  <h2 *ngIf="editProfile" class="page-title"> Edit Profile</h2>
+  
   <form class="signup">
       <ion-item class="ion-ele">
           <ion-label position="floating">User Name</ion-label>
@@ -48,7 +50,8 @@
       </ion-item>
       <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
-              <ion-button type="submit" shape="round" expand="block" class="ion-margin-bottom">Get Started</ion-button>
+              <ion-button *ngIf="!editProfile" type="submit" shape="round" expand="block" class="ion-margin-bottom">Get Started</ion-button>
+              <ion-button *ngIf="editProfile" type="submit" shape="round" expand="block" class="ion-margin-bottom">Save Profile</ion-button>
           </ion-col>
       </ion-row>
   </form>

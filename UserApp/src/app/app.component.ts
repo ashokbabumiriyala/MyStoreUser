@@ -12,9 +12,9 @@ import { CategorySearchPage } from './category-search/category-search.page';
 export class AppComponent {
   showHead:boolean = true;
   public appPages = [
-    { title: 'Profile', url: '/folder/Inbox', icon: 'person-outline' },
-    { title: 'Previous Product Orders', url: '/folder/Outbox', icon: 'aperture-outline' },
-    { title: 'Previous Service Orders', url: '/folder/Favorites', icon: 'color-filter-outline' },
+    { title: 'Profile', url: '/signup', icon: 'person-outline' },
+    { title: 'Previous Product Orders', url: '/product-orders', icon: 'aperture-outline' },
+    { title: 'Previous Service Orders', url: '/service-orders', icon: 'color-filter-outline' },
     { title: 'Raise A Complaint', url: '/folder/Favorites', icon: 'chatbox-ellipses-outline' }
   ];
   constructor(public modalController: ModalController,
