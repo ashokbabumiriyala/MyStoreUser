@@ -86,6 +86,9 @@ export class MapsPage implements OnInit {
         title: 'I am here!'
       });
       this.markers.push(marker);
+      marker.addListener("click", () => {
+        alert(1);
+      });
       this.map.setCenter(pos);
     }).catch((error) => {
       console.log('Error getting location', error);
