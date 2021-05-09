@@ -16,7 +16,7 @@ export class MapsPage implements OnInit {
   map: any;
   address:string;
   lat: string;
-  long: string;  
+  long: string;
   autocomplete: { input: string; };
   autocompleteItems: any[];
   location: any;
@@ -35,7 +35,7 @@ export class MapsPage implements OnInit {
   ngOnInit() {
     this.loadMap();
   }
- 
+
   dismiss() {
     this.modalCtrl.dismiss({
       'dismissed': true
@@ -49,7 +49,7 @@ export class MapsPage implements OnInit {
     }
   }
   loadMap() {
-    
+
     //FIRST GET THE LOCATION FROM THE DEVICE.
     this.geolocation.getCurrentPosition().then((resp) => {
       let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
@@ -57,17 +57,17 @@ export class MapsPage implements OnInit {
         center: latLng,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
-      } 
-      
+      }
+
       //LOAD THE MAP WITH THE PREVIOUS VALUES AS PARAMETERS.
-      this.getAddressFromCoords(resp.coords.latitude, resp.coords.longitude); 
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions); 
+      this.getAddressFromCoords(resp.coords.latitude, resp.coords.longitude);
+      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
       this.map.addListener('tilesloaded', () => {
         console.log('accuracy',this.map, this.map.center.lat());
         this.getAddressFromCoords(this.map.center.lat(), this.map.center.lng())
         this.lat = this.map.center.lat()
         this.long = this.map.center.lng()
-      }); 
+      });
     }).catch((error) => {
       console.log('Error getting location', error);
     });
@@ -94,20 +94,20 @@ export class MapsPage implements OnInit {
       console.log('Error getting location', error);
     });
   }
-  
+
   getAddressFromCoords(lattitude, longitude) {
     console.log("getAddressFromCoords "+lattitude+" "+longitude);
     let options: NativeGeocoderOptions = {
       useLocale: true,
-      maxResults: 5    
-    }; 
+      maxResults: 5
+    };
     this.nativeGeocoder.reverseGeocode(lattitude, longitude, options)
       .then((result: NativeGeocoderResult[]) => {
         this.address = "";
         let responseAddress = [];
         for (let [key, value] of Object.entries(result[0])) {
           if(value.length>0)
-          responseAddress.push(value); 
+          responseAddress.push(value);
         }
         responseAddress.reverse();
         for (let value of responseAddress) {
@@ -115,16 +115,16 @@ export class MapsPage implements OnInit {
         }
         this.address = this.address.slice(0, -2);
       })
-      .catch((error: any) =>{ 
+      .catch((error: any) =>{
         this.address = "Address Not Available!";
-      }); 
+      });
   }
 
   //FUNCTION SHOWING THE COORDINATES OF THE POINT AT THE CENTER OF THE MAP
   ShowCords(){
     alert('lat' +this.lat+', long'+this.long )
   }
-  
+
   //AUTOCOMPLETE, SIMPLY LOAD THE PLACE USING GOOGLE PREDICTIONS AND RETURNING THE ARRAY.
   UpdateSearchResults(){
     if (this.autocomplete.input == '') {
@@ -141,12 +141,12 @@ export class MapsPage implements OnInit {
       });
     });
   }
-  
+
   //wE CALL THIS FROM EACH ITEM.
   SelectSearchResult(item){
     //this.clearMarkers();
     this.autocompleteItems = [];
-  
+
     this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
       if(status === 'OK' && results[0]){
         let position = {
@@ -162,19 +162,19 @@ export class MapsPage implements OnInit {
       }
     })
   }
-  
-  
+
+
   //lET'S BE CLEAN! THIS WILL JUST CLEAN THE LIST WHEN WE CLOSE THE SEARCH BAR.
   ClearAutocomplete(){
     this.autocompleteItems = []
     this.autocomplete.input = ''
   }
- 
+
   //sIMPLE EXAMPLE TO OPEN AN URL WITH THE PLACEID AS PARAMETER.
   GoTo(){
     return window.location.href = 'https://www.google.com/maps/search/?api=1&query=Google&query_place_id='+this.placeid;
   }
-  
+
    //convert Address string to lat and long
   geoCode(address:any) {
     let geocoder = new google.maps.Geocoder();

@@ -15,8 +15,8 @@ import { GoogleMapsComponent }  from 'src/app/google-maps/google-maps.component'
     ProductInfoPageRoutingModule
   ],
   declarations: [ProductInfoPage,GoogleMapsComponent]
-  ,providers:[  
-    Geolocation,    
+  ,providers:[
+    Geolocation,
     NativeGeocoder]
 })
 export class ProductInfoPageModule {}

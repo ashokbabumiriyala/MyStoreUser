@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "500249383393",
+    "project_id": "my3karrt-user-app",
+    "storage_bucket": "my3karrt-user-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500249383393:android:09c5459cda7c19287442a0",
+        "android_client_info": {
+          "package_name": "com.velocious.my3karrt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500249383393-urm2j24kf173g9ida58o5nb57v9qr2cq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2MatPSEXOg0s8GVtEkKEzgl-p0JBYdcI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500249383393-urm2j24kf173g9ida58o5nb57v9qr2cq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

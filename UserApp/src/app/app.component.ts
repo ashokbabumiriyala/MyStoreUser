@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController, AnimationController } from '@ionic/angular';
 import { CartPage } from './Shared/cart/cart.page';
 import { MapsPage } from './Shared/maps/maps.page';
 import { CategorySearchPage } from './category-search/category-search.page';
+import { Platform } from '@ionic/angular';
+import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']  
+  styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   showHead:boolean = true;
   public appPages = [
     { title: 'Profile', url: '/signup', icon: 'person-outline' },
@@ -18,30 +20,67 @@ export class AppComponent {
     { title: 'Raise A Complaint', url: '/folder/Favorites', icon: 'chatbox-ellipses-outline' }
   ];
   constructor(public modalController: ModalController,
-    public animationCtrl: AnimationController) { }
+    public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform) {
+      this.initializeApp();
+     }
+    ngOnInit(): void {
+
+    }
+     initializeApp() {
+      this.platform.ready().then(() => {
+        // subscribe to a topic
+        this.fcm.subscribeToTopic('Users');
+
+        // get FCM token
+        this.fcm.getToken().then(token => {
+          console.log(token);
+          sessionStorage.setItem("PushToken",token);
+        });
+
+        // ionic push notification example
+        this.fcm.onNotification().subscribe(data => {
+          console.log(data);
+          if (data.wasTapped) {
+            console.log('Received in background');
+          } else {
+            console.log('Received in foreground');
+          }
+        });
+
+        // refresh the FCM token
+        this.fcm.onTokenRefresh().subscribe(token => {
+          console.log(token);
+          sessionStorage.setItem("PushToken",token);
+        });
+
+        // unsubscribe from a topic
+        // this.fcm.unsubscribeFromTopic('offers');
+
+      });
+    }
     async presentModal() {
       const enterAnimation = (baseEl: any) => {
         const backdropAnimation = this.animationCtrl.create()
           // .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '16%'})
           .addElement(baseEl.querySelector('ion-backdrop')!)
-          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');         
+          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
 
         const wrapperAnimation = this.animationCtrl.create()
           .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '6%'})
           .addElement(baseEl.querySelector('.modal-wrapper')!)
           .fromTo('transform', 'scale(0)', 'scale(1)');
-  
+
         return this.animationCtrl.create()
           .addElement(baseEl)
           .easing('ease-out')
           .duration(400)
           .addAnimation([backdropAnimation, wrapperAnimation]);
       }
-  
+
       const leaveAnimation = (baseEl: any) => {
         return enterAnimation(baseEl).direction('reverse');
       }
-  
+
       const modal = await this.modalController.create({
         component: MapsPage,
         enterAnimation,
@@ -55,7 +94,7 @@ export class AppComponent {
         .beforeStyles({ 'width': '100vw','height': 'auto','min-height': '85vh',
           'margin-top': '16%','margin-bottom': '10%'})
           .addElement(baseEl.querySelector('ion-backdrop')!)
-          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');         
+          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
 
         const wrapperAnimation = this.animationCtrl.create()
           .beforeStyles({ 'opacity': 1,'width': '90vw','position': 'absolute',
@@ -70,11 +109,11 @@ export class AppComponent {
           .duration(400)
           .addAnimation([backdropAnimation, wrapperAnimation]);
       }
-  
+
       const leaveAnimation = (baseEl: any) => {
         return enterAnimation(baseEl).direction('reverse');
       }
-  
+
       const modal = await this.modalController.create({
         component: CartPage,
         enterAnimation,
@@ -90,7 +129,7 @@ export class AppComponent {
         .beforeStyles({ 'width': '100vw','height': 'auto','min-height': '85vh',
           'margin-top': '16%','margin-bottom': '10%'})
           .addElement(baseEl.querySelector('ion-backdrop')!)
-          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');         
+          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
 
         const wrapperAnimation = this.animationCtrl.create()
           .beforeStyles({ 'opacity': 1,'width': '90vw','position': 'absolute',
@@ -105,11 +144,11 @@ export class AppComponent {
           .duration(400)
           .addAnimation([backdropAnimation, wrapperAnimation]);
       }
-  
+
       const leaveAnimation = (baseEl: any) => {
         return enterAnimation(baseEl).direction('reverse');
       }
-  
+
       const modal = await this.modalController.create({
         component: CategorySearchPage,
         enterAnimation,
