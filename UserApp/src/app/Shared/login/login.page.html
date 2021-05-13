@@ -24,7 +24,7 @@
       </ion-row>
       <ion-row>
           <ion-col class="ion-text-center">
-              <a [routerLink]="['/signup']" class="small-text ion-margin-bottom">New user ? Register with us!</a>&nbsp;&nbsp;
+              <a [routerLink]="['/signup']" class="small-text ion-margin-bottom" [queryParams]="{ signup: true}">New user ? Register with us!</a>&nbsp;&nbsp;
           </ion-col>
       </ion-row>
   </form>

@@ -1,8 +1,11 @@
 <ion-content class="ion-padding after-login-bg">
-  <h2 *ngIf="!editProfile" class="page-title"> SignUp</h2>
-  <h2 *ngIf="editProfile" class="page-title"> Edit Profile</h2>
+  <h2 *ngIf="!editProfile && !readProfile" class="page-title"> SignUp</h2>
+  <h2 *ngIf="editProfile" class="page-title">
+       <ion-icon name="arrow-back-outline" slot="start" (click)="backToScreen()"></ion-icon>Edit Profile</h2>
+  <h2 *ngIf="readProfile" class="page-title">Profile
+       <ion-icon name="create-outline" slot="end" (click)="UpdateProfile()"></ion-icon></h2>
 
-  <form class="signup" [formGroup]="signUpFormGroup" >
+  <form class="signup" [formGroup]="signUpFormGroup" *ngIf="!readProfile">
       <ion-item class="ion-ele">
           <ion-label position="floating">User Name</ion-label>
            <ion-input type="text" required formControlName="UserName"></ion-input>
@@ -54,7 +57,7 @@
               <ion-button *ngIf="editProfile" type="submit" shape="round" expand="block" class="ion-margin-bottom" >Save Profile</ion-button>
           </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row *ngIf="!editProfile && !readProfile">
         <ion-col class="ion-text-center ion-margin-top">
             <a [routerLink]="['/login']"  class="small-text">Login</a>&nbsp;&nbsp;
         </ion-col>
@@ -65,4 +68,36 @@
       </ion-col>
   </ion-row> -->
   </form>
+
+    <ion-list *ngIf="readProfile">       
+   <ion-item>
+        <ion-label>User Name:</ion-label>
+        <ion-note slot="end">Store User</ion-note>
+    </ion-item>
+   <ion-item>
+        <ion-label>Mobile Number:</ion-label>
+        <ion-note slot="end">123456789</ion-note>
+    </ion-item>
+   <ion-item>
+        <ion-label>E-mail Id:</ion-label>
+        <ion-note slot="end">storeuser@gmail.com</ion-note>
+    </ion-item>
+   <ion-item>
+        <ion-label>Address:</ion-label>
+        <ion-note slot="end">Store user, Near Higway, Banglore</ion-note>
+    </ion-item>
+   <ion-item>
+        <ion-label>City:</ion-label>
+        <ion-note slot="end">Hyderabad</ion-note>
+    </ion-item>
+   <ion-item>
+        <ion-label>State:</ion-label>
+        <ion-note slot="end">Telagana</ion-note>
+    </ion-item>
+   <ion-item>
+        <ion-label>Pin Code:</ion-label>
+        <ion-note slot="end">500038</ion-note>
+    </ion-item>
+</ion-list>
+
 </ion-content>

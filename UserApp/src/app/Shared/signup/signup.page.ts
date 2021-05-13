@@ -14,6 +14,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx'
 })
 export class SignupPage implements OnInit {
   editProfile:boolean = false;
+  readProfile: any;
   constructor(private route: ActivatedRoute, private helperService:HelperService,
      private signUpService:SignUpService, private router:Router,
      private toastController:ToastController, private geolocation: Geolocation) { }
@@ -24,10 +25,15 @@ export class SignupPage implements OnInit {
     this.signUpFormGroupCreate();
     this.route.queryParams.subscribe(params => {
       if(Object.keys(params).length > 0) {
-      this.editProfile = JSON.parse(params.prop);
+        if(JSON.parse(params.signup)) {
+          this.readProfile = false;
+          this.editProfile = false;
+        } else {
+          this.readProfile = true;
+          this.editProfile = false;
+        }
       }
-    }
-  );
+    });
   }
   get Password() {
     return this.signUpFormGroup.get('Password');
@@ -134,7 +140,14 @@ export class SignupPage implements OnInit {
        console.log('Error getting location', error);
      });
   }
-
+  async UpdateProfile() {
+    this.editProfile = true;
+    this.readProfile = false;
+  }
+  async backToScreen() {
+    this.editProfile = false;
+    this.readProfile = true;
+  }
 }
 interface  IsignUp{
   UserName :string;
