@@ -5,6 +5,7 @@ import { MapsPage } from './Shared/maps/maps.page';
 import { CategorySearchPage } from './category-search/category-search.page';
 import { Platform } from '@ionic/angular';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
+import { HelperService} from 'src/app/common/helper.service'
 
 @Component({
   selector: 'app-root',
@@ -28,34 +29,36 @@ export class AppComponent implements OnInit{
     }
      initializeApp() {
       this.platform.ready().then(() => {
-        // subscribe to a topic
-        this.fcm.subscribeToTopic('Users');
+        if (this.platform.is('android') || this.platform.is('ios')) {
+          console.log("running on mobile device!");
+          sessionStorage.setItem('mobile', 'true');
+          // subscribe to a topic
+          this.fcm.subscribeToTopic('Users');
 
-        // get FCM token
-        this.fcm.getToken().then(token => {
-          console.log(token);
-          sessionStorage.setItem("PushToken",token);
-        });
+          // get FCM token
+          this.fcm.getToken().then(token => {
+            console.log(token);
+            sessionStorage.setItem("PushToken",token);
+          });
 
-        // ionic push notification example
-        this.fcm.onNotification().subscribe(data => {
-          console.log(data);
-          if (data.wasTapped) {
-            console.log('Received in background');
-          } else {
-            console.log('Received in foreground');
-          }
-        });
+          // ionic push notification example
+          this.fcm.onNotification().subscribe(data => {
+            console.log(data);
+            if (data.wasTapped) {
+              console.log('Received in background');
+            } else {
+              console.log('Received in foreground');
+            }
+          });
 
-        // refresh the FCM token
-        this.fcm.onTokenRefresh().subscribe(token => {
-          console.log(token);
-          sessionStorage.setItem("PushToken",token);
-        });
-
-        // unsubscribe from a topic
-        // this.fcm.unsubscribeFromTopic('offers');
-
+          // refresh the FCM token
+          this.fcm.onTokenRefresh().subscribe(token => {
+            console.log(token);
+            sessionStorage.setItem("PushToken",token);
+          });
+        } else {
+          sessionStorage.setItem('mobile', 'false');
+        }
       });
     }
     async presentModal() {

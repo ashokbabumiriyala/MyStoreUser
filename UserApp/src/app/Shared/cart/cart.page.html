@@ -9,45 +9,44 @@
   </ion-row>
   <div *ngIf="isEmptyCart" class="empty-cart">
     <div class="empty-results">
-      <h3 text-center>
+      <p style="text-align: center;">
         <ion-icon name="cart"></ion-icon>
-      </h3>
-      <p text-center>
         Your cart is empty
       </p>
     </div>
   </div>
-  <ion-row class="btm-btn">
+  <ion-row class="btm-btn" *ngIf="!isEmptyCart">
     <ion-button type="submit" shape="round"  class="ion-margin-bottom"
       (click)="navigateTo('category-search')">Continue <ion-icon name="cart-outline" color="#FFF"></ion-icon></ion-button>
     <ion-button type="submit" shape="round" class="ion-margin-bottom" (click)="navigateTo('checkout')">
       Proceed To Checkout</ion-button>
   </ion-row>
   <div *ngIf="!isEmptyCart" class="cart-itm-wrap">
-    <ion-card class="cart-list" *ngFor="let itm of  cartItems">
+    <ion-card class="cart-list" *ngFor="let item of  cartItems">
       <ion-card-content>
         <ion-row>
           <ion-col size="2">
-            <img src="{{'../assets/images/dump/'+itm.thumb}}">
+            <img src="{{item.url}}" *ngIf="item.url">
+            <img src="../../../assets/images/default-image.jpg" *ngIf="!item.url">
           </ion-col>
           <ion-col size="4">
-            <h3 text-left>{{itm.name}}</h3>
+            <h3 text-left>{{item.productName? item.productName: item.businessName}}</h3>
             <div class="itm-footer">
               <span class="price">
-                {{itm.price | currency:'INR'}}
+                {{item.priceAfterDiscount | currency:'INR'}}
               </span>
             </div>
             <!-- <h3>Total Price:  {{itm.price * itm.count | currency:'INR'}}</h3> -->
           </ion-col>
-          <ion-col size="4" class="ion-padding-top">
+          <ion-col size="4" class="ion-padding-top" *ngIf="item.productID">
             <p class="ion-no-margin units">
-              <ion-icon class="plus-minus" name="remove-circle" (click)="decrement(itm)" item-right></ion-icon>
-              <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="itm.count"></ion-input>
-              <ion-icon class="plus-minus" name="add-circle" (click)="increment(itm)" item-right></ion-icon>
+              <ion-icon class="plus-minus" name="remove-circle" (click)="decrement(item)" item-right></ion-icon>
+              <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="item.itemCount"></ion-input>
+              <ion-icon class="plus-minus" name="add-circle" (click)="increment(item)" item-right></ion-icon>
             </p>
           </ion-col>
           <ion-col size="1" class="ion-padding-top">
-            <ion-icon class="delete" name="trash-outline" (click)="removeItem(itm)"></ion-icon>
+            <ion-icon class="delete" name="trash-outline" (click)="removeItem(item)"></ion-icon>
           </ion-col>
         </ion-row>
       </ion-card-content>

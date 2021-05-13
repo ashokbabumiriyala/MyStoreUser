@@ -1,29 +1,33 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <!-- <h2 class="page-title">Products</h2> -->
   <ion-searchbar placeholder="Type here to filter.."></ion-searchbar>
-  <ion-card class="ion-no-margin product">
+  <ion-card class="ion-no-margin product" *ngFor="let service of serviceList;let i = index;">
     <ion-row>
       <ion-col size="3">
-        <img class="product-img" src="../assets/images/dump/serviceType-1.png">
+        <img class="product-img" src="../../assets/images/dump/service-1.jpg" *ngIf="!service.url">
+        <img class="product-img" src="{{service.url}}" *ngIf="service.url">
       </ion-col>
       <ion-col size="9">
-        <h3 class="product-name">TV Repair</h3>
+        <h3 class="product-name">{{service.businessName}}</h3>
         <ion-grid>
           <ion-row>
             <ion-col>
-              <p class="ion-no-margin">Price: Rs-1000/-</p>
+              <p class="ion-no-margin">Price: Rs-{{service.priceAfterDiscount}}</p>
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col class="ion-text-center">
-              <ion-button shape="round" expand="block">Add To Cart</ion-button>
+            <ion-col class="ion-text-center" *ngIf="!service.addedToCart">
+              <ion-button shape="round" expand="block" (click)="addToCart(i)">Add To Cart</ion-button>
+            </ion-col>
+            <ion-col class="ion-text-center" *ngIf="service.addedToCart">
+              <ion-button shape="round" expand="block" (click)="removeFromCart(i)">Delete From Cart</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
     </ion-row>
   </ion-card>
-  <ion-card class="ion-no-margin product">
+  <!-- <ion-card class="ion-no-margin product">
     <ion-row>
       <ion-col size="3">
         <img class="product-img" src="../assets/images/dump/serviceType-2.png">
@@ -110,5 +114,5 @@
         </ion-grid>
       </ion-col>
     </ion-row>
-  </ion-card>
+  </ion-card> -->
 </ion-content>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { HelperService } from '../../common/helper.service';
 
 @Component({
   selector: 'app-cart',
@@ -14,7 +15,7 @@ export class CartPage implements OnInit {
   isCartItemLoaded: boolean = false;
   isEmptyCart: boolean = true;
 
-  constructor(private modalCtrl: ModalController, private router: Router) { }
+  constructor(private modalCtrl: ModalController, private router: Router, private helperService: HelperService) { }
   ngOnInit() {
     this.loadCartItems();
   }
@@ -25,30 +26,36 @@ export class CartPage implements OnInit {
   }
   increment(itm) {
     var ind = this.cartItems.indexOf(itm);
-    this.cartItems[ind].count ++;
+    this.cartItems[ind].itemCount ++;
+    this.helperService.setCartItems(this.cartItems);
   }
 
   decrement(itm) {
     var ind = this.cartItems.indexOf(itm);
-    if(this.cartItems[ind].count > 0) {
-    this.cartItems[ind].count --;
+    if(this.cartItems[ind].itemCount > 0) {
+    this.cartItems[ind].itemCount --;
+    this.helperService.setCartItems(this.cartItems);
     } else {
-      this.cartItems[ind].count = 0;
+      this.removeItem(itm);
     }
   }
+
   loadCartItems() {
-    this.cartItems = [
-      { name: 'Santoor', price: 30, count: 1, thumb: 'merchantProduct-1.jpeg' },
-      { name: 'Lays', price: 50, count: 5, thumb: 'merchantProduct-2.jpeg' },
-      { name: 'Biscuits', price: 50, count: 10, thumb: 'merchantProduct-3.jpeg' },
-      { name: 'Ground Nuts', price: 100, count: 1, thumb: 'merchantProduct-4.jpeg' },
-      { name: 'Oil', price: 150, count: 1, thumb: 'merchantProduct-5.jpeg' }
-    ];
-    this.isEmptyCart = false;
+    this.helperService.getCartItems().subscribe(cartItems => {
+      if(cartItems!=null){
+        this.cartItems = cartItems;
+        console.log(this.cartItems);
+        this.isEmptyCart = false;
+      } else {
+        this.isEmptyCart = true;
+      }
+    });
+
   }
   removeItem(itm) {
     var ind = this.cartItems.indexOf(itm);
     this.cartItems.splice(ind, 1);
+    this.helperService.setCartItems(this.cartItems);
   }
   navigateTo(ele) {
     var route = '/'+ele;

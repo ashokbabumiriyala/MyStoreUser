@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild,NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { promise } from 'protractor';
-
-
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { HelperService } from '../common/helper.service';
+import { ProductInfoService } from '../product-info/product-info.service'
 declare var google;
 @Component({
   selector: 'app-product-info',
@@ -55,13 +55,13 @@ export class ProductInfoPage implements OnInit {
       title: 'Big Bazar'
     },
   ];
-
-  // constructor(private router:Router) { }
+  merchantList = [];
   constructor(
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
     public zone: NgZone,
-    private router:Router
+    private router:Router,
+    private helperService: HelperService, private productInfoService: ProductInfoService
   ) {
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     this.autocomplete = { input: '' };
@@ -266,9 +266,24 @@ export class ProductInfoPage implements OnInit {
       }
     ]
     this.displayListView=true;
+    this.getMerchantList();
   }
-  getProducts() {
-    this.router.navigate(['/product-list'])
+  async getMerchantList(){
+    const loadingController = await this.helperService.createLoadingController("loading");
+    await loadingController.present();
+   await this.productInfoService.getMerchantList('UserMerchantSelect')
+    .subscribe((data: any) => {
+      console.log(data);
+      this.merchantList = data;
+      loadingController.dismiss();
+    },
+    (error: any) => {
+      loadingController.dismiss();
+    });
+
+  }
+  getProducts(merchant) {
+    this.router.navigate(['/product-list'], { queryParams: { storeId: merchant.merchantID } })
   }
   mapView():void{
     this.loadMap();

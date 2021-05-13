@@ -105,13 +105,13 @@ export class SignupPage implements OnInit {
         (error: any) => {
           loadingController.dismiss();
         });
-     
+
   }
   getPosition () {
      var options = {
         enableHighAccuracy: true,
         maximumAge        : 30000, // milliseconds e.g., 30000 === 30 seconds
-    timeout           : 27000 
+    timeout           : 27000
       };
       this.geolocation.getCurrentPosition(options).then((resp) => {
         console.log(resp);
