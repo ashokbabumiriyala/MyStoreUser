@@ -13,26 +13,21 @@ export class HelperService {
 
 constructor(private loadingController:LoadingController) { }
 
-
 private profileObs$: BehaviorSubject<IProviderDetails> = new BehaviorSubject(null);
 private cartItems$: BehaviorSubject<any[]> = new BehaviorSubject(null);
 
 getProfileObs(): Observable<any> {
     return this.profileObs$.asObservable();
 }
-
 setProfileObs(profile: IProviderDetails) {
     this.profileObs$.next(profile);   
 }
 getCartItems(): Observable<any> {
   return this.cartItems$.asObservable();
 }
-
 setCartItems(cartItems: any[]) {
   this.cartItems$.next(cartItems);   
 }
-
-
 async createLoadingController(displayMessage:string): Promise<any> {
   const loadingController = await this.loadingController.create({
       message: displayMessage
