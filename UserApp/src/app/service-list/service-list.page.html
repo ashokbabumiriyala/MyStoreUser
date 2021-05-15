@@ -3,13 +3,15 @@
   <ion-searchbar placeholder="Type here to filter.."></ion-searchbar>
   <ion-card class="ion-no-margin product" *ngFor="let service of serviceList;let i = index;">
     <ion-row>
-      <ion-col size="3">
-        <img class="product-img" src="../../assets/images/dump/service-1.jpg" *ngIf="!service.url">
-        <img class="product-img" src="{{service.url}}" *ngIf="service.url">
+      <ion-col size="2" style="margin: auto">
+        <ion-avatar>
+          <img  src="{{service.url}}" *ngIf="service.url">
+          <img src="../../assets/images/default-image.jpg" *ngIf="!service.url">
+        </ion-avatar>
       </ion-col>
-      <ion-col size="9">
-        <h3 class="product-name">{{service.businessName}}</h3>
+      <ion-col size="10">
         <ion-grid>
+          <h3 class="product-name">{{service.businessName}}</h3>
           <ion-row>
             <ion-col>
               <p class="ion-no-margin">Price: Rs-{{service.priceAfterDiscount}}</p>

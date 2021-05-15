@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { IProviderDetails} from 'src/app/common/provider-details';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
+
 @Injectable({
   providedIn: 'root'
 })
-export class HelperService { 
+export class HelperService {
  iProviderDetails:IProviderDetails;
 // public providerSource = new BehaviorSubject<IProviderDetails>(this.iProviderDetails)
 // providerDetails = this.providerSource.asObservable();
 
-constructor(private loadingController:LoadingController, private router:Router) { }
+constructor(private loadingController:LoadingController, private router:Router, private alertCtrl: AlertController) { }
 
 private profileObs$: BehaviorSubject<IProviderDetails> = new BehaviorSubject(null);
 private cartItems$: BehaviorSubject<any[]> = new BehaviorSubject(null);
@@ -20,13 +21,13 @@ getProfileObs(): Observable<any> {
     return this.profileObs$.asObservable();
 }
 setProfileObs(profile: IProviderDetails) {
-    this.profileObs$.next(profile);   
+    this.profileObs$.next(profile);
 }
 getCartItems(): Observable<any> {
   return this.cartItems$.asObservable();
 }
 setCartItems(cartItems: any[]) {
-  this.cartItems$.next(cartItems);   
+  this.cartItems$.next(cartItems);
 }
 async createLoadingController(displayMessage:string): Promise<any> {
   const loadingController = await this.loadingController.create({
@@ -44,6 +45,28 @@ prepareDropDownData(items: any): iDropdown[] {
     }
   }
   return iDropdownItems;
+}
+showAlert(){
+  const prompt = this.alertCtrl.create({
+    header: 'Alert',
+    message: "Do you want to clear cart items?",
+    buttons: [
+      {
+        text: 'No',
+        handler: data => {
+          console.log('Cancel clicked');
+        }
+      },
+      {
+        text: 'Yes',
+        handler: data => {
+          console.log('Saved clicked');
+        }
+      }
+    ]
+  }).then((res) => {
+    res.present();
+  })
 }
 
 

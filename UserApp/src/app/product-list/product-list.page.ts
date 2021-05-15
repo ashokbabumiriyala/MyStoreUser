@@ -3,6 +3,7 @@ import { HelperService } from '../common/helper.service';
 import { ProductListService } from '../product-list/product-list.service'
 import { ActivatedRoute } from '@angular/router';
 import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
@@ -16,7 +17,7 @@ export class ProductListPage  implements OnInit{
   merchantStoreId:number;
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private productListService: ProductListService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute, private alertCtrl: AlertController) { }
   ngOnInit(){
     // this.route.queryParams.subscribe(params => {
     //   this.merchantStoreId = JSON.parse(params.storeId);
@@ -56,7 +57,7 @@ debugger;
     (error: any) => {
       loadingController.dismiss();
     });
-  } 
+  }
 }
 
   increment (index) {
@@ -67,7 +68,7 @@ debugger;
       this.cartItems[idIndex].itemCount = this.productList[index].itemCount
       this.helperService.setCartItems(this.cartItems);
   }
-  
+
   }
 
   decrement (index) {
@@ -83,13 +84,47 @@ debugger;
     }
   }
   addToCart(index){
-    if (this.productList[index].itemCount > 0 && !this.productList[index].addedToCart) {
-      this.productList[index].addedToCart = true;
-      this.cartItems.push(this.productList[index]);
+    if(this.cartItems.length == 0 ||
+      (this.cartItems.length > 0 && this.cartItems[0].storeID == this.productList[index].storeID)) {
+        if (this.productList[index].itemCount > 0 && !this.productList[index].addedToCart) {
+          this.productList[index].addedToCart = true;
+          this.cartItems.push(this.productList[index]);
+        }
+        this.helperService.setCartItems(this.cartItems);
+    } else {
+      this.showCartClearAlert(index);
     }
-    this.helperService.setCartItems(this.cartItems);
+
 
   }
-  
+  showCartClearAlert(index) {
+    const prompt = this.alertCtrl.create({
+      header: 'Alert',
+      message: "Do you want to clear cart items?",
+      buttons: [
+        {
+          text: 'No',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: data => {
+            console.log('Saved clicked');
+            this.cartItems = [];
+            this.productList[index].addedToCart = true;
+            this.cartItems.push(this.productList[index]);
+            this.helperService.setCartItems(this.cartItems);
+          }
+        }
+      ]
+    }).then(res => {
+
+      res.present();
+
+    });
+  }
+
 
 }

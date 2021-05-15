@@ -292,8 +292,8 @@ export class ProductInfoPage implements OnInit {
 
   }
   mapView():void{
-    this.loadMap();
     this.displayListView=false;
+    this.loadMap();
   }
   listView():void{
     this.displayListView=true;

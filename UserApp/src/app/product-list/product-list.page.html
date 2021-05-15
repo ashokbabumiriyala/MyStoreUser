@@ -3,13 +3,15 @@
   <ion-searchbar placeholder="Type here to filter.."></ion-searchbar>
   <ion-card class="ion-no-margin product" *ngFor="let product of productList;let i=index;">
     <ion-row>
-      <ion-col size="3">
-        <img class="product-img" src="{{product.url}}" *ngIf="product.url">
-        <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">
+      <ion-col size="2" style="margin: auto">
+        <ion-avatar>
+          <img  src="{{product.url}}" *ngIf="product.url">
+          <img src="../../assets/images/default-image.jpg" *ngIf="!product.url">
+        </ion-avatar>
       </ion-col>
-      <ion-col size="9">
-        <h3 class="product-name">{{product.productName}}</h3>
+      <ion-col size="10">
         <ion-grid>
+          <h3 class="product-name">{{product.productName}}</h3>
           <ion-row>
             <ion-col size="5">
               <p class="ion-no-margin">Units:{{product.units}}</p>
