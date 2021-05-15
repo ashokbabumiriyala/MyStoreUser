@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+declare var RazorpayCheckout: any;
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.page.html',
@@ -10,7 +10,6 @@ export class CheckoutPage implements OnInit {
  default:boolean = true;
  cartItems: any[] = [];
   constructor() { }
-
   ngOnInit() {
     this.defaultAddress = "JNTU, Hyderabad, Telangana, India-500038";
     this.cartItems = [
@@ -33,4 +32,39 @@ export class CheckoutPage implements OnInit {
       this.default = true;
     }
   }
+
+  payWithRazorMobileApp() {
+    var options = {
+      description: 'Credits towards consultation',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR', // your 3 letter currency code
+      key: 'rzp_test_UTCzslKTfAlqNW', // your Key Id from Razorpay dashboard
+      amount: 500, // Payment amount in smallest denomiation e.g. cents for USD
+      name: 'My3Karrt',
+      prefill: {
+        email: 'ashok.miriyala',
+        contact: '8106939983',
+        name: 'Enappd'
+      },
+      theme: {
+        color: '#F37254'
+      },
+      modal: {
+        ondismiss: function () {
+          alert('dismissed')
+        }
+      }
+    };
+
+    var successCallback = function (payment_id) {
+      alert('payment_id: ' + payment_id);
+    };
+
+    var cancelCallback = function (error) {
+      alert(error.description + ' (Error ' + error.code + ')');
+    };
+
+    RazorpayCheckout.open(options, successCallback, cancelCallback);
+  }
+  
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../common/helper.service';
 import { ProductListService } from '../product-list/product-list.service'
 import { ActivatedRoute } from '@angular/router';
+import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
@@ -13,12 +14,17 @@ export class ProductListPage  implements OnInit{
   productList = [];
   cartItems = [];
   merchantStoreId:number;
+  iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private productListService: ProductListService,
     private route: ActivatedRoute) { }
   ngOnInit(){
+    // this.route.queryParams.subscribe(params => {
+    //   this.merchantStoreId = JSON.parse(params.storeId);
+    // });
     this.route.queryParams.subscribe(params => {
-      this.merchantStoreId = JSON.parse(params.storeId);
+      this.iDataTransferBetweenPages = this.helperService.getPageData();
     });
+
     this.getProductList();
     this.helperService.getCartItems().subscribe(cartItems => {
       if(cartItems!=null){
@@ -27,12 +33,13 @@ export class ProductListPage  implements OnInit{
     });
   }
   async getProductList(){
-    const loadingController = await this.helperService.createLoadingController("loading");
+debugger;
+    if (this.iDataTransferBetweenPages != null) {
+       const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
-    const dataObject={storeId:this.merchantStoreId};
+    const dataObject={storeId:this.iDataTransferBetweenPages.storeId};
     await this.productListService.getProductList('UserMerchantProdSelect', dataObject)
     .subscribe((data: any) => {
-      console.log(data);
       this.productList = data.provideMerchantProdList;
       this.productList.forEach((product)=>{
         product['itemCount'] = 0;
@@ -49,8 +56,8 @@ export class ProductListPage  implements OnInit{
     (error: any) => {
       loadingController.dismiss();
     });
-
-  }
+  } 
+}
 
   increment (index) {
   // this.currentNumber++;

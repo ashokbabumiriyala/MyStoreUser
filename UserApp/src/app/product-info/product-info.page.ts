@@ -5,6 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { HelperService } from '../common/helper.service';
 import { ProductInfoService } from '../product-info/product-info.service'
+import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
 declare var google;
 @Component({
   selector: 'app-product-info',
@@ -24,6 +25,7 @@ export class ProductInfoPage implements OnInit {
   placeid: any;
   GoogleAutocomplete: any;
   style = [];
+  iDataTransferBetweenPages: iDataTransferBetweenPages;
   markers: Marker[] = [
     {
       position: {
@@ -283,7 +285,11 @@ export class ProductInfoPage implements OnInit {
 
   }
   getProducts(merchant) {
-    this.router.navigate(['/product-list'], { queryParams: { storeId: merchant.merchantID } })
+    // this.router.navigate(['/product-list'], { queryParams: { storeId: merchant.merchantID } })
+    this.iDataTransferBetweenPages = { storeId: Number(merchant.merchantID) };
+    this.helperService.navigateWithData(['/product-list'], this.iDataTransferBetweenPages);
+
+
   }
   mapView():void{
     this.loadMap();

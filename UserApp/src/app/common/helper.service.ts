@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { IProviderDetails} from 'src/app/common/provider-details';
 import { LoadingController } from '@ionic/angular';
-
+import { Router, NavigationExtras } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +11,7 @@ export class HelperService {
 // public providerSource = new BehaviorSubject<IProviderDetails>(this.iProviderDetails)
 // providerDetails = this.providerSource.asObservable();
 
-constructor(private loadingController:LoadingController) { }
+constructor(private loadingController:LoadingController, private router:Router) { }
 
 private profileObs$: BehaviorSubject<IProviderDetails> = new BehaviorSubject(null);
 private cartItems$: BehaviorSubject<any[]> = new BehaviorSubject(null);
@@ -34,8 +34,6 @@ async createLoadingController(displayMessage:string): Promise<any> {
   });
   return loadingController;
 }
-
-
 prepareDropDownData(items: any): iDropdown[] {
   let iDropdownItems: iDropdown[];
   const defaultSelectText = '-- Please Select --';
@@ -47,6 +45,24 @@ prepareDropDownData(items: any): iDropdown[] {
   }
   return iDropdownItems;
 }
+
+
+navigateWithData(url: any, data: any): Promise<boolean> {
+  const navigationExtras: NavigationExtras = {
+    state: {
+      pageData: data
+    }
+  };
+  return this.router.navigate(url, navigationExtras);
+}
+
+getPageData(): any {
+  if (this.router.getCurrentNavigation().extras.state) {
+    return this.router.getCurrentNavigation().extras.state.pageData;
+  }
+}
+
+
 
 }
 
