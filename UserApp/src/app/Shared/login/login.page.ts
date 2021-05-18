@@ -55,6 +55,8 @@ export class LoginPage implements OnInit {
     await  this.registrationServiceService.validateUser('UserLogin', dataObject)
       .subscribe((data: any) => {
         sessionStorage.setItem("AuthToken",data.token);
+        sessionStorage.setItem("UserId",data.userId);
+        sessionStorage.setItem("UserName",data.userName);
         console.log(data);
         this.router.navigate(['category-search']);
        this.presentToast("login success.","success");

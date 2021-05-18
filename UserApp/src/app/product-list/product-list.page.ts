@@ -34,7 +34,6 @@ export class ProductListPage  implements OnInit{
     });
   }
   async getProductList(){
-debugger;
     if (this.iDataTransferBetweenPages != null) {
        const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();

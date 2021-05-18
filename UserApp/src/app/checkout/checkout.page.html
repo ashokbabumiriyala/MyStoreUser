@@ -16,27 +16,30 @@
     <ion-col size="3">Store:</ion-col>
     <ion-col>IKEA, Hi-tech City</ion-col>
     </ion-row>
-  <ion-card class="cart-list"   *ngFor="let itm of  cartItems">
+  <ion-card class="cart-list"   *ngFor="let item of  cartItems">
     <ion-card-content>
       <ion-row>
-        <ion-col size="3">
-              <img src="{{'../assets/images/dump/'+itm.thumb}}">
+        <ion-col size="3" style="margin: auto">
+          <ion-avatar>
+            <img src="{{item.url}}" *ngIf="item.url">
+            <img src="../../../assets/images/default-image.jpg" *ngIf="!item.url">
+          </ion-avatar>
         </ion-col>
         <ion-col size="7">
-          <h3 text-left>{{itm.name}} - <span class="price">{{itm.price | currency:'INR'}}</span></h3>
-          <h3>Count - {{itm.count}} &nbsp;&nbsp; Units - {{itm.units}}</h3>
-          <h3>Total Price:  {{itm.price * itm.count | currency:'INR'}}</h3>
+          <h3 text-left>{{item.productName? item.productName: item.businessName}} - <span class="price">{{item.priceAfterDiscount | currency:'INR'}}</span></h3>
+          <h3>Count - {{item.itemCount}} &nbsp;&nbsp; {{item.units? 'Units - ' + item.units: ''}}</h3>
+          <h3>Total Price:  {{item.priceAfterDiscount * item.itemCount | currency:'INR'}}</h3>
         </ion-col>
         <ion-col size="2" class="ion-padding-top">
-          <ion-icon class="delete" name="trash-outline" (click)="removeItem(itm)"></ion-icon>
+          <ion-icon class="delete" name="trash-outline" (click)="removeItem(item)"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-card-content>
   </ion-card>
-  <h3>Sub Total: {{'1030' | currency:'INR'}}</h3>
-  <p>Delivery charges: {{'100' | currency:'INR'}}</p>
-  <h3>Total cost: {{'1130' | currency:'INR'}}</h3>
-  
+  <h3>Sub Total: {{subTotal | currency:'INR'}}</h3>
+  <p>Delivery charges: {{deliveryCharges | currency:'INR'}}</p>
+  <h3>Total cost: {{subTotal + deliveryCharges | currency:'INR'}}</h3>
+
     <ion-row>
         <ion-col class="ion-text-center ion-margin-top">
             <ion-button type="submit" shape="round" expand="block" (click)="payWithRazorMobileApp();" class="ion-margin-bottom">Make payment</ion-button>

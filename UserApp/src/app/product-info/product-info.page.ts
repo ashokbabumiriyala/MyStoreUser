@@ -65,7 +65,9 @@ export class ProductInfoPage implements OnInit {
     private router:Router,
     private helperService: HelperService, private productInfoService: ProductInfoService
   ) {
-    this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+    if (google) {
+      this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+    }
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
   }
