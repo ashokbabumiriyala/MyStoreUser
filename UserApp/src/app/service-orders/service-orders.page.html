@@ -1,28 +1,21 @@
 <ion-content class="login-form ion-padding after-login-bg">
-  <h2 class="page-title">Previous Service Orders</h2>
-  <ion-row>
-    <ion-col size="12">Store Name : {{storeName}}</ion-col>
-    <ion-col size="12">Ordered date : {{orderedDate | date:'dd-MMM-yyyy'}}</ion-col>
-    <ion-col size="12">Order Id : {{orderId}}</ion-col>
-    <ion-col size="12">Delivery Status : {{deliveryStatus}}</ion-col>
-  </ion-row>
-  <div class="cart-itm-wrap">
-    <ion-card class="cart-list" *ngFor="let itm of  orderedItems">
-      <ion-card-content>
-        <ion-row>
-          <ion-col size="2">
-            <img src="{{'../assets/images/dump/'+itm.thumb}}">
-          </ion-col>
-            <ion-col size="7">
-              <h3 text-left>{{itm.name}} - <span class="price">{{itm.price | currency:'INR'}}</span></h3>
-              <h3>Count - {{itm.count}} &nbsp;&nbsp; Units - {{itm.units}}</h3>
-              <h3>Total Price:  {{itm.price * itm.count | currency:'INR'}}</h3>
-            </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
-  </div>
-  <ion-row>
-    <ion-button class="track" (click)="trackStatus()">Track Delivery</ion-button>
+  <h2 class="page-title">
+    <ion-icon name="color-filter-outline" slot="start"></ion-icon>Service Orders</h2>
+  <ion-list class="ion-list-ele">
+    <ion-row (click)="expandItem($event,item)" class="order-status" *ngFor="let item of orderedItems">
+      <ion-col size="6">
+        <ion-label>Store Name: <b>{{item.name}}</b></ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label>Ordered Date: <b>{{item.date}}</b></ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label>Order Id: <b>{{item.orderId}}</b></ion-label>
+      </ion-col>
+      <ion-col size="6">
+        <ion-label>Status: <b>{{item.status}}</b></ion-label>
+      </ion-col>
+      <app-service-order-row-expand [items]="stores" [expanded]="item.expand"></app-service-order-row-expand>
     </ion-row>
+  </ion-list>
 </ion-content>

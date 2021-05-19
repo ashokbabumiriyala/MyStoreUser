@@ -12,16 +12,24 @@ export class ProductOrdersPage implements OnInit {
   orderId:any = 12345;
   deliveryStatus:any = 'On the way';
   orderedItems:any = [];
+  expand:boolean = false;
   constructor( private router: Router) { }
 
   ngOnInit() {
     this.orderedItems = [
-      { name: 'Santoor', price: 30, count: 1, thumb: 'merchantProduct-1.jpeg',units: 'item'},
-      { name: 'Lays', price: 50, count: 5, thumb: 'merchantProduct-2.jpeg',units: 'item' },
-      { name: 'Biscuits', price: 50, count: 10, thumb: 'merchantProduct-3.jpeg',units: 'item' },
-      { name: 'Ground Nuts', price: 100, count: 1, thumb: 'merchantProduct-4.jpeg',units: 'Kg' },
-      { name: 'Oil', price: 150, count: 1, thumb: 'merchantProduct-5.jpeg',units: 'Ltrs' }
+      { name: 'store 1', date: '10/01/2021', orderId: 25678, status: 'Delivered', expand:false},
+      { name: 'store 2', date: '15/05/2021', orderId: 52345, status: 'Pending', expand:false},
+      { name: 'store 3', date: '10/05/2021', orderId: 25698, status: 'Delivered', expand:false}
     ];
+  }
+  expandItem(event, ele): void {  
+    event.currentTarget.classList.toggle('order-status');
+    event.currentTarget.classList.toggle('row-icon');
+    if (ele.expand) {
+      ele.expand = false;
+    } else {
+      ele.expand = true;
+    }
   }
   trackStatus() {
     this.router.navigate(['/service-orders']);

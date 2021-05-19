@@ -1,0 +1,25 @@
+<div #expandWrapper class='expand-wrapper' [ngClass]="!expanded ? 'collapsed':'expanded'">
+  <ion-list>
+    <ion-item *ngFor="let itm of  orderedItems">
+      <ion-avatar slot="start">
+        <img src="{{'../assets/images/dump/'+itm.thumb}}">
+      </ion-avatar>
+      <ion-label>
+        <ion-row>
+          <ion-col size="6">
+            <h3>Name:{{itm.name}}</h3>
+          </ion-col>
+          <ion-col size="6">
+            <h3>Count:{{itm.count}}</h3>
+          </ion-col>
+          <ion-col size="6">
+            <h3>Price:{{itm.price | currency:'INR'}}</h3>
+            </ion-col>
+            <ion-col size="6">
+            <h3>Units:{{itm.units}}</h3>
+          </ion-col>
+        </ion-row>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</div>

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { RaiseComplaintPage } from './raise-complaint.page';
+import { ProductOrderRowExpandComponent } from './product-order-row-expand.component';
 
-describe('RaiseComplaintPage', () => {
-  let component: RaiseComplaintPage;
-  let fixture: ComponentFixture<RaiseComplaintPage>;
+describe('ProductOrderRowExpandComponent', () => {
+  let component: ProductOrderRowExpandComponent;
+  let fixture: ComponentFixture<ProductOrderRowExpandComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RaiseComplaintPage ],
+      declarations: [ ProductOrderRowExpandComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(RaiseComplaintPage);
+    fixture = TestBed.createComponent(ProductOrderRowExpandComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

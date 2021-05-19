@@ -1,0 +1,33 @@
+.login-form {
+    a.small-text {
+        text-decoration: none;
+    }
+}
+
+.ion-ele {
+    border-radius: 15px;
+    border: 1px solid;
+    border-width: thin;
+    --background: transparent;
+    margin-bottom: 5px;
+}
+.wide-as-needed {
+    overflow: scroll;
+    white-space: nowrap;
+    height:190px;
+    ion-col {
+        border: 1px solid;
+        border-collapse: collapse;
+        min-width: 150px;
+        white-space: break-spaces;
+        img {
+            width: 80px;
+            height: 60px;
+        }
+    }
+  }
+  .content-section {
+    height: auto;
+    max-height: 495px;
+    overflow-y: auto;
+  }

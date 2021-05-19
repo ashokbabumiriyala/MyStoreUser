@@ -56,7 +56,11 @@ ion-button {
     font-family: lato sans-serif;
     color: var(--btnbg);
     text-decoration: underline;
-    
+    ion-icon {
+        position: relative;
+        top: 5px;
+        right: 5px;
+    }
 }
 ion-searchbar ion-icon {
     right: 16px !important;

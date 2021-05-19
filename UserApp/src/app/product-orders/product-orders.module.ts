@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProductOrdersPageRoutingModule } from './product-orders-routing.module';
 
 import { ProductOrdersPage } from './product-orders.page';
+import { ProductOrderRowExpandComponent } from './product-order-row-expand/product-order-row-expand.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { ProductOrdersPage } from './product-orders.page';
     IonicModule,
     ProductOrdersPageRoutingModule
   ],
-  declarations: [ProductOrdersPage]
+  declarations: [ProductOrdersPage,ProductOrderRowExpandComponent]
 })
 export class ProductOrdersPageModule {}

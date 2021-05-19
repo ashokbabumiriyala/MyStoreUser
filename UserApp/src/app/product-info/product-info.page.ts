@@ -1,11 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild,NgZone } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { promise } from 'protractor';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { HelperService } from '../common/helper.service';
 import { ProductInfoService } from '../product-info/product-info.service'
-import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
+import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages';
 declare var google;
 @Component({
   selector: 'app-product-info',
@@ -14,9 +14,9 @@ declare var google;
 })
 export class ProductInfoPage implements OnInit {
 
-  @ViewChild('map',  {static: false}) mapElement: ElementRef;
+  @ViewChild('map', { static: false }) mapElement: ElementRef;
   map: any;
-  address:string;
+  address: string;
   lat: string;
   long: string;
   autocomplete: { input: string; };
@@ -62,7 +62,7 @@ export class ProductInfoPage implements OnInit {
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
     public zone: NgZone,
-    private router:Router,
+    private router: Router,
     private helperService: HelperService, private productInfoService: ProductInfoService
   ) {
     if (google) {
@@ -71,219 +71,219 @@ export class ProductInfoPage implements OnInit {
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
   }
-  displayListView:boolean;
+  displayListView: boolean;
   ngOnInit() {
-    this.style=
-    [
-      {
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#f5f5f5"
-          }
-        ]
-      },
-      {
-        "elementType": "geometry.stroke",
-        "stylers": [
-          {
-            "visibility": "on"
-          }
-        ]
-      },
-      {
-        "elementType": "labels.icon",
-        "stylers": [
-          {
-            "visibility": "off"
-          }
-        ]
-      },
-      {
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#616161"
-          }
-        ]
-      },
-      {
-        "elementType": "labels.text.stroke",
-        "stylers": [
-          {
-            "color": "#f5f5f5"
-          }
-        ]
-      },
-      {
-        "featureType": "administrative.land_parcel",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#bdbdbd"
-          }
-        ]
-      },
-      {
-        "featureType": "administrative.locality",
-        "elementType": "geometry.fill",
-        "stylers": [
-          {
-            "color": "#ff4500"
-          }
-        ]
-      },
-      {
-        "featureType": "landscape.natural.landcover",
-        "elementType": "geometry.fill",
-        "stylers": [
-          {
-            "color": "#ff4500"
-          }
-        ]
-      },
-      {
-        "featureType": "poi",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#eeeeee"
-          }
-        ]
-      },
-      {
-        "featureType": "poi",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#757575"
-          }
-        ]
-      },
-      {
-        "featureType": "poi.park",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#e5e5e5"
-          }
-        ]
-      },
-      {
-        "featureType": "poi.park",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#9e9e9e"
-          }
-        ]
-      },
-      {
-        "featureType": "road",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#ffffff"
-          }
-        ]
-      },
-      {
-        "featureType": "road.arterial",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#757575"
-          }
-        ]
-      },
-      {
-        "featureType": "road.highway",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#dadada"
-          }
-        ]
-      },
-      {
-        "featureType": "road.highway",
-        "elementType": "geometry.fill",
-        "stylers": [
-          {
-            "color": "#ff4500"
-          }
-        ]
-      },
-      {
-        "featureType": "road.highway",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#616161"
-          }
-        ]
-      },
-      {
-        "featureType": "road.local",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#9e9e9e"
-          }
-        ]
-      },
-      {
-        "featureType": "transit.line",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#e5e5e5"
-          }
-        ]
-      },
-      {
-        "featureType": "transit.station",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#eeeeee"
-          }
-        ]
-      },
-      {
-        "featureType": "water",
-        "elementType": "geometry",
-        "stylers": [
-          {
-            "color": "#c9c9c9"
-          }
-        ]
-      },
-      {
-        "featureType": "water",
-        "elementType": "labels.text.fill",
-        "stylers": [
-          {
-            "color": "#9e9e9e"
-          }
-        ]
-      }
-    ]
-    this.displayListView=true;
+    this.style =
+      [
+        {
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#f5f5f5"
+            }
+          ]
+        },
+        {
+          "elementType": "geometry.stroke",
+          "stylers": [
+            {
+              "visibility": "on"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.icon",
+          "stylers": [
+            {
+              "visibility": "off"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#616161"
+            }
+          ]
+        },
+        {
+          "elementType": "labels.text.stroke",
+          "stylers": [
+            {
+              "color": "#f5f5f5"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.land_parcel",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#bdbdbd"
+            }
+          ]
+        },
+        {
+          "featureType": "administrative.locality",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#ff4500"
+            }
+          ]
+        },
+        {
+          "featureType": "landscape.natural.landcover",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#ff4500"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#eeeeee"
+            }
+          ]
+        },
+        {
+          "featureType": "poi",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#757575"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#e5e5e5"
+            }
+          ]
+        },
+        {
+          "featureType": "poi.park",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#9e9e9e"
+            }
+          ]
+        },
+        {
+          "featureType": "road",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#ffffff"
+            }
+          ]
+        },
+        {
+          "featureType": "road.arterial",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#757575"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#dadada"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "geometry.fill",
+          "stylers": [
+            {
+              "color": "#ff4500"
+            }
+          ]
+        },
+        {
+          "featureType": "road.highway",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#616161"
+            }
+          ]
+        },
+        {
+          "featureType": "road.local",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#9e9e9e"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.line",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#e5e5e5"
+            }
+          ]
+        },
+        {
+          "featureType": "transit.station",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#eeeeee"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "geometry",
+          "stylers": [
+            {
+              "color": "#c9c9c9"
+            }
+          ]
+        },
+        {
+          "featureType": "water",
+          "elementType": "labels.text.fill",
+          "stylers": [
+            {
+              "color": "#9e9e9e"
+            }
+          ]
+        }
+      ]
+    this.displayListView = true;
     this.getMerchantList();
   }
-  async getMerchantList(){
+  async getMerchantList() {
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
-   await this.productInfoService.getMerchantList('UserMerchantSelect')
-    .subscribe((data: any) => {
-      console.log(data);
-      this.merchantList = data;
-      loadingController.dismiss();
-    },
-    (error: any) => {
-      loadingController.dismiss();
-    });
+    await this.productInfoService.getMerchantList('UserMerchantSelect')
+      .subscribe((data: any) => {
+        console.log(data);
+        this.merchantList = data;
+        loadingController.dismiss();
+      },
+        (error: any) => {
+          loadingController.dismiss();
+        });
 
   }
   getProducts(merchant) {
@@ -297,28 +297,29 @@ export class ProductInfoPage implements OnInit {
     this.displayListView=false;
     this.loadMap();
   }
-  listView():void{
-    this.displayListView=true;
+  listView(): void {
+    const mapEle: HTMLElement = document.getElementById('map');
+    mapEle.classList.remove('map-view');
+    this.displayListView = true;
   }
-
-
   loadMap() {
     // create a new map by passing HTMLElement
     const mapEle: HTMLElement = document.getElementById('map');
+    mapEle.classList.add('map-view');
     // create LatLng object
-    const myLatLng = {lat: 12.972442, lng: 77.580643};
+    const myLatLng = { lat: 12.972442, lng: 77.580643 };
     // create map
     this.map = new google.maps.Map(mapEle, {
       center: myLatLng,
       zoom: 12,
       styles: this.style
     });
-
     google.maps.event.addListenerOnce(this.map, 'idle', () => {
       this.renderMarkers();
       mapEle.classList.add('show-map');
     });
   }
+
   addMarker(marker: Marker) {
 
     // const svgMarker = {
@@ -335,7 +336,7 @@ export class ProductInfoPage implements OnInit {
 
     // http:// google.com/mapfiles/ms/micons
     let url = "http://maps.google.com/mapfiles/ms/micons/";
-      url += "orange-dot" + ".png";
+    url += "orange-dot" + ".png";
     return new google.maps.Marker({
       position: marker.position,
       map: this.map,
@@ -373,5 +374,4 @@ interface Marker {
     lng: number,
   };
   title: string;
-
 }

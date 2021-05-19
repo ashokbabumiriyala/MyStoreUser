@@ -4,6 +4,9 @@ ion-icon[slot="start"] {
 }
 
 .signup {
+    height: auto;
+    max-height: 495px;
+    overflow-y: auto;
     .ion-ele {
         border-radius: 15px;
         border: 1px solid;

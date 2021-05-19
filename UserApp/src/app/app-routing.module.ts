@@ -56,17 +56,22 @@ const routes: Routes = [
     loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
   },
   {
-    path: 'raise-complaint',
-    loadChildren: () => import('./raise-complaint/raise-complaint.module').then( m => m.RaiseComplaintPageModule)
-  },
-  {
     path: 'product-orders',
     loadChildren: () => import('./product-orders/product-orders.module').then( m => m.ProductOrdersPageModule)
   },
   {
     path: 'service-orders',
     loadChildren: () => import('./service-orders/service-orders.module').then( m => m.ServiceOrdersPageModule)
+  },
+  {
+    path: 'complaint',
+    loadChildren: () => import('./complaint/complaint.module').then( m => m.ComplaintPageModule)
+  },  {
+    path: 'information-pages',
+    loadChildren: () => import('./information-pages/information-pages.module').then( m => m.InformationPagesPageModule)
   }
+
+
 
 ];
 

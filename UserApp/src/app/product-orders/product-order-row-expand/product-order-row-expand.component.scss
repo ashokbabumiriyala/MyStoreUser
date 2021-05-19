@@ -1,0 +1,18 @@
+.expand-wrapper {
+    transition: max-height 0.4s ease-in-out;
+    overflow: hidden;
+    height: auto;
+    width:93vw;
+    right: 15px;
+    position: relative;
+  }
+  
+  .collapsed {
+    max-height: 0px;  
+  }
+  .expanded {
+    height: 200px;
+    max-height: 200px;
+    overflow-y: auto;   
+  }
+  

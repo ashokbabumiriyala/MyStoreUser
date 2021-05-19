@@ -1,5 +1,6 @@
 <ion-content class="login-form ion-padding after-login-bg">
-  <!-- <h2 class="page-title">Services</h2> -->
+  <h2 class="page-title">
+    <ion-icon name="construct-outline"></ion-icon>Services</h2>
   <ion-searchbar placeholder="Type here to filter.."></ion-searchbar>
   <ion-card class="ion-no-margin service" *ngFor="let service of serviceInfoList;let i = index;">
     <ion-row  (click)="getServices(service)">

@@ -1,0 +1,17 @@
+.list-unstyled { 
+    list-style-type:none;
+    .mb-3 {
+        margin-bottom:1rem;
+    }
+    .d-block {
+        display: block;
+    }
+    .mb-1 {
+        margin-bottom: 0.25rem;
+    }
+}
+.content-section {
+    height: auto;
+    max-height: 495px;
+    overflow-y: auto;
+}
