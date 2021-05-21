@@ -47,37 +47,41 @@
   </div> 
 </ion-row>
 </ion-content> -->
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
-  </ion-toolbar>
+<ion-content class="login-form  after-login-bg">
+<ion-list class="location">
+  <ion-radio-group [(ngModel)]="selectedRadio">
+    <ion-item>
+      <ion-label>Use this address</ion-label>
+      <ion-radio slot="start" value="primary" (click)="updateRadio($event)"></ion-radio>
+    </ion-item>
+    <ion-item>
+      Suraj, H-No:1-75 ,Near Post Office, Banglore, Karnataka, India- 560002.
+    </ion-item>
+    <ion-item>
+      <ion-label>Use different address</ion-label>
+      <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>
+  <ion-row *ngIf="mapImage">
+    <ion-col size="10">
+      <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
+    </ion-col>
+    <ion-col  size="2" class="ion-padding-top">
+        <ion-icon name="location-outline" size="large" (click)="tryGeolocation()"></ion-icon>
+    </ion-col>
+  </ion-row> 
   <ion-list [hidden]="autocompleteItems.length == 0">
     <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
       {{ item.description }}
     </ion-item>
   </ion-list>
-  <ion-row>    
-    <ion-col size="6">
-      <ion-text>Google & Ionic Map</ion-text>
-    </ion-col>
-    <ion-col  size="6">
-      <ion-button (click)="tryGeolocation()" shape="round" fill="outline">
-        <ion-icon slot="start" name="locate"></ion-icon>
-          Where I Am
-        </ion-button>
-    </ion-col>
-  </ion-row>  
-</ion-header>
-<ion-content> 
-  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="mapImage">
     <ion-fab-button (click)="ShowCords()" ion-fab color="tertiary">
       <ion-icon name="information-circle-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <div class="map-wrapper" style="height: 100%;">      
-    <!-- <div id="map_center">
-      <ion-icon name="pin" size="large" color="danger"></ion-icon>      
-    </div> -->
+  <div class="map-wrapper" id="mapWrapper">  
     <div #map id="map"  style="height: 100%;"></div>
   </div>   
 </ion-content>

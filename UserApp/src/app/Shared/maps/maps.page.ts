@@ -12,7 +12,7 @@ declare var google:any;
 export class MapsPage implements OnInit {
   selectedRadio:any = "primary";
   mapImage:boolean = false;
-  @ViewChild('map',  {static: false}) mapElement: ElementRef;
+  @ViewChild('map',  {static: true}) mapElement: ElementRef;
   map: any;
   address:string;
   lat: string;
@@ -42,14 +42,18 @@ export class MapsPage implements OnInit {
     });
   }
   updateRadio(eve){
+    const ele = document.getElementById('mapWrapper') as HTMLElement;
     if(eve.target.value == 'secondary') {
       this.mapImage = true;
+      ele.classList.remove('map-size');
     } else {
       this.mapImage = false;
+      ele.classList.add('map-size');
     }
   }
   loadMap() {
-
+    const ele = document.getElementById('mapWrapper') as HTMLElement;
+    ele.classList.add('map-size');
     //FIRST GET THE LOCATION FROM THE DEVICE.
     var options = {
       enableHighAccuracy: true,
