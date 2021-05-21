@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../common/helper.service';
 import { CheckoutService } from '../checkout/checkout.service';
 import { ToastController } from '@ionic/angular';
+import { CategorySearchService } from '../category-search/category-search.service';
+import { Router } from '@angular/router';
 declare var RazorpayCheckout: any;
+
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.page.html',
@@ -15,7 +18,8 @@ export class CheckoutPage implements OnInit {
  subTotal = 0;
  deliveryCharges = 50;
   constructor(private helperService:HelperService, private checkoutService: CheckoutService,
-    private toastController: ToastController) { }
+    private toastController: ToastController, private categorySearchService: CategorySearchService,
+     private router: Router) { }
   ngOnInit() {
     this.defaultAddress = "JNTU, Hyderabad, Telangana, India-500038";
     this.helperService.getCartItems().subscribe(cartItems => {
@@ -65,8 +69,8 @@ export class CheckoutPage implements OnInit {
         }
       }
     };
-    var successCallback = (success) =>{
-      this.insertOrderList(success);
+    var successCallback = (payment_id) =>{
+      this.insertOrderList(payment_id);
     }
 
     var cancelCallback = (error) => {
@@ -74,12 +78,12 @@ export class CheckoutPage implements OnInit {
     };
 
    await RazorpayCheckout.open(options, successCallback, cancelCallback);
-  // this.insertOrderList('hgdsjhsgh');
+  //  this.insertOrderList('hgdsjhsgh');
   }
   async insertOrderList(payment_id){
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
-    const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId: payment_id, TotalAmount: this.subTotal + this.deliveryCharges,
+    const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId: payment_id, TotalAmount: String(this.subTotal + this.deliveryCharges),
      DeliveryCharge: this.deliveryCharges, SubTotal : this.subTotal};
      let apiName;
      if (this.cartItems[0].storeID) {
@@ -89,7 +93,7 @@ export class CheckoutPage implements OnInit {
       this.cartItems.forEach(item => {
         let data = {ProductID: item.productID,
           ProductName: item.productName,
-          Quantity : item.itemCount,
+          Quantity : String(item.itemCount),
           Units: item.units,
           PriceAfterDiscount : item.priceAfterDiscount,
           DiscountType: item.discountType,
@@ -115,12 +119,17 @@ export class CheckoutPage implements OnInit {
     }
     await this.checkoutService.insertOrderList(apiName, dataObject)
     .subscribe((data: any) => {
-      console.log(data)
-      this.presentToast('your order is placed successfully. Order Id is',"success");
+      console.log(data);
+      this.cartItems = [];
+      this.helperService.setCartItems(this.cartItems);
+      sessionStorage.setItem('cartUpdated', 'false');
+      let orderId = data.operationStatusDTO.orderId;
+      this.presentToast('your order is placed successfully. Order Id is ' + orderId,"success");
       loadingController.dismiss();
+       this.router.navigate(['/category-search'], {replaceUrl: true});
     },
     (error: any) => {
-      alert(error);
+      this.presentToast(error,"error");
       loadingController.dismiss();
     });
   }
@@ -132,6 +141,16 @@ export class CheckoutPage implements OnInit {
       color: tostarColor
     });
     toast.present();
+  }
+  async ionViewDidLeave () {
+    if (sessionStorage.getItem('cartUpdated') == 'true'){
+      await this.categorySearchService.insertCartItems('UserCartItemsInsert')
+      .subscribe((data: any) => {
+        sessionStorage.setItem('cartUpdated', 'false');
+      },
+      (error: any) => {
+      });
+    }
   }
 
 }

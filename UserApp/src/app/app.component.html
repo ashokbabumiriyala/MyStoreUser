@@ -13,7 +13,7 @@
             </ion-item>
           </ion-menu-toggle>
         </ion-list>
-      </ion-content> 
+      </ion-content>
     </ion-menu>
   <ion-header class="header" *ngIf="showHead">
             <ion-toolbar>
@@ -23,7 +23,10 @@
                 <ion-title class="ion-text-center">
                     <ion-img class="app-img" src="../assets/images/logo.png"></ion-img>
                 </ion-title>
-                <ion-icon class="ion-margin-end cart" name="cart-outline" slot="end" (click)="cartModal()"></ion-icon>
+                <ion-buttons (click)="cartModal()" slot="end">
+                  <ion-badge *ngIf="cartItems.length !== 0">{{cartItems.length}}</ion-badge>
+                  <ion-icon class="cart" name="cart-outline"></ion-icon>
+              </ion-buttons>
             </ion-toolbar>
         </ion-header>
         <ion-router-outlet id="main-content" [ngClass]="showHead ? 'main-content' : ''"></ion-router-outlet>

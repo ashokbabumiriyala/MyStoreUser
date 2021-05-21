@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { HelperService } from '../../common/helper.service';
 
+import { CategorySearchService } from '../../category-search/category-search.service';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -15,7 +16,8 @@ export class CartPage implements OnInit {
   isCartItemLoaded: boolean = false;
   isEmptyCart: boolean = true;
 
-  constructor(private modalCtrl: ModalController, private router: Router, private helperService: HelperService) { }
+  constructor(private modalCtrl: ModalController, private router: Router, private helperService: HelperService,
+     private categorySearchService: CategorySearchService) { }
   ngOnInit() {
     this.loadCartItems();
   }
@@ -61,5 +63,15 @@ export class CartPage implements OnInit {
     var route = '/'+ele;
     this.router.navigate([route]);
     this.dismiss();
+  }
+  async ionViewDidLeave () {
+    if (sessionStorage.getItem('cartUpdated') == 'true'){
+      await this.categorySearchService.insertCartItems('UserCartItemsInsert')
+      .subscribe((data: any) => {
+        sessionStorage.setItem('cartUpdated', 'false');
+      },
+      (error: any) => {
+      });
+    }
   }
 }

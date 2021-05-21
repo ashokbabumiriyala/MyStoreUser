@@ -27,6 +27,7 @@ getCartItems(): Observable<any> {
   return this.cartItems$.asObservable();
 }
 setCartItems(cartItems: any[]) {
+  sessionStorage.setItem('cartUpdated', 'true');
   this.cartItems$.next(cartItems);
 }
 async createLoadingController(displayMessage:string): Promise<any> {

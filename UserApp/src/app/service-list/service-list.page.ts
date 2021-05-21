@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
+import { CategorySearchService } from '../category-search/category-search.service';
+
 @Component({
   selector: 'app-service-list',
   templateUrl: './service-list.page.html',
@@ -16,7 +18,7 @@ export class ServiceListPage implements OnInit {
   cartItems:any[] = [];
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private serviceListService: ServiceListService,
-    private route: ActivatedRoute, private alertCtrl: AlertController) { }
+    private route: ActivatedRoute, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
       // this.serviceId = JSON.parse(params.serviceId);
@@ -102,5 +104,16 @@ export class ServiceListPage implements OnInit {
 
     });
   }
+  async ionViewDidLeave () {
+    if (sessionStorage.getItem('cartUpdated') == 'true'){
+      await this.categorySearchService.insertCartItems('UserCartItemsInsert')
+      .subscribe((data: any) => {
+        sessionStorage.setItem('cartUpdated', 'false');
+      },
+      (error: any) => {
+      });
+    }
+  }
+
 
 }

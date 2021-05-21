@@ -51,7 +51,12 @@ export class MapsPage implements OnInit {
   loadMap() {
 
     //FIRST GET THE LOCATION FROM THE DEVICE.
-    this.geolocation.getCurrentPosition().then((resp) => {
+    var options = {
+      enableHighAccuracy: true,
+      maximumAge: 30000, // milliseconds e.g., 30000 === 30 seconds
+      timeout: 27000
+    };
+    this.geolocation.getCurrentPosition(options).then((resp) => {
       let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
       let mapOptions = {
         center: latLng,
@@ -68,6 +73,7 @@ export class MapsPage implements OnInit {
         this.lat = this.map.center.lat()
         this.long = this.map.center.lng()
       });
+      this.map.addListener('')
     }).catch((error) => {
       console.log('Error getting location', error);
     });
@@ -156,8 +162,13 @@ export class MapsPage implements OnInit {
         let marker = new google.maps.Marker({
           position: results[0].geometry.location,
           map: this.map,
+          draggable: true
         });
         this.markers.push(marker);
+        google.maps.event.addListener(marker, 'dragend', function() {
+          console.log('dragend', marker.getPosition())
+          // $scope.geocodePosition(marker.getPosition());
+        });
         this.map.setCenter(results[0].geometry.location);
       }
     })

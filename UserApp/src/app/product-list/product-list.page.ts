@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../common/helper.service';
-import { ProductListService } from '../product-list/product-list.service'
+import { ProductListService } from '../product-list/product-list.service';
 import { ActivatedRoute } from '@angular/router';
 import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
 import { AlertController } from '@ionic/angular';
+import { CategorySearchService } from '../category-search/category-search.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
@@ -17,7 +18,7 @@ export class ProductListPage  implements OnInit{
   merchantStoreId:number;
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private productListService: ProductListService,
-    private route: ActivatedRoute, private alertCtrl: AlertController) { }
+    private route: ActivatedRoute, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
   ngOnInit(){
     // this.route.queryParams.subscribe(params => {
     //   this.merchantStoreId = JSON.parse(params.storeId);
@@ -71,7 +72,6 @@ export class ProductListPage  implements OnInit{
   }
 
   decrement (index) {
-    // this.currentNumber--;
     if (this.productList[index].itemCount > 0) {
       this.productList[index].itemCount--;
     }
@@ -93,8 +93,6 @@ export class ProductListPage  implements OnInit{
     } else {
       this.showCartClearAlert(index);
     }
-
-
   }
   showCartClearAlert(index) {
     const prompt = this.alertCtrl.create({
@@ -124,6 +122,15 @@ export class ProductListPage  implements OnInit{
 
     });
   }
-
+ async ionViewDidLeave () {
+    if (sessionStorage.getItem('cartUpdated') == 'true'){
+      await this.categorySearchService.insertCartItems('UserCartItemsInsert')
+      .subscribe((data: any) => {
+        sessionStorage.setItem('cartUpdated', 'false');
+      },
+      (error: any) => {
+      });
+    }
+  }
 
 }

@@ -5,7 +5,7 @@ import { MapsPage } from './Shared/maps/maps.page';
 import { CategorySearchPage } from './category-search/category-search.page';
 import { Platform } from '@ionic/angular';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
-import { HelperService} from 'src/app/common/helper.service'
+import { HelperService} from 'src/app/common/helper.service';
 
 @Component({
   selector: 'app-root',
@@ -28,11 +28,17 @@ export class AppComponent implements OnInit{
 
   ];
   constructor(public modalController: ModalController,
-    public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform) {
+    public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform,
+     private helperService: HelperService) {
       this.initializeApp();
      }
+     cartItems =[];
     ngOnInit(): void {
-
+      this.helperService.getCartItems().subscribe(cartItems => {
+        if(cartItems!=null){
+          this.cartItems = cartItems;
+        }
+      });
     }
      initializeApp() {
       this.platform.ready().then(() => {
