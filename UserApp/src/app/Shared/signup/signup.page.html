@@ -12,50 +12,80 @@
            <ion-input type="text" required formControlName="UserName"></ion-input>
           <ion-icon name="cog-outline" slot="start"></ion-icon>
       </ion-item>
+      <small *ngIf="isFormSubmitted &&  UserName.errors"><span style="color: red;">*UserName Required
+        </span>
+      </small>
       <ion-item class="ion-ele">
           <ion-label position="floating">Mobile Number</ion-label>
           <ion-input type="text" formControlName="MobileNumber" required></ion-input>
           <ion-icon name="logo-whatsapp" slot="start"></ion-icon>
       </ion-item>
+      <small *ngIf="isFormSubmitted &&  MobileNumber.errors"><span style="color: red;">*MobileNumber Required
+      </span>
+    </small>
       <ion-item class="ion-ele">
           <ion-label position="floating">E-mail Id</ion-label>
           <ion-input type="text" formControlName="Email" required></ion-input>
           <ion-icon name="mail-outline" slot="start"></ion-icon>
       </ion-item>
-      <ion-item class="ion-ele">
+      <small *ngIf="isFormSubmitted &&  Email.errors"><span style="color: red;">*Email Required
+        </span>
+      </small>
+      <ion-item class="ion-ele" *ngIf="!editProfile">
           <ion-label position="floating">Password</ion-label>
           <ion-input type="text" formControlName="Password" required></ion-input>
           <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
       </ion-item>
-      <ion-item class="ion-ele">
+      <small *ngIf="isFormSubmitted &&  Password.errors && !editProfile"><span style="color: red;">*Password Required
+      </span>
+    </small>
+      <ion-item class="ion-ele" *ngIf="!editProfile">
           <ion-label position="floating">Confirm Password</ion-label>
           <ion-input type="text" formControlName="confirmPassword" required></ion-input>
           <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
       </ion-item>
-  <ion-item class="ion-ele">
+      <small *ngIf="isFormSubmitted &&  confirmPassword.errors && !editProfile"><span style="color: red;">*ConfirmPassword Required
+        </span>
+      </small>
+      <small *ngIf="signUpFormGroup?.errors?.confirmPassword && !editProfile">
+        <span style="color: red;">*Confirm password does not match </span>
+    </small>
+      <ion-item class="ion-ele">
           <ion-label position="floating">Address</ion-label>
           <ion-textarea formControlName="Address"></ion-textarea>
           <ion-icon name="chatbox-outline" slot="start"></ion-icon>
       </ion-item>
-  <ion-item class="ion-ele">
+      <small *ngIf="isFormSubmitted &&  Address.errors"><span style="color: red;">*Address Required
+      </span>
+    </small>
+    <ion-item class="ion-ele">
           <ion-label position="floating">City</ion-label>
           <ion-input type="text" formControlName="City" required></ion-input>
           <ion-icon name="diamond-outline" slot="start"></ion-icon>
       </ion-item>
+      <small *ngIf="isFormSubmitted &&  City.errors"><span style="color: red;">*City Required
+      </span>
+    </small>
   <ion-item class="ion-ele">
           <ion-label position="floating">State</ion-label>
           <ion-input type="text" formControlName="State" required></ion-input>
           <ion-icon name="file-tray-outline" slot="start"></ion-icon>
       </ion-item>
+      <small *ngIf="isFormSubmitted &&  State.errors"><span style="color: red;">*State Required
+      </span>
+    </small>
   <ion-item class="ion-ele">
           <ion-label position="floating">Pin Code</ion-label>
           <ion-input type="text" formControlName="Pincode" required></ion-input>
           <ion-icon name="diamond-outline" slot="start"></ion-icon>
       </ion-item>
+      <small *ngIf="isFormSubmitted &&  Pincode.errors"><span style="color: red;">*Pincode Required
+      </span>
+    </small>
       <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
               <ion-button *ngIf="!editProfile" type="submit" shape="round" expand="block" class="ion-margin-bottom" (click)="register();">Get Started</ion-button>
-              <ion-button *ngIf="editProfile" type="submit" shape="round" expand="block" class="ion-margin-bottom" >Update Profile</ion-button>
+              <ion-button *ngIf="editProfile" type="submit" shape="round" expand="block" class="ion-margin-bottom" (click)="register();" >Update Profile</ion-button>
           </ion-col>
       </ion-row>
       <ion-row *ngIf="!editProfile && !readProfile">
@@ -70,38 +100,38 @@
   </ion-row> -->
   </form>
 
-    <ion-list *ngIf="readProfile">       
+  <ion-list *ngIf="readProfile">
    <ion-item>
         <ion-label>User Name:</ion-label>
-        <ion-note slot="end">Store User</ion-note>
+        <ion-note slot="end">{{userProfile.UserName}}</ion-note>
     </ion-item>
    <ion-item>
         <ion-label>Mobile Number:</ion-label>
-        <ion-note slot="end">123456789</ion-note>
+        <ion-note slot="end">{{userProfile.MobileNumber}}</ion-note>
     </ion-item>
    <ion-item>
         <ion-label>E-mail Id:</ion-label>
-        <ion-note slot="end">storeuser@gmail.com</ion-note>
+        <ion-note slot="end">{{userProfile.Email}}</ion-note>
     </ion-item>
-    <ion-item>
+    <!-- <ion-item>
         <ion-label>Password:</ion-label>
-        <ion-note slot="end">XXXXXXXX</ion-note>
-    </ion-item>
+        <ion-note slot="end">{{userProfile.password}}</ion-note>
+    </ion-item> -->
    <ion-item>
         <ion-label>Address:</ion-label>
-        <ion-note slot="end">Store user, Near Higway, Banglore</ion-note>
+        <ion-note slot="end">{{userProfile.Address}}</ion-note>
     </ion-item>
    <ion-item>
         <ion-label>City:</ion-label>
-        <ion-note slot="end">Hyderabad</ion-note>
+        <ion-note slot="end">{{userProfile.City}}</ion-note>
     </ion-item>
    <ion-item>
         <ion-label>State:</ion-label>
-        <ion-note slot="end">Telagana</ion-note>
+        <ion-note slot="end">{{userProfile.State}}</ion-note>
     </ion-item>
    <ion-item>
         <ion-label>Pin Code:</ion-label>
-        <ion-note slot="end">500038</ion-note>
+        <ion-note slot="end">{{userProfile.Pincode}}</ion-note>
     </ion-item>
 </ion-list>
 

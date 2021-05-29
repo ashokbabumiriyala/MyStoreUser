@@ -15,6 +15,8 @@ constructor(private commonApiServiceCallsService:CommonApiServiceCallsService) {
 
   providerSignUp(methodName: string,resource:any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName,resource);
-    }
-
+  }
+  getProfileData(methodName: string, resource:any): Observable<any> {
+    return this.commonApiServiceCallsService.select(this.apiUrl + methodName,resource);
+  }
 }

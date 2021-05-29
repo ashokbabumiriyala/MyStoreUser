@@ -77,8 +77,8 @@ export class CheckoutPage implements OnInit {
       alert(error.description + ' (Error ' + error.code + ')');
     };
 
-   await RazorpayCheckout.open(options, successCallback, cancelCallback);
-  //  this.insertOrderList('hgdsjhsgh');
+  //  await RazorpayCheckout.open(options, successCallback, cancelCallback);
+   this.insertOrderList('hgdsjhsgh');
   }
   async insertOrderList(payment_id){
     const loadingController = await this.helperService.createLoadingController("loading");

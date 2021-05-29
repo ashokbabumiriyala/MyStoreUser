@@ -29,21 +29,26 @@ export class CategorySearchPage implements OnInit {
     const dataObject={UserId: Number(sessionStorage.getItem('UserId'))};
     await this.categorySearchService.getCartItems('UserCartItemsSelect', dataObject)
     .subscribe((data: any) => {
-      if (data.ServiceLocationId) {
-        this.cartItems = data.ServiceCartItems;
+      loadingController.dismiss();
+      let cartItemsData = data.cartItems;
+      if (cartItemsData.serviceLocationId !== 0) {
+        this.cartItems = cartItemsData.serviceCartItems;
         this.cartItems.forEach((item) => {
           item['itemCount'] = 1;
           item['addedToCart'] = true;
+          item['locationID'] = cartItemsData.serviceLocationId;
         });
       } else {
-        this.cartItems = data.ProductCartItems;
+        this.cartItems = cartItemsData.productCartItems;
         this.cartItems.forEach((item) => {
-          item['itemCount'] = item.Quantity;
+          item['itemCount'] = Number(item.quantity);
           item['addedToCart'] = true;
+          item['storeID'] = cartItemsData.storeId;
         });
       }
       this.helperService.setCartItems(this.cartItems);
-      loadingController.dismiss();
+      sessionStorage.setItem('cartUpdated', 'false')
+
     },
     (error: any) => {
       loadingController.dismiss();

@@ -12,6 +12,8 @@ import {CategorySearchPageModule} from 'src/app/category-search/category-search.
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
+import { AppVersion } from '@ionic-native/app-version/ngx';
+import { Market } from '@ionic-native/market/ngx';
 
 @NgModule({
   declarations: [	AppComponent],
@@ -26,6 +28,8 @@ import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
     Geolocation,
     NativeGeocoder,
     FCM,
+    AppVersion,
+    Market,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

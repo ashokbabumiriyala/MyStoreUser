@@ -21,7 +21,7 @@ export class CategorySearchService {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, data);
   }
   insertCartItems(methodName: string): Observable<any> {
-    const dataObject={UserId: Number(sessionStorage.getItem('UserId')), ServiceLocationId: null, StoreId : null,
+    const dataObject={UserId: Number(sessionStorage.getItem('UserId')), ServiceLocationId: 0, StoreId : 0,
        ProductCartItems: [], ServiceCartItems: []};
        if (this.cartItems[0]?.storeID) {
         dataObject['StoreId'] = this.cartItems[0].storeID;

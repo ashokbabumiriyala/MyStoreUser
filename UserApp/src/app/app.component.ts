@@ -6,6 +6,9 @@ import { CategorySearchPage } from './category-search/category-search.page';
 import { Platform } from '@ionic/angular';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { HelperService} from 'src/app/common/helper.service';
+import { AppVersion } from '@ionic-native/app-version/ngx';
+import { CommonApiServiceCallsService} from './Shared/common-api-service-calls.service';
+import { environment} from './../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -29,10 +32,11 @@ export class AppComponent implements OnInit{
   ];
   constructor(public modalController: ModalController,
     public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform,
-     private helperService: HelperService) {
+     private helperService: HelperService, private appVersion: AppVersion, private commonApiServiceCallsService: CommonApiServiceCallsService) {
       this.initializeApp();
      }
      cartItems =[];
+     version:any;
     ngOnInit(): void {
       this.helperService.getCartItems().subscribe(cartItems => {
         if(cartItems!=null){
@@ -45,6 +49,21 @@ export class AppComponent implements OnInit{
         if (this.platform.is('android') || this.platform.is('ios')) {
           console.log("running on mobile device!");
           sessionStorage.setItem('mobile', 'true');
+          this.appVersion.getVersionNumber().then((res) => {
+            console.log(res);
+            this.version = res;
+            if (this.version){
+              let apiUrl = environment.adminServiceUrl;
+              this.commonApiServiceCallsService.getAll(apiUrl + 'GetAppVersion').subscribe((res)=>{
+                let appNewVersion = res[0]['userAppVersion'];
+                let needUpdate = appNewVersion.localeCompare(this.version, undefined, { numeric: true, sensitivity: 'base' })
+                if (needUpdate == 1) {
+                  this.helperService.showAlert('Please update your App to avail Latest features provided by My3Karrt.');
+                }
+              }, (error) => {
+              })
+            }
+          });
           // subscribe to a topic
           this.fcm.subscribeToTopic('Users');
 

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { IProviderDetails} from 'src/app/common/provider-details';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
+import { Market } from '@ionic-native/market/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class HelperService {
 // public providerSource = new BehaviorSubject<IProviderDetails>(this.iProviderDetails)
 // providerDetails = this.providerSource.asObservable();
 
-constructor(private loadingController:LoadingController, private router:Router, private alertCtrl: AlertController) { }
+constructor(private loadingController:LoadingController, private router:Router,
+  private alertCtrl: AlertController, private market: Market, private toastController: ToastController) { }
 
 private profileObs$: BehaviorSubject<IProviderDetails> = new BehaviorSubject(null);
 private cartItems$: BehaviorSubject<any[]> = new BehaviorSubject(null);
@@ -47,27 +49,47 @@ prepareDropDownData(items: any): iDropdown[] {
   }
   return iDropdownItems;
 }
-showAlert(){
-  const prompt = this.alertCtrl.create({
+async presentToast(data: string, toastColor:string) {
+  const toast = await this.toastController.create({
+    message: data,
+    duration: 2000,
+    position: 'bottom',
+    color: toastColor
+  });
+  toast.present();
+}
+async presentAlertConfirm(message) {
+  let result;
+  const alert = await this.alertCtrl.create({
+    cssClass: 'my-custom-class',
     header: 'Alert',
-    message: "Do you want to clear cart items?",
+    message: message,
     buttons: [
-      {
-        text: 'No',
-        handler: data => {
-          console.log('Cancel clicked');
+    {
+        text: 'Confirm',
+        handler: () => {
+          // console.log('Confirm Okay');
+          alert.dismiss(true);
+          return false;
         }
       },
       {
-        text: 'Yes',
-        handler: data => {
-          console.log('Saved clicked');
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: (blah) => {
+          // console.log('Confirm Cancel: blah');
+          alert.dismiss(false);
+          return false;
         }
       }
     ]
-  }).then((res) => {
-    res.present();
+  });
+  await alert.present();
+  await alert.onDidDismiss().then((data) => {
+    result = data;
   })
+  return result;
 }
 
 
@@ -84,6 +106,23 @@ getPageData(): any {
   if (this.router.getCurrentNavigation().extras.state) {
     return this.router.getCurrentNavigation().extras.state.pageData;
   }
+}
+async showAlert(message){
+  const alert = await this.alertCtrl.create({
+    cssClass: 'my-custom-class',
+    header: 'Alert',
+    message: message,
+    backdropDismiss: false,
+    buttons: [
+    {
+        text: 'Update',
+        handler: () => {
+          this.market.open('com.velocious.my3Karrt_admin');
+        }
+      }
+    ]
+  });
+  await alert.present();
 }
 
 

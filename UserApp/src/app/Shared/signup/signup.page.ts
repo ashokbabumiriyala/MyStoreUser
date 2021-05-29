@@ -21,6 +21,7 @@ export class SignupPage implements OnInit {
   isignUp:IsignUp;
   signUpFormGroup:FormGroup;
   isFormSubmitted:boolean;
+  userProfile:any = {};
   ngOnInit() {
     this.signUpFormGroupCreate();
     this.route.queryParams.subscribe(params => {
@@ -33,10 +34,41 @@ export class SignupPage implements OnInit {
           this.editProfile = false;
         }
       }
+      if (this.readProfile) {
+        this.getProfileData();
+      }
+    });
+  }
+  async getProfileData(){
+    const loadingController = await this.helperService.createLoadingController("loading");
+    await loadingController.present();
+    let data = {"UserId": Number(sessionStorage.getItem('UserId'))};
+    await this.signUpService.getProfileData('UserProfileSelect', data)
+    .subscribe((data: any) => {
+      console.log(data);
+      loadingController.dismiss();
+      let profileData = data.userProfile;
+      this.userProfile = {
+        UserName: profileData.userName,
+        MobileNumber: profileData.mobileNumber,
+        Email: profileData.email,
+        Address: profileData.address,
+        City: profileData.city,
+        State: profileData.state,
+        Pincode: profileData.pinCode,
+        Password: '',
+        confirmPassword: ''
+      };
+    },
+    (error: any) => {
+      loadingController.dismiss();
     });
   }
   get Password() {
     return this.signUpFormGroup.get('Password');
+  }
+  get confirmPassword() {
+    return this.signUpFormGroup.get('confirmPassword');
   }
   get Email() {
     return this.signUpFormGroup.get('Email');
@@ -75,9 +107,14 @@ export class SignupPage implements OnInit {
       validators: [ConfirmPasswordValidation.ConfirmPassword
       ]
     });
+
   }
   async register(): Promise<void>{
     this.isFormSubmitted = true;
+    if (this.editProfile){
+      this.signUpFormGroup.controls['Password'].setErrors(null);
+      this.signUpFormGroup.controls['confirmPassword'].setErrors(null);
+    }
       if (this.signUpFormGroup.invalid) {
         return;
       }
@@ -94,13 +131,28 @@ export class SignupPage implements OnInit {
         Pincode:this.Pincode.value,
         pushToken: sessionStorage.getItem('PushToken')
       };
+      let apiName = 'UserSignupSave';
+      if(this.editProfile) {
+        apiName = 'UpdateUserProfile';
+        this.isignUp['UserId'] = Number(sessionStorage.getItem('UserId'));
+        delete this.isignUp['Password'];
+        delete this.isignUp['pushToken'];
+      }
 
-     await this.signUpService.providerSignUp('UserSignupSave', this.isignUp)
+     await this.signUpService.providerSignUp(apiName, this.isignUp)
       .subscribe((data: any) => {
-        this.signUpFormGroup.reset();
-        this.router.navigate(['login']);
-        this.presentToast("Registration successfully.","success");
         loadingController.dismiss();
+        if (!this.editProfile && !this.readProfile) {
+          this.signUpFormGroup.reset();
+          this.router.navigate(['login']);
+          this.presentToast("Registration successfully.","success");
+        } else {
+          this.presentToast("Profile Update successfully.","success");
+          this.userProfile = this.signUpFormGroup.getRawValue();
+          this.editProfile = false;
+          this.readProfile = true;
+          this.signUpFormGroup.reset();
+        }
       },
         (error: any) => {
           loadingController.dismiss();
@@ -143,6 +195,9 @@ export class SignupPage implements OnInit {
   async UpdateProfile() {
     this.editProfile = true;
     this.readProfile = false;
+    if (this.userProfile.UserName) {
+      this.signUpFormGroup.setValue(this.userProfile)
+    }
   }
   async backToScreen() {
     this.editProfile = false;
