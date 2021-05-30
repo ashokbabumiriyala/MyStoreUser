@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { HelperService } from '../common/helper.service';
+import { ServiceOrderService } from './service-order.service';
 @Component({
   selector: 'app-service-orders',
   templateUrl: './service-orders.page.html',
@@ -12,16 +14,29 @@ export class ServiceOrdersPage implements OnInit {
   orderId: any = 12345;
   deliveryStatus: any = 'Completed';
   orderedItems: any = [];
-  constructor(private router: Router) { }
+  constructor(private router: Router, private helperService: HelperService, private serviceOrderService: ServiceOrderService) { }
 
-  ngOnInit() { 
+  ngOnInit() {
      this.orderedItems = [
       { name: 'store 1', date: '10/01/2021', orderId: 25678, status: 'Delivered', expand: false },
       { name: 'store 2', date: '15/05/2021', orderId: 52345, status: 'Pending', expand: false },
       { name: 'store 3', date: '10/05/2021', orderId: 25698, status: 'Delivered', expand: false }
     ];
+    this.loadServiceOrders();
   }
-
+  async loadServiceOrders(){
+    const loadingController = await this.helperService.createLoadingController("loading");
+    await loadingController.present();
+    const dataObject={"UserId": Number(sessionStorage.getItem('UserId'))};
+    await this.serviceOrderService.getServiceOrders('UserProductOrders', dataObject)
+    .subscribe((data: any) => {
+      this.orderedItems = data.serviceOrders;
+      loadingController.dismiss();
+    },
+    (error: any) => {
+      loadingController.dismiss();
+    });
+  }
   expandItem(event, ele): void {
     event.currentTarget.classList.toggle('order-status');
     event.currentTarget.classList.toggle('row-icon');

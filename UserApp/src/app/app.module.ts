@@ -14,6 +14,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Market } from '@ionic-native/market/ngx';
+import { Camera } from '@ionic-native/camera/ngx'
 
 @NgModule({
   declarations: [	AppComponent],
@@ -30,6 +31,7 @@ import { Market } from '@ionic-native/market/ngx';
     FCM,
     AppVersion,
     Market,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

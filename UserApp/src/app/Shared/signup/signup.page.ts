@@ -155,6 +155,7 @@ export class SignupPage implements OnInit {
         }
       },
         (error: any) => {
+          this.presentToast("error","danger");
           loadingController.dismiss();
         });
 

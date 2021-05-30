@@ -25,7 +25,7 @@
       <ion-col>Description</ion-col>
       <ion-col>Image</ion-col>
     </div>
-    <div style="display: flex;">
+    <div style="display: flex;" *ngFor="let complaint of complaintList">
       <ion-col>Payment</ion-col>
       <ion-col>456789</ion-col>
       <ion-col>Payment Debited but status is still pending</ion-col>
@@ -35,42 +35,45 @@
     </div>
   </ion-grid>
 </div>
-  <form [formGroup]="" *ngIf="!issuesGrid">
+  <form [formGroup]="complaintFormGroup" *ngIf="!issuesGrid">
       <ion-item class="ion-ele" lines="full">
         <ion-label position="floating">Issue Related To</ion-label>
-        <ion-select>
+        <ion-select formControlName="IssueRelatedTo">
           <ion-select-option value="{{opt.id}}" *ngFor="let opt of issues">{{opt.description}}</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item class="ion-ele" lines="full">
           <ion-label position="floating">order Id</ion-label>
-          <ion-input type="text"></ion-input>
+          <ion-input type="text" formControlName="OrderId"></ion-input>
           <ion-icon name="cog-outline" slot="start"></ion-icon>
       </ion-item>
 
       <ion-item class="ion-ele" lines="full">
         <ion-label position="floating">Issue Description</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-input type="text" formControlName="IssueDescription"></ion-input>
         <ion-icon name="clipboard-outline" slot="start"></ion-icon>
     </ion-item>
 
-    <ion-item class="ion-ele" lines="full">
-      <ion-label position="floating">Upload</ion-label>
-      <ion-input type="file"></ion-input>
-      <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+    <ion-item class="ion-ele" *ngIf="mobileApp">
+      <ion-icon name="images-outline" slot="start"></ion-icon>
+      <ion-button shape="round" expand="full" size="default" (click)="selectImage();" class="ion-button">
+          Select Image</ion-button>
+      <ion-label class="ion-text-right" *ngIf="selectedDocs.length != 0">
+          <ion-icon name="eye-outline"></ion-icon> {{selectedDocs.length}}
+      </ion-label>
   </ion-item>
-     
+  <ion-item class="ion-ele" lines="full" *ngIf="!mobileApp">
+      <ion-label>Image</ion-label>
+      <input type="file" #selectedWebDocs multiple (change)="selectedImgWeb($event)" />
+      <ion-icon name="images-outline" slot="start"></ion-icon>
+  </ion-item>
+
      <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
-              <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom">Submit</ion-button>
+              <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom" (click)="raiseComplaint()">Submit</ion-button>
           </ion-col>
       </ion-row>
-      <!--  <ion-row>
-          <ion-col class="ion-text-center">
-              <a [routerLink]="['/signup']" class="small-text ion-margin-bottom" [queryParams]="{ signup: true}">New user ? Register with us!</a>&nbsp;&nbsp;
-          </ion-col>
-      </ion-row> -->
   </form>
   </div>
 </ion-content>
