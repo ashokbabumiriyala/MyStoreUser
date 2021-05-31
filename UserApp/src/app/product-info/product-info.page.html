@@ -11,28 +11,26 @@
   <div *ngIf="displayListView">
     <ion-card class="ion-no-margin product" *ngFor="let merchant of merchantList; let i = index;">
       <ion-row (click)="getProducts(merchant)">
-        <ion-col size="3">
-          <img class="product-img" src="{{merchant.url}}" *ngIf="merchant.url">
-          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!merchant.url">
+        <ion-col size="2" style="margin: auto">
+          <ion-avatar>
+            <img class="product-img"src="{{merchant.url}}" *ngIf="merchant.url">
+            <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!merchant.url">
+          </ion-avatar>
         </ion-col>
-        <ion-col size="9">
-          <h3 class="product-name">{{merchant.name}}</h3>
-          <ion-grid>
-            <ion-row>
-              <ion-col size="6">
-                <p class="ion-no-margin">category: {{merchant.catergory}}</p>
-              </ion-col>
-              <ion-col size="6">
-                <p class="ion-no-margin">Distance: {{merchant.distance}} KM</p>
-              </ion-col>
-            </ion-row>
-            <ion-row>
-              <p class="ion-no-margin">
-                <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
-                <ion-label class="ion-no-margin units">Address: {{merchant.address}}</ion-label>
-              </p>
-            </ion-row>
-          </ion-grid>
+        <ion-col size="10">
+          <h4 class="product-name">{{merchant.name}}</h4>
+          <ion-row>
+            <ion-col>
+            <b>category:</b> {{merchant.catergory}}
+          </ion-col>
+          <ion-col>
+           <b>Distance:</b> {{merchant.distance}} KM
+          </ion-col>
+          </ion-row>
+          <p class="ion-no-margin">
+            <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
+            <b>Address:</b> {{merchant.address}}
+          </p>
         </ion-col>
       </ion-row>
     </ion-card>

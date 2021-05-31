@@ -48,7 +48,8 @@
 </ion-row>
 </ion-content> -->
 <ion-content class="login-form  after-login-bg">
-<ion-list class="location">
+  <ion-icon name="close-circle-outline" (click)="dismiss()" class="close"></ion-icon>
+  <ion-list class="location">
   <ion-radio-group [(ngModel)]="selectedRadio">
     <ion-item>
       <ion-label>Use this address</ion-label>

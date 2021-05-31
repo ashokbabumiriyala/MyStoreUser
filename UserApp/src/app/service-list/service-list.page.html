@@ -5,24 +5,22 @@
     <ion-row>
       <ion-col size="2" style="margin: auto">
         <ion-avatar>
-          <img  src="{{service.url}}" *ngIf="service.url">
-          <img src="../../assets/images/default-image.jpg" *ngIf="!service.url">
+          <img  class="product-img" src="{{service.url}}" *ngIf="service.url">
+          <img  class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!service.url">
         </ion-avatar>
       </ion-col>
       <ion-col size="10">
         <ion-grid>
-          <h3 class="product-name">{{service.businessName}}</h3>
-          <ion-row>
-            <ion-col>
-              <p class="ion-no-margin">Price: Rs-{{service.priceAfterDiscount}}</p>
+          <h6 class="product-name">{{service.businessName}}</h6>
+          <ion-row style="align-items: center;">
+            <ion-col size="6">
+              <p class="ion-no-margin">Price:{{service.priceAfterDiscount | currency:'INR'}}</p>
             </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col class="ion-text-center" *ngIf="!service.addedToCart">
-              <ion-button shape="round" expand="block" (click)="addToCart(i)">Add To Cart</ion-button>
+            <ion-col class="ion-text-center" *ngIf="!service.addedToCart" size="6">
+              <ion-button shape="round" size="small" (click)="addToCart(i)">Add To Cart</ion-button>
             </ion-col>
-            <ion-col class="ion-text-center" *ngIf="service.addedToCart">
-              <ion-button shape="round" expand="block" (click)="removeFromCart(i)">Delete From Cart</ion-button>
+            <ion-col class="ion-text-center" *ngIf="service.addedToCart" size="6">
+              <ion-button shape="round" size="small" (click)="removeFromCart(i)">Delete From Cart</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>

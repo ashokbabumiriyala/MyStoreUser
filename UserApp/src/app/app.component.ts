@@ -19,8 +19,8 @@ export class AppComponent implements OnInit{
   showHead:boolean = true;
   public appPages = [
     { title: 'Profile', url: '/signup', icon: 'person-outline' },
-    { title: 'Previous Product Orders', url: '/product-orders', icon: 'aperture-outline' },
-    { title: 'Previous Service Orders', url: '/service-orders', icon: 'color-filter-outline' },
+    { title: 'Product Orders', url: '/product-orders', icon: 'aperture-outline' },
+    { title: 'Service Orders', url: '/service-orders', icon: 'color-filter-outline' },
     { title: 'Raise A Complaint', url: '/complaint', icon: 'chatbox-ellipses-outline' },
     { title: 'About My3Karrt', url: '/information-pages/about-us', icon: 'extension-puzzle-outline' },
     { title: 'Terms and Conditions', url: '/information-pages/terms-conditions', icon: 'cog-outline' },

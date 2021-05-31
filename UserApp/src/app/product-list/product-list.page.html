@@ -5,13 +5,13 @@
     <ion-row>
       <ion-col size="2" style="margin: auto">
         <ion-avatar>
-          <img  src="{{product.url}}" *ngIf="product.url">
-          <img src="../../assets/images/default-image.jpg" *ngIf="!product.url">
+          <img  class="product-img" src="{{product.url}}" *ngIf="product.url">
+          <img  class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">
         </ion-avatar>
       </ion-col>
       <ion-col size="10">
         <ion-grid>
-          <h3 class="product-name">{{product.productName}}</h3>
+          <h6 class="product-name">{{product.productName}}</h6>
           <ion-row>
             <ion-col size="5">
               <p class="ion-no-margin">Units:{{product.units}}</p>
@@ -21,17 +21,15 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col size="2"></ion-col>
-            <ion-col size="8">
+            <ion-col size="6">
               <p class="ion-no-margin units">
                   <ion-icon class="plus-minus" name="remove-circle" (click)="decrement(i)" item-right></ion-icon>
                   <ion-input type="number" min="1" [value]="product.itemCount" [(ngModel)]="product.itemCount"></ion-input>
                   <ion-icon class="plus-minus" name="add-circle" (click)="increment(i)" item-right></ion-icon>
               </p>
             </ion-col>
-            <ion-col size="2"></ion-col>
-              <ion-col class="ion-text-center">
-                <ion-button shape="round" expand="block" (click)="addToCart(i)">Add To Cart</ion-button>
+              <ion-col class="ion-text-center" size="6">
+                <ion-button shape="round" size="small" (click)="addToCart(i)">Add To Cart</ion-button>
               </ion-col>
           </ion-row>
         </ion-grid>

@@ -6,118 +6,18 @@
     <ion-row  (click)="getServices(service)">
         <ion-col size="2" style="margin: auto">
           <ion-avatar>
-            <img  src="{{service.url}}" *ngIf="service.url">
-            <img src="../../assets/images/default-image.jpg" *ngIf="!service.url">
+            <img class="service-img" src="{{service.url}}" *ngIf="service.url">
+            <img class="service-img" src="../../assets/images/default-image.jpg" *ngIf="!service.url">
           </ion-avatar>
         </ion-col>
         <ion-col size="10">
-        <ion-grid>
-          <h3 class="service-name">{{service.businessName}}</h3>
-          <ion-row>
-            <ion-col>
-              <p class="ion-no-margin">Distance: {{service.distance}}</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <p class="ion-no-margin">
+          <h4 class="service-name">{{service.businessName}}</h4>
+              <p class="ion-no-margin"><b>Distance:</b> {{service.distance}}</p>
+              <p class="ion-no-margin">
               <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
-              <ion-label class="ion-no-margin units">Address:{{service.address}}</ion-label>
-            </p>
-          </ion-row>
-        </ion-grid>
+              <b>Address:</b>{{service.address}}
+              </p>
       </ion-col>
     </ion-row>
   </ion-card>
-  <!-- <ion-card class="ion-no-margin service" (click)="getProducts()">
-    <ion-row>
-      <ion-col size="3">
-        <img class="service-img" src="../assets/images/dump/service-2.jpg">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="service-name">Ayurveda spa</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <p class="ion-no-margin">Distance: 3KM</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <p class="ion-no-margin">
-              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
-              <ion-label class="ion-no-margin units">Address: Abids, Hyderabad, Telangana. </ion-label>
-            </p>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <ion-card class="ion-no-margin service" (click)="getProducts()">
-    <ion-row>
-      <ion-col size="3">
-        <img class="service-img" src="../assets/images/dump/service-3.png">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="service-name">Hospital</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <p class="ion-no-margin">Distance: 5.2KM</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <p class="ion-no-margin">
-              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
-              <ion-label class="ion-no-margin units">Address: JNTU, Hyderabad, Telangana state.</ion-label>
-            </p>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <ion-card class="ion-no-margin service" (click)="getProducts()">
-    <ion-row>
-      <ion-col size="3">
-        <img class="service-img" src="../assets/images/dump/service-4.jpg">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="service-name">Plumber</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <p class="ion-no-margin">Distance: 0.5KM</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <p class="ion-no-margin">
-              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
-              <ion-label class="ion-no-margin units">Address: Balanagar, Hyderabad, Telangana.</ion-label>
-            </p>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <ion-card class="ion-no-margin service" (click)="getProducts()">
-    <ion-row>
-      <ion-col size="3">
-        <img class="service-img" src="../assets/images/dump/service-5.jpg">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="service-name">Electrician</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <p class="ion-no-margin">Distance: 1KM</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <p class="ion-no-margin">
-              <ion-icon name="location-outline" class="addr-icon" slot="start"></ion-icon>
-              <ion-label class="ion-no-margin units">Address:ESI, Hyderabad, Telangana.</ion-label>
-            </p>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card> -->
 </ion-content>
