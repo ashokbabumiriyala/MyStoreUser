@@ -93,7 +93,7 @@ export class AppComponent implements OnInit{
         }
       });
     }
-    async presentModal() {
+    async presentModal(title) {
       const enterAnimation = (baseEl: any) => {
         const backdropAnimation = this.animationCtrl.create()
           // .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '16%'})
@@ -118,6 +118,7 @@ export class AppComponent implements OnInit{
 
       const modal = await this.modalController.create({
         component: MapsPage,
+        componentProps: {"model_title": title},
         enterAnimation,
         leaveAnimation
       });

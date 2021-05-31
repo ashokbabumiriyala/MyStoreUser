@@ -1,12 +1,12 @@
 <!-- <ion-content class="login-form  after-login-bg">
-  <ion-row>    
+  <ion-row>
     <ion-col size="10">
       <h2 class="page-title">Tele-Port</h2>
     </ion-col>
     <ion-col  size="2">
       <ion-icon class="close-icon" name="close-outline" (click)="dismiss()"></ion-icon>
     </ion-col>
-  </ion-row>  
+  </ion-row>
   <ion-list class="location">
     <ion-radio-group [(ngModel)]="selectedRadio">
       <ion-item>
@@ -24,7 +24,7 @@
   </ion-list>
   <ion-row>
   <div [hidden]="!mapImage">
-    <!-- <img class="product-img" src="../assets/images/dump/maps.jpeg">  
+    <!-- <img class="product-img" src="../assets/images/dump/maps.jpeg">
     <ion-toolbar color="primary">
       <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
     </ion-toolbar>
@@ -38,18 +38,24 @@
         <ion-icon name="locate"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    <div class="map-wrapper" style="height: 100%;">      
+    <div class="map-wrapper" style="height: 100%;">
       <div id="map_center">
-        <ion-icon name="pin" size="large" color="danger"></ion-icon>      
+        <ion-icon name="pin" size="large" color="danger"></ion-icon>
       </div>
       <div #map id="map"  style="height: 100%;"></div>
-    </div>   
-  </div> 
+    </div>
+  </div>
 </ion-row>
 </ion-content> -->
 <ion-content class="login-form  after-login-bg">
-  <ion-icon name="close-circle-outline" (click)="dismiss()" class="close"></ion-icon>
-  <ion-list class="location">
+  <ion-toolbar class="after-login-bg">
+    <ion-title class="ion-text-center"><strong>{{model_title}}</strong></ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="close-circle-outline" (click)="dismiss()"  size="large"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+  <!-- <ion-icon name="close-circle-outline" (click)="dismiss()" class="close"></ion-icon> -->
+  <ion-list class="location" *ngIf="!searchLocation">
   <ion-radio-group [(ngModel)]="selectedRadio">
     <ion-item>
       <ion-label>Use this address</ion-label>
@@ -71,7 +77,7 @@
     <ion-col  size="2" class="ion-padding-top">
         <ion-icon name="location-outline" size="large" (click)="tryGeolocation()"></ion-icon>
     </ion-col>
-  </ion-row> 
+  </ion-row>
   <ion-list [hidden]="autocompleteItems.length == 0">
     <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
       {{ item.description }}
@@ -82,7 +88,7 @@
       <ion-icon name="information-circle-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <div class="map-wrapper" id="mapWrapper">  
+  <div class="map-wrapper" id="mapWrapper">
     <div #map id="map"  style="height: 100%;"></div>
-  </div>   
+  </div>
 </ion-content>

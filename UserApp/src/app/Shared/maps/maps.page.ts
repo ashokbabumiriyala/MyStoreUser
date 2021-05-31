@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, Input } from '@angular/core';
 import { ModalController} from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
@@ -10,6 +10,7 @@ declare var google:any;
   styleUrls: ['./maps.page.scss']
 })
 export class MapsPage implements OnInit {
+  @Input() model_title: string;
   selectedRadio:any = "primary";
   mapImage:boolean = false;
   @ViewChild('map',  {static: true}) mapElement: ElementRef;
@@ -24,6 +25,7 @@ export class MapsPage implements OnInit {
   GoogleAutocomplete: any;
   geocoder:any;
   markers:any;
+  searchLocation:boolean;
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder, public zone: NgZone) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -31,9 +33,17 @@ export class MapsPage implements OnInit {
       this.autocompleteItems = [];
       this.geocoder = new google.maps.Geocoder;
       this.markers = [];
+
      }
   ngOnInit() {
     this.loadMap();
+    if (this.model_title != 'Delivery Address') {
+      this.searchLocation = true;
+      this.mapImage = true;
+      const ele = document.getElementById('mapWrapper') as HTMLElement;
+      ele.classList.remove('map-size');
+    }
+
   }
 
   dismiss() {
