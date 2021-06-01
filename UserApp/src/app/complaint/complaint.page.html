@@ -21,39 +21,46 @@
   <ion-grid>
     <div style="display: flex;">
       <ion-col>Issue</ion-col>
-      <ion-col>Order Id</ion-col>
+      <ion-col>Order Number</ion-col>
       <ion-col>Description</ion-col>
-      <ion-col>Image</ion-col>
+      <ion-col>Date</ion-col>
     </div>
     <div style="display: flex;" *ngFor="let complaint of complaintList">
-      <ion-col>Payment</ion-col>
-      <ion-col>456789</ion-col>
-      <ion-col>Payment Debited but status is still pending</ion-col>
-      <ion-col>
-        <img src="../assets/images/dump/merchantProduct-1.jpeg">
-      </ion-col>
+      <ion-col>{{complaint.issue}}</ion-col>
+      <ion-col>{{complaint.orderId}}</ion-col>
+      <ion-col>{{complaint.issueDescription}}</ion-col>
+      <ion-col>{{complaint.createdOn|date :'dd/MM/yyyy' }}</ion-col>
     </div>
   </ion-grid>
 </div>
   <form [formGroup]="complaintFormGroup" *ngIf="!issuesGrid">
       <ion-item class="ion-ele" lines="full">
-        <ion-label position="floating">Issue Related To</ion-label>
+        <ion-label position="floating">Issue Type</ion-label>
         <ion-select formControlName="IssueRelatedTo">
           <ion-select-option value="{{opt.id}}" *ngFor="let opt of issues">{{opt.description}}</ion-select-option>
-        </ion-select>
+        </ion-select>     
       </ion-item>
-
+      <small *ngIf="isFormSubmitted &&  IssueRelatedTo.errors"><span style="color: red;">*Select Issue Type
+      </span>
+      </small>
       <ion-item class="ion-ele" lines="full">
-          <ion-label position="floating">order Id</ion-label>
+          <ion-label position="floating">Order Number</ion-label>
           <ion-input type="text" formControlName="OrderId"></ion-input>
           <ion-icon name="cog-outline" slot="start"></ion-icon>
       </ion-item>
 
+      <small *ngIf="isFormSubmitted &&  OrderId.errors"><span style="color: red;">*Order Number Required
+      </span>
+      </small>
+
       <ion-item class="ion-ele" lines="full">
-        <ion-label position="floating">Issue Description</ion-label>
+        <ion-label position="floating">Description</ion-label>
         <ion-input type="text" formControlName="IssueDescription"></ion-input>
         <ion-icon name="clipboard-outline" slot="start"></ion-icon>
-    </ion-item>
+      </ion-item>
+    <small *ngIf="isFormSubmitted &&  IssueDescription.errors"><span style="color: red;">*Issue Description Required
+    </span>
+    </small>
 
     <ion-item class="ion-ele" *ngIf="mobileApp">
       <ion-icon name="images-outline" slot="start"></ion-icon>

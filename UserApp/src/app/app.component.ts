@@ -46,11 +46,9 @@ export class AppComponent implements OnInit{
     }
      initializeApp() {
       this.platform.ready().then(() => {
-        if (this.platform.is('android') || this.platform.is('ios')) {
-          console.log("running on mobile device!");
+        if (this.platform.is('android') || this.platform.is('ios')) {     
           sessionStorage.setItem('mobile', 'true');
-          this.appVersion.getVersionNumber().then((res) => {
-            console.log(res);
+          this.appVersion.getVersionNumber().then((res) => {       
             this.version = res;
             if (this.version){
               let apiUrl = environment.adminServiceUrl;
@@ -69,13 +67,12 @@ export class AppComponent implements OnInit{
 
           // get FCM token
           this.fcm.getToken().then(token => {
-            console.log(token);
-            sessionStorage.setItem("PushToken",token);
-          });
+       
+            sessionStorage.setItem("PushToken",token);         });
 
           // ionic push notification example
           this.fcm.onNotification().subscribe(data => {
-            console.log(data);
+      
             if (data.wasTapped) {
               console.log('Received in background');
             } else {
@@ -85,7 +82,7 @@ export class AppComponent implements OnInit{
 
           // refresh the FCM token
           this.fcm.onTokenRefresh().subscribe(token => {
-            console.log(token);
+          
             sessionStorage.setItem("PushToken",token);
           });
         } else {

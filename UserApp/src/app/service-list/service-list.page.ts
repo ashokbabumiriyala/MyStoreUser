@@ -39,7 +39,7 @@ export class ServiceListPage implements OnInit {
       const dataObject={locationId:this.serviceId};
       await this.serviceListService.getServiceList('UserServiceProviderServiceSelect', dataObject)
       .subscribe((data: any) => {
-        console.log(data);
+   
         this.serviceList = data.provideServiceList;
         this.serviceList.forEach(service => {
           service['addedToCart'] = false;
@@ -84,13 +84,13 @@ export class ServiceListPage implements OnInit {
         {
           text: 'No',
           handler: data => {
-            console.log('Cancel clicked');
+          
           }
         },
         {
           text: 'Yes',
           handler: data => {
-            console.log('Saved clicked');
+           
             this.cartItems = [];
             this.serviceList[index].addedToCart = true;
             this.cartItems.push(this.serviceList[index]);

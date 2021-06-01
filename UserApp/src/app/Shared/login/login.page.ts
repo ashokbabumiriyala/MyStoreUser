@@ -57,7 +57,7 @@ export class LoginPage implements OnInit {
         sessionStorage.setItem("AuthToken",data.token);
         sessionStorage.setItem("UserId",data.userId);
         sessionStorage.setItem("UserName",data.userName);
-        console.log(data);
+       
         this.router.navigate(['category-search']);
        this.presentToast("login success.","success");
        loadingController.dismiss();

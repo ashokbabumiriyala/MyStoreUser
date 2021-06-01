@@ -277,7 +277,7 @@ export class ProductInfoPage implements OnInit {
     await loadingController.present();
     await this.productInfoService.getMerchantList('UserMerchantSelect')
       .subscribe((data: any) => {
-        console.log(data);
+   
         this.merchantList = data;
         loadingController.dismiss();
       },

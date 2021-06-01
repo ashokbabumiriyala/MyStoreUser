@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ActionSheetController } from '@ionic/angular';
-
 import { HelperService } from '../common/helper.service';
 import {ComplaintService} from './complaint.service'
 
@@ -39,7 +37,9 @@ export class ComplaintPage implements OnInit {
    const dataObject={"UserId": Number(sessionStorage.getItem('UserId'))};
    await this.complaintService.getComplaints('UserComplaintSelect', dataObject)
     .subscribe((data: any) => {
+ 
       this.issues=data.issueRelatedList;
+     
       this.complaintList = data.complaintList;
       this.issues = [
         {id:1, description:'Product'},
@@ -111,7 +111,7 @@ export class ComplaintPage implements OnInit {
       this.getblobObject(base64Img);
     }, (err) => {
       // Handle error
-      console.log(err);
+
     });
   }
   selectedImgWeb(data){

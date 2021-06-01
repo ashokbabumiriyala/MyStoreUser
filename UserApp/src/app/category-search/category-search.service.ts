@@ -39,13 +39,15 @@ export class CategorySearchService {
         })
        } else if (this.cartItems[0]?.locationID){
         dataObject['ServiceLocationId'] = this.cartItems[0].locationID;
+        
         this.cartItems.forEach(item => {
-          let data = {ServiceId : item.serviceId,
+          let data = {ServiceId :Number(item.serviceId),
             BusinessName : item.businessName ,
-            PriceAfterDiscount : item.priceAfterDiscount,
-            DiscountType: item.discountType,
-            Discount : item.discount,
-            PriceBeforeDiscount : item.priceBeforeDiscount
+            PriceAfterDiscount : Number(item.priceAfterDiscount),
+            PriceBeforeDiscount :Number(item.priceBeforeDiscount),          
+            DiscountType:String(item.discountType),
+            Discount : item.discount
+           
           };
           dataObject['ServiceCartItems'].push(data)
        });

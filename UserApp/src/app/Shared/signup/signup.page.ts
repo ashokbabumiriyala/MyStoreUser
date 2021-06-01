@@ -45,7 +45,7 @@ export class SignupPage implements OnInit {
     let data = {"UserId": Number(sessionStorage.getItem('UserId'))};
     await this.signUpService.getProfileData('UserProfileSelect', data)
     .subscribe((data: any) => {
-      console.log(data);
+  
       loadingController.dismiss();
       let profileData = data.userProfile;
       this.userProfile = {
@@ -166,13 +166,10 @@ export class SignupPage implements OnInit {
         maximumAge        : 30000, // milliseconds e.g., 30000 === 30 seconds
     timeout           : 27000
       };
-      this.geolocation.getCurrentPosition(options).then((resp) => {
-        console.log(resp);
-        // resp.coords.latitude
-        // resp.coords.longitude
+      this.geolocation.getCurrentPosition(options).then((resp) => {       
 
        }).catch((error) => {
-         console.log('Error getting location', error);
+        
        });
   }
   async presentToast(data: string,tostarColor:string) {
@@ -186,11 +183,11 @@ export class SignupPage implements OnInit {
   }
   async getCurrentLocation () {
     this.geolocation.getCurrentPosition().then((resp) => {
-      console.log(resp)
+    
       // resp.coords.latitude
       // resp.coords.longitude
      }).catch((error) => {
-       console.log('Error getting location', error);
+    
      });
   }
   async UpdateProfile() {

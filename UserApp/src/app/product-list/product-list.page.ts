@@ -102,13 +102,13 @@ export class ProductListPage  implements OnInit{
         {
           text: 'No',
           handler: data => {
-            console.log('Cancel clicked');
+           
           }
         },
         {
           text: 'Yes',
           handler: data => {
-            console.log('Saved clicked');
+          
             this.cartItems = [];
             this.productList[index].addedToCart = true;
             this.cartItems.push(this.productList[index]);

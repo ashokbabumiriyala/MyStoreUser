@@ -68,7 +68,7 @@ async presentAlertConfirm(message) {
     {
         text: 'Confirm',
         handler: () => {
-          // console.log('Confirm Okay');
+        
           alert.dismiss(true);
           return false;
         }
@@ -78,7 +78,7 @@ async presentAlertConfirm(message) {
         role: 'cancel',
         cssClass: 'secondary',
         handler: (blah) => {
-          // console.log('Confirm Cancel: blah');
+         
           alert.dismiss(false);
           return false;
         }

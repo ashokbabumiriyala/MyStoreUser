@@ -46,7 +46,7 @@ export class CartPage implements OnInit {
     this.helperService.getCartItems().subscribe(cartItems => {
       if(cartItems!=null){
         this.cartItems = cartItems;
-        console.log(this.cartItems);
+       
         this.isEmptyCart = false;
       } else {
         this.isEmptyCart = true;

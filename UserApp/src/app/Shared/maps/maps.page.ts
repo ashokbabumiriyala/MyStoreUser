@@ -82,14 +82,14 @@ export class MapsPage implements OnInit {
       this.getAddressFromCoords(resp.coords.latitude, resp.coords.longitude);
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
       this.map.addListener('tilesloaded', () => {
-        console.log('accuracy',this.map, this.map.center.lat());
+      
         this.getAddressFromCoords(this.map.center.lat(), this.map.center.lng())
         this.lat = this.map.center.lat()
         this.long = this.map.center.lng()
       });
       this.map.addListener('')
     }).catch((error) => {
-      console.log('Error getting location', error);
+     
     });
   }
 
@@ -111,12 +111,11 @@ export class MapsPage implements OnInit {
       });
       this.map.setCenter(pos);
     }).catch((error) => {
-      console.log('Error getting location', error);
+     
     });
   }
 
-  getAddressFromCoords(lattitude, longitude) {
-    console.log("getAddressFromCoords "+lattitude+" "+longitude);
+  getAddressFromCoords(lattitude, longitude) {  
     let options: NativeGeocoderOptions = {
       useLocale: true,
       maxResults: 5
@@ -179,17 +178,12 @@ export class MapsPage implements OnInit {
           draggable: true
         });
         this.markers.push(marker);
-        google.maps.event.addListener(marker, 'dragend', function() {
-          console.log('dragend', marker.getPosition())
-          // $scope.geocodePosition(marker.getPosition());
+        google.maps.event.addListener(marker, 'dragend', function() {         
         });
         this.map.setCenter(results[0].geometry.location);
       }
     })
   }
-
-
-  //lET'S BE CLEAN! THIS WILL JUST CLEAN THE LIST WHEN WE CLOSE THE SEARCH BAR.
   ClearAutocomplete(){
     this.autocompleteItems = []
     this.autocomplete.input = ''
