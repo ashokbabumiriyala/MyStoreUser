@@ -19,11 +19,11 @@ export class ProductOrdersPage implements OnInit {
   constructor( private router: Router, private helperService: HelperService, private productOrderService: ProductOrderService) { }
 
   ngOnInit() {
-    this.orderedItems = [
-      { name: 'store 1', date: '10/01/2021', orderId: 25678, status: 'Delivered', expand:false},
-      { name: 'store 2', date: '15/05/2021', orderId: 52345, status: 'Pending', expand:false},
-      { name: 'store 3', date: '10/05/2021', orderId: 25698, status: 'Delivered', expand:false}
-    ];
+    // this.orderedItems = [
+    //   { name: 'store 1', date: '10/01/2021', orderId: 25678, status: 'Delivered', expand:false},
+    //   { name: 'store 2', date: '15/05/2021', orderId: 52345, status: 'Pending', expand:false},
+    //   { name: 'store 3', date: '10/05/2021', orderId: 25698, status: 'Delivered', expand:false}
+    // ];
     this.loadProductOrders();
   }
   async loadProductOrders(){
@@ -33,6 +33,9 @@ export class ProductOrdersPage implements OnInit {
     await this.productOrderService.getProductOrders('UserProductOrders', dataObject)
     .subscribe((data: any) => {
       this.orderedItems = data.productorders;
+      this.orderedItems.forEach(element => {
+        element['expand'] = false;
+      });
       loadingController.dismiss();
     },
     (error: any) => {

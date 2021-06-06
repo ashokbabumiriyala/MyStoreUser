@@ -48,37 +48,37 @@ export class CheckoutPage implements OnInit {
   }
 
   async payWithRazorMobileApp() {
-  //   var options = {
-  //     description: 'Credits towards consultation',
-  //     image: 'https://i.imgur.com/3g7nmJC.png',
-  //     currency: 'INR', // your 3 letter currency code
-  //     key: 'rzp_test_UTCzslKTfAlqNW', // your Key Id from Razorpay dashboard
-  //     amount: 500, // Payment amount in smallest denomiation e.g. cents for USD
-  //     name: 'My3Karrt',
-  //     prefill: {
-  //       email: 'ashok.miriyala',
-  //       contact: '8106939983',
-  //       name: 'Enappd'
-  //     },
-  //     theme: {
-  //       color: '#F37254'
-  //     },
-  //     modal: {
-  //       ondismiss: function () {
-  //         alert('dismissed')
-  //       }
-  //     }
-  //   };
-  //   var successCallback = (payment_id) =>{
-  //     this.insertOrderList(payment_id);
-  //   }
+    var options = {
+      description: 'Credits towards consultation',
+      image: 'https://i.imgur.com/3g7nmJC.png',
+      currency: 'INR', // your 3 letter currency code
+      key: 'rzp_test_UTCzslKTfAlqNW', // your Key Id from Razorpay dashboard
+      amount: 500, // Payment amount in smallest denomiation e.g. cents for USD
+      name: 'My3Karrt',
+      prefill: {
+        email: 'ashok.miriyala',
+        contact: '8106939983',
+        name: 'Enappd'
+      },
+      theme: {
+        color: '#F37254'
+      },
+      modal: {
+        ondismiss: function () {
+          alert('dismissed')
+        }
+      }
+    };
+    var successCallback = (payment_id) =>{
+      this.insertOrderList(payment_id);
+    }
 
-  //   var cancelCallback = (error) => {
-  //     alert(error.description + ' (Error ' + error.code + ')');
-  //   };
+    var cancelCallback = (error) => {
+      alert(error.description + ' (Error ' + error.code + ')');
+    };
 
-  //  await RazorpayCheckout.open(options, successCallback, cancelCallback);
-  this.insertOrderList("adasd66776767");
+   await RazorpayCheckout.open(options, successCallback, cancelCallback);
+  // this.insertOrderList("adasd66776767");
   }
   async insertOrderList(payment_id){
     const loadingController = await this.helperService.createLoadingController("loading");

@@ -17,20 +17,23 @@ export class ServiceOrdersPage implements OnInit {
   constructor(private router: Router, private helperService: HelperService, private serviceOrderService: ServiceOrderService) { }
 
   ngOnInit() {
-     this.orderedItems = [
-      { name: 'store 1', date: '10/01/2021', orderId: 25678, status: 'Delivered', expand: false },
-      { name: 'store 2', date: '15/05/2021', orderId: 52345, status: 'Pending', expand: false },
-      { name: 'store 3', date: '10/05/2021', orderId: 25698, status: 'Delivered', expand: false }
-    ];
+    //  this.orderedItems = [
+    //   { name: 'store 1', date: '10/01/2021', orderId: 25678, status: 'Delivered', expand: false },
+    //   { name: 'store 2', date: '15/05/2021', orderId: 52345, status: 'Pending', expand: false },
+    //   { name: 'store 3', date: '10/05/2021', orderId: 25698, status: 'Delivered', expand: false }
+    // ];
     this.loadServiceOrders();
   }
   async loadServiceOrders(){
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     const dataObject={"UserId": Number(sessionStorage.getItem('UserId'))};
-    await this.serviceOrderService.getServiceOrders('UserProductOrders', dataObject)
+    await this.serviceOrderService.getServiceOrders('UserServiceOrders', dataObject)
     .subscribe((data: any) => {
       this.orderedItems = data.serviceOrders;
+      this.orderedItems.forEach(element => {
+        element['expand'] = false;
+      });
       loadingController.dismiss();
     },
     (error: any) => {
