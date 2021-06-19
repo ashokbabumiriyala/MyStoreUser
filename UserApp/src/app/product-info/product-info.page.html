@@ -13,8 +13,8 @@
       <ion-row (click)="getProducts(merchant)">
         <ion-col size="2" style="margin: auto">
           <ion-avatar>
-            <img class="product-img"src="{{merchant.url}}" *ngIf="merchant.url">
-            <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!merchant.url">
+            <img class="product-img"src="{{merchant.logo}}" *ngIf="merchant.logo">
+            <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!merchant.logo">
           </ion-avatar>
         </ion-col>
         <ion-col size="10">

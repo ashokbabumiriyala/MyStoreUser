@@ -58,6 +58,8 @@ export class LoginPage implements OnInit {
         sessionStorage.setItem("AuthToken",data.token);
         sessionStorage.setItem("UserId",data.userId);
         sessionStorage.setItem("UserName",data.userName); 
+
+       
         let providerDetails:IUserDetails
         providerDetails = {
           name:data.userName

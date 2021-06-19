@@ -6,8 +6,8 @@
     <ion-row  (click)="getServices(service)">
         <ion-col size="2" style="margin: auto">
           <ion-avatar>
-            <img class="service-img" src="{{service.url}}" *ngIf="service.url">
-            <img class="service-img" src="../../assets/images/default-image.jpg" *ngIf="!service.url">
+            <img class="service-img" src="{{service.logo}}" *ngIf="service.logo">
+            <img class="service-img" src="../../assets/images/default-image.jpg" *ngIf="!service.logo">
           </ion-avatar>
         </ion-col>
         <ion-col size="10">
