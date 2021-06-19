@@ -3,9 +3,9 @@ import { HelperService } from '../common/helper.service';
 import { CheckoutService } from '../checkout/checkout.service';
 import { ToastController } from '@ionic/angular';
 import { CategorySearchService } from '../category-search/category-search.service';
-import { Router } from '@angular/router';
+import { Router ,ActivatedRoute} from '@angular/router';
 declare var RazorpayCheckout: any;
-
+import {environment}  from '../../environments/environment';
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.page.html',
@@ -17,15 +17,18 @@ export class CheckoutPage implements OnInit {
  cartItems: any[] = [];
  subTotal = 0;
  deliveryCharges = 50;
+
   constructor(private helperService:HelperService, private checkoutService: CheckoutService,
-    private toastController: ToastController, private categorySearchService: CategorySearchService,
-     private router: Router) { }
+    private toastController: ToastController, 
+    private categorySearchService: CategorySearchService,
+     private router: Router,
+     private route: ActivatedRoute,
+  ) {}
   ngOnInit() {
     this.defaultAddress = "JNTU, Hyderabad, Telangana, India-500038";
     this.helperService.getCartItems().subscribe(cartItems => {
       if(cartItems!=null){
-        this.cartItems = cartItems;
-        console.log(this.cartItems);
+        this.cartItems = cartItems;      
         this.subTotal = 0;
         this.cartItems.forEach((item) =>{
           this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
@@ -38,8 +41,7 @@ export class CheckoutPage implements OnInit {
     this.cartItems.splice(ind, 1);
     this.helperService.setCartItems(this.cartItems);
   }
-  selectedAddr(addr) {
-    console.log(addr);
+  selectedAddr(addr) {  
     if(addr.target.value != 'default') {
       this.default = false;
     } else {
@@ -48,44 +50,45 @@ export class CheckoutPage implements OnInit {
   }
 
   async payWithRazorMobileApp() {
-    var options = {
-      description: 'Credits towards consultation',
-      image: 'https://i.imgur.com/3g7nmJC.png',
-      currency: 'INR', // your 3 letter currency code
-      key: 'rzp_test_UTCzslKTfAlqNW', // your Key Id from Razorpay dashboard
-      amount: 500, // Payment amount in smallest denomiation e.g. cents for USD
-      name: 'My3Karrt',
-      prefill: {
-        email: 'ashok.miriyala',
-        contact: '8106939983',
-        name: 'Enappd'
-      },
-      theme: {
-        color: '#F37254'
-      },
-      modal: {
-        ondismiss: function () {
-          alert('dismissed')
-        }
-      }
-    };
-    var successCallback = (payment_id) =>{
-      this.insertOrderList(payment_id);
-    }
-
-    var cancelCallback = (error) => {
-      alert(error.description + ' (Error ' + error.code + ')');
-    };
-
-   await RazorpayCheckout.open(options, successCallback, cancelCallback);
-  // this.insertOrderList("adasd66776767");
+  //   var options = {
+  //     description: 'Credits towards consultation',
+  //     image: 'https://i.imgur.com/3g7nmJC.png',
+  //     currency: 'INR', // your 3 letter currency code
+  //     key: 'rzp_test_UTCzslKTfAlqNW', // your Key Id from Razorpay dashboard
+  //     amount: 500,
+  //     name: 'My3Karrt',
+  //     prefill: {
+  //       email: 'ashok.miriyala@gmail.com',
+  //       contact: '8106939983',
+  //       name: 'Enappd'
+  //     },
+  //     theme: {
+  //       color: '#F37254'
+  //     },
+  //     modal: {
+  //       ondismiss: function () {
+  //         alert('dismissed')
+  //       }
+  //     }
+  //   };
+  //   var successCallback = (payment_id) =>{
+  //     this.insertOrderList(payment_id);
+  //   }
+  //   var cancelCallback = (error) => {
+  //     alert(error.description + ' (Error ' + error.code + ')');
+  //   };
+  //  await RazorpayCheckout.open(options, successCallback, cancelCallback); 
+    this.insertOrderList("sdfadsfasdf")
   }
-  async insertOrderList(payment_id){
+  async insertOrderList(payment_id){   
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
-    const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId: payment_id, TotalAmount: String(this.subTotal + this.deliveryCharges),
-     DeliveryCharge: this.deliveryCharges, SubTotal : this.subTotal};
+    const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId: payment_id, 
+     TotalAmount: String(this.subTotal + this.deliveryCharges),
+     DeliveryCharge: 50, 
+     SubTotal : this.subTotal,transferId:sessionStorage.getItem("Key")};
      let apiName;
+     debugger;
      if (this.cartItems[0].storeID) {
       apiName = 'UserProductOrderInsert';
       dataObject['StoreId'] = this.cartItems[0].storeID;
@@ -152,5 +155,24 @@ export class CheckoutPage implements OnInit {
       });
     }
   }
+
+  RAZORPAY_OPTIONS = {
+    "key": environment.razorPaymentkey,
+    "amount": "",
+    "name": "My3Karrt",
+    "order_id": "",
+    "description": "",
+    "image": "",
+    "prefill": {
+      "name": "",
+      "email": '',
+      "contact":'',
+      "method": ""
+    },
+    "modal": {},
+    "theme": {
+      "color": "#0096C5"
+    }
+  };
 
 }

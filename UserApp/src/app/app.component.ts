@@ -17,6 +17,8 @@ import { environment} from './../environments/environment';
 })
 export class AppComponent implements OnInit{
   showHead:boolean = true;
+  userName:string;
+  showMenu:boolean;
   public appPages = [
     { title: 'Profile', url: '/signup', icon: 'person-outline' },
     { title: 'Product Orders', url: '/product-orders', icon: 'aperture-outline' },
@@ -27,8 +29,9 @@ export class AppComponent implements OnInit{
     { title: 'Shipping Policies', url: '/information-pages/shipping-policies', icon: 'bus-outline' },
     { title: 'Privacy Policies', url: '/information-pages/privacy-policies', icon: 'prism-outline' },
     { title: 'Refunds & Cancellations', url: '/information-pages/refunds-cancellation', icon: 'wallet-outline' },
-    { title: 'Contact Us', url: '/information-pages/contact-us', icon: 'call-outline' }
-
+    { title: 'Contact Us', url: '/information-pages/contact-us', icon: 'call-outline' },
+    { title: 'Log Out', url: '/login', icon: 'log-out-outline' }
+   
   ];
   constructor(public modalController: ModalController,
     public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform,
@@ -38,6 +41,16 @@ export class AppComponent implements OnInit{
      cartItems =[];
      version:any;
     ngOnInit(): void {
+
+      this.helperService.getProfileObs().subscribe(profile => {
+        if(profile!=null){
+        this.userName = profile.name; 
+        this.showMenu=true;     
+        }else{
+          this.showMenu=false;    
+        }
+      });
+
       this.helperService.getCartItems().subscribe(cartItems => {
         if(cartItems!=null){
           this.cartItems = cartItems;

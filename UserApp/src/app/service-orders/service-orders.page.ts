@@ -14,6 +14,7 @@ export class ServiceOrdersPage implements OnInit {
   orderId: any = 12345;
   deliveryStatus: any = 'Completed';
   orderedItems: any = [];
+  stores:[];
   constructor(private router: Router, private helperService: HelperService, private serviceOrderService: ServiceOrderService) { }
 
   ngOnInit() {

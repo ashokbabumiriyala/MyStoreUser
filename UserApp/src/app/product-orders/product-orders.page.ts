@@ -16,6 +16,7 @@ export class ProductOrdersPage implements OnInit {
   deliveryStatus:any = 'On the way';
   orderedItems:any = [];
   expand:boolean = false;
+  stores:[];
   constructor( private router: Router, private helperService: HelperService, private productOrderService: ProductOrderService) { }
 
   ngOnInit() {

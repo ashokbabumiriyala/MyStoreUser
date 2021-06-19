@@ -5,7 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { RegistrationServiceService } from '../../Shared/registration-service.service';
 import { Router, NavigationStart } from '@angular/router';
-
+import {IUserDetails} from '../../common/provider-details';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -22,6 +22,7 @@ export class LoginPage implements OnInit {
   menus: any[];
   ngOnInit() {
     this.createloginForm();
+    this.helperService.setProfileObs(null);
   }
   get userName() {
     return this.loginFormGroup.get('userName');
@@ -56,11 +57,15 @@ export class LoginPage implements OnInit {
       .subscribe((data: any) => {
         sessionStorage.setItem("AuthToken",data.token);
         sessionStorage.setItem("UserId",data.userId);
-        sessionStorage.setItem("UserName",data.userName);
-       
+        sessionStorage.setItem("UserName",data.userName); 
+        let providerDetails:IUserDetails
+        providerDetails = {
+          name:data.userName
+        };
+         this.helperService.setProfileObs(providerDetails);      
         this.router.navigate(['category-search']);
-       this.presentToast("login success.","success");
-       loadingController.dismiss();
+        this.presentToast("login success.","success");
+        loadingController.dismiss();
       },
         (error: any) => {
             this.presentToast("Invalid User Name or Password.","danger");

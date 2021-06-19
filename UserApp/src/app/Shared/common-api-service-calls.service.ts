@@ -12,15 +12,25 @@ class ID {
 export class CommonApiServiceCallsService {
   private httpHeaders: HttpHeaders;
   constructor(private httpClient: HttpClient,private toastController:ToastController) { }
+
+
   createHttpHeader() {
-    this.httpHeaders = new HttpHeaders();
-    let authToken: any;
-    authToken = JSON.parse(sessionStorage.getItem('AuthToken'));
-    if (authToken != null && authToken !== undefined) {
-      this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Origin', '*');
-      this.httpHeaders = this.httpHeaders.set('Content-Type', 'application/json');
-      this.httpHeaders = this.httpHeaders.set('Authorization', 'Bearer ' + authToken);
-    }
+    // this.httpHeaders = new HttpHeaders();
+    // let authToken: any;
+    // authToken = JSON.parse(sessionStorage.getItem('AuthToken'));
+    // if (authToken != null && authToken !== undefined) {
+    //   this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Origin', '*');
+    //   this.httpHeaders = this.httpHeaders.set('Content-Type', 'application/json');
+    //   this.httpHeaders = this.httpHeaders.set('Authorization', 'Bearer ' + authToken);
+    // }
+
+    this.httpHeaders = new HttpHeaders();   
+    this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Origin' ,'*');
+    this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+    this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
+    this.httpHeaders = this.httpHeaders.set('Content-Type', 'application/json');
+    this.httpHeaders.append("Authorization", "Basic " + btoa("rzp_test_jksL0BIxIGtc18:DzkTmavVAMxnxRukpL2AbK5t"));  
+   
   }
   getAll(apiUrl: string): Observable<any> {
    // this.createHttpHeader();
@@ -55,7 +65,7 @@ export class CommonApiServiceCallsService {
       .pipe(catchError(error => this.handleError(error)));
   }
   update(apiUrl: string, resource: any): Observable<any> {
-    this.createHttpHeader();
+    //this.createHttpHeader();
     return this.httpClient
       .patch(apiUrl, resource)
       .pipe(catchError(error => this.handleError(error)));
@@ -81,6 +91,15 @@ export class CommonApiServiceCallsService {
       .post(apiUrl, resource, { headers: this.httpHeaders, responseType: 'blob' })
       .pipe(catchError(error => this.handleError(error)));
   }
+
+
+  createRazorOrder(apiUrl: string, resource: any) {
+    this.createHttpHeader();
+    return this.httpClient
+      .post(apiUrl, resource,{headers :this.httpHeaders})
+      .pipe(catchError(error => this.handleError(error)));
+  }
+
   private handleError(error: Response) {
     if (error.status === 404) {
       return throwError(console.log(error));

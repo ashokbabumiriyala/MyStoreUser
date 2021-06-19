@@ -276,19 +276,21 @@ export class ProductInfoPage implements OnInit {
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     await this.productInfoService.getMerchantList('UserMerchantSelect')
-      .subscribe((data: any) => {
-   
+      .subscribe((data: any) => {   
         this.merchantList = data;
         loadingController.dismiss();
       },
         (error: any) => {
           loadingController.dismiss();
         });
-
   }
-  getProducts(merchant) {
-    // this.router.navigate(['/product-list'], { queryParams: { storeId: merchant.merchantID } })
-    this.iDataTransferBetweenPages = { storeId: Number(merchant.merchantID) };
+  getProducts(merchant) {    
+    this.iDataTransferBetweenPages = { storeId: Number(merchant.merchantID)
+     };
+     sessionStorage.removeItem("Key");
+     sessionStorage.removeItem("DelCharge");
+     sessionStorage.setItem("Key",merchant.razorPaymentKey); 
+     sessionStorage.setItem("DelCharge",merchant.deliveryCharges); 
     this.helperService.navigateWithData(['/product-list'], this.iDataTransferBetweenPages);
 
 

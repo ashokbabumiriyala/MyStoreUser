@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { IProviderDetails} from 'src/app/common/provider-details';
+import { IUserDetails} from 'src/app/common/provider-details';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import { Market } from '@ionic-native/market/ngx';
@@ -9,20 +9,20 @@ import { Market } from '@ionic-native/market/ngx';
   providedIn: 'root'
 })
 export class HelperService {
- iProviderDetails:IProviderDetails;
+  iUserDetails:IUserDetails;
 // public providerSource = new BehaviorSubject<IProviderDetails>(this.iProviderDetails)
 // providerDetails = this.providerSource.asObservable();
 
 constructor(private loadingController:LoadingController, private router:Router,
   private alertCtrl: AlertController, private market: Market, private toastController: ToastController) { }
 
-private profileObs$: BehaviorSubject<IProviderDetails> = new BehaviorSubject(null);
+private profileObs$: BehaviorSubject<IUserDetails> = new BehaviorSubject(null);
 private cartItems$: BehaviorSubject<any[]> = new BehaviorSubject(null);
 
 getProfileObs(): Observable<any> {
     return this.profileObs$.asObservable();
 }
-setProfileObs(profile: IProviderDetails) {
+setProfileObs(profile: IUserDetails) {
     this.profileObs$.next(profile);
 }
 getCartItems(): Observable<any> {
@@ -124,8 +124,6 @@ async showAlert(message){
   });
   await alert.present();
 }
-
-
 
 }
 

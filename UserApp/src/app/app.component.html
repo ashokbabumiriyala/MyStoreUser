@@ -1,13 +1,14 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu contentId="main-content" type="overlay"  *ngIf="showMenu">
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>Welcome Suraj</ion-list-header>
+          <ion-list-header>{{userName}}</ion-list-header>
           <ion-note>Explore My3KaRRt</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" [queryParams]="{signup: false}" lines="none" detail="false" routerLinkActive="selected">
+            <ion-item routerDirection="root" [routerLink]="[p.url]" 
+            [queryParams]="{signup: false}" lines="none" detail="false" routerLinkActive="selected">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
@@ -23,28 +24,20 @@
                 <ion-title class="ion-text-center">
                     <ion-img class="app-img" src="../assets/images/logo.png"></ion-img>
                 </ion-title>
-                <ion-buttons (click)="cartModal()" slot="end">
+                <ion-buttons  *ngIf="showMenu" (click)="cartModal()" slot="end">
                   <ion-badge *ngIf="cartItems.length !== 0">{{cartItems.length}}</ion-badge>
                   <ion-icon class="cart" name="cart-outline"></ion-icon>
               </ion-buttons>
             </ion-toolbar>
         </ion-header>
         <ion-router-outlet id="main-content" [ngClass]="showHead ? 'main-content' : ''"></ion-router-outlet>
-        <ion-footer class="footer" *ngIf="showHead">
+        <ion-footer class="footer" *ngIf="showMenu">
           <ion-row class="ion-padding-horizontal">
             <ion-col size="3" class="ion-text-center"><ion-icon [routerLink]="['/category-search']" name="home-outline"></ion-icon></ion-col>
             <ion-col size="3" class="ion-text-center"><ion-icon name="location-outline" (click)="presentModal('Delivery Address')"></ion-icon></ion-col>
             <ion-col size="3" class="ion-text-center"><ion-icon name="locate-outline" (click)="presentModal('Change Location of Search')"></ion-icon></ion-col>
             <ion-col size="3" class="ion-text-center"><ion-icon name="search-outline" (click)="searchModal()"></ion-icon></ion-col>
-          </ion-row>
-            <!-- <ion-toolbar class="ion-padding-horizontal">
-                <ion-icon slot="start" [routerLink]="['/category-search']" name="home-outline"></ion-icon>
-                <ion-title class="ion-text-center">
-                  <ion-icon name="location-outline" (click)="presentModal()"></ion-icon>
-              </ion-title>
-                <ion-icon slot="end" name="search-outline" (click)="searchModal()"></ion-icon>
-            </ion-toolbar> -->
+          </ion-row>           
         </ion-footer>
   </ion-split-pane>
-
 </ion-app>

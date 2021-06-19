@@ -1,6 +1,5 @@
 export interface iDataTransferBetweenPages {
     storeId?:number;
-    serviceId?:number;
-    razorPayKey?:string;
-    orderId?:number;
+    serviceId?:number; 
+    orderId?:number;   
 }

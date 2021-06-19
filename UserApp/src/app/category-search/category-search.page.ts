@@ -17,7 +17,7 @@ export class CategorySearchPage implements OnInit {
   ngOnInit() {
     sessionStorage.getItem('cartUpdated');
     if (sessionStorage.getItem('cartUpdated') !== 'true') {
-      this.getCartItemsList();
+      //this.getCartItemsList();
     }
     this.helperService.getCartItems().subscribe(cartItems => {
         this.cartItems = cartItems;
@@ -38,7 +38,8 @@ export class CategorySearchPage implements OnInit {
           item['addedToCart'] = true;
           item['locationID'] = cartItemsData.serviceLocationId;
         });
-      } else {
+      }
+      if (cartItemsData.storeId !== 0) {
         this.cartItems = cartItemsData.productCartItems;
         this.cartItems.forEach((item) => {
           item['itemCount'] = Number(item.quantity);
