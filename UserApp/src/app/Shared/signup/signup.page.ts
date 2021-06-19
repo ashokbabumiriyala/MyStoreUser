@@ -6,7 +6,7 @@ import { HelperService }  from 'src/app/common/helper.service';
 import {SignUpService} from 'src/app/Shared/signup/sign-up.service';
 import { ToastController } from '@ionic/angular';
 import {Geolocation} from '@ionic-native/geolocation/ngx'
-
+declare var google:any;
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -15,6 +15,9 @@ import {Geolocation} from '@ionic-native/geolocation/ngx'
 export class SignupPage implements OnInit {
   editProfile:boolean = false;
   readProfile: any;
+  latitude:any;
+  longitude:any;
+  geocoder:any;
   constructor(private route: ActivatedRoute, private helperService:HelperService,
      private signUpService:SignUpService, private router:Router,
      private toastController:ToastController, private geolocation: Geolocation) { }
@@ -120,6 +123,19 @@ export class SignupPage implements OnInit {
       }
       const loadingController = await this.helperService.createLoadingController("loading");
       await loadingController.present();
+      let fullAddress = this.Address.value + ',' + this.City.value + ','
+      + this.State.value + ',' + this.Pincode.value;
+      this.geocoder.geocode( { 'address': fullAddress}, (results, status) =>{
+        if (status == google.maps.GeocoderStatus.OK) {
+          this.latitude =  results[0].geometry.location.lat();
+          this.longitude =  results[0].geometry.location.lng();
+        } else {
+          this.latitude = null;
+          this.longitude = null;
+        }
+      });
+      
+     
       this.isignUp = {
         UserName :this.UserName.value,
         MobileNumber :this.MobileNumber.value.toString(),
@@ -129,7 +145,9 @@ export class SignupPage implements OnInit {
         City: this.City.value,
         State: this.State.value,
         Pincode:this.Pincode.value,
-        pushToken: sessionStorage.getItem('PushToken')
+        pushToken: sessionStorage.getItem('PushToken'),
+        Latitude: this.latitude, 
+        Longitude: this.longitude
       };
       let apiName = 'UserSignupSave';
       if(this.editProfile) {
@@ -158,6 +176,7 @@ export class SignupPage implements OnInit {
           this.presentToast("error","danger");
           loadingController.dismiss();
         });
+     
 
   }
   getPosition () {
@@ -212,4 +231,6 @@ interface  IsignUp{
   City:string;
   State:string;
   Pincode:string;
+  Latitude:string;
+  Longitude:string;
  }
