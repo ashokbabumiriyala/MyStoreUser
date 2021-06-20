@@ -87,8 +87,8 @@ export class CheckoutPage implements OnInit {
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId: payment_id, 
-     TotalAmount: String(this.subTotal + this.deliveryCharges),
-     DeliveryCharge: 50, 
+     TotalAmount: String(10),
+     DeliveryCharge: 5, 
      SubTotal : this.subTotal,transferId:sessionStorage.getItem("Key")};
      let apiName;
      debugger;
