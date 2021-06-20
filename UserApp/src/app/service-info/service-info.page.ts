@@ -23,9 +23,8 @@ export class ServiceInfoPage implements OnInit {
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     await this.serviceInfoService.getServiceInfoList('UserServiceSelect')
-    .subscribe((data: any) => {
-      console.log(data);
-      this.serviceInfoList = data;
+    .subscribe((data: any) => {     
+      this.serviceInfoList = data;     
       loadingController.dismiss();
     },
     (error: any) => {

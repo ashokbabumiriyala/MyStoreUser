@@ -4,6 +4,7 @@ import { CheckoutService } from '../checkout/checkout.service';
 import { ToastController } from '@ionic/angular';
 import { CategorySearchService } from '../category-search/category-search.service';
 import { Router ,ActivatedRoute} from '@angular/router';
+
 declare var RazorpayCheckout: any;
 import {environment}  from '../../environments/environment';
 @Component({
@@ -15,7 +16,7 @@ export class CheckoutPage implements OnInit {
  defaultAddress:any;
  default:boolean = true;
  cartItems: any[] = [];
- subTotal = 0;
+ subTotal :number=10;
  deliveryCharges = 50;
 
   constructor(private helperService:HelperService, private checkoutService: CheckoutService,
@@ -24,14 +25,14 @@ export class CheckoutPage implements OnInit {
      private router: Router,
      private route: ActivatedRoute,
   ) {}
-  ngOnInit() {
-    this.defaultAddress = "JNTU, Hyderabad, Telangana, India-500038";
+  ngOnInit() {  
+    this.defaultAddress = sessionStorage.getItem("UserAddress");
     this.helperService.getCartItems().subscribe(cartItems => {
       if(cartItems!=null){
         this.cartItems = cartItems;      
-        this.subTotal = 0;
+        //this.subTotal = 0;
         this.cartItems.forEach((item) =>{
-          this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
+         // this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
         });
       }
     });
@@ -51,16 +52,16 @@ export class CheckoutPage implements OnInit {
 
   async payWithRazorMobileApp() {
     var options = {
-      description: 'Credits towards consultation',
-      image: 'https://i.imgur.com/3g7nmJC.png',
+      description: 'Online Shopping',
+      image: '../assets/images/logo.png',
       currency: 'INR', // your 3 letter currency code
-      key: 'rzp_test_jNwqDuM2GUsHdb', // your Key Id from Razorpay dashboard
-      amount: 500,
+      key: environment.razorPaymentkey, // your Key Id from Razorpay dashboard
+      amount: this.subTotal + '00',
       name: 'My3Karrt',
       prefill: {
-        email: 'ashok.miriyala@gmail.com',
-        contact: '8106939983',
-        name: 'Enappd'
+        email:sessionStorage.getItem("Email"),
+        contact:sessionStorage.getItem("MobileNumber"),
+        name: sessionStorage.getItem("UserName"),
       },
       theme: {
         color: '#F37254'
@@ -78,7 +79,9 @@ export class CheckoutPage implements OnInit {
       alert(error.description + ' (Error ' + error.code + ')');
     };
    await RazorpayCheckout.open(options, successCallback, cancelCallback); 
-   
+
+
+
   }
   async insertOrderList(payment_id){   
     const loadingController = await this.helperService.createLoadingController("loading");

@@ -32,8 +32,8 @@ export class LoginPage implements OnInit {
   }
   private createloginForm() {
     this.loginFormGroup = new FormGroup({
-      userName: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
+      userName: new FormControl('Ravishankar', Validators.required),
+      password: new FormControl('12345', Validators.required)
     });
   }
   async presentToast(data: string,tostarColor:string) {
@@ -55,9 +55,13 @@ export class LoginPage implements OnInit {
     const dataObject = { UserName:this.userName.value, Password:this.password.value, pushToken: sessionStorage.getItem('PushToken') };
     await  this.registrationServiceService.validateUser('UserLogin', dataObject)
       .subscribe((data: any) => {
+        console.log(data);
         sessionStorage.setItem("AuthToken",data.token);
         sessionStorage.setItem("UserId",data.userId);
-        sessionStorage.setItem("UserName",data.userName); 
+        sessionStorage.setItem("UserName",data.userName);
+        sessionStorage.setItem("UserAddress",data.userAddress); 
+        sessionStorage.setItem("MobileNumber",data.mobileNumber); 
+        sessionStorage.setItem("Email",data.email); 
 
        
         let providerDetails:IUserDetails
