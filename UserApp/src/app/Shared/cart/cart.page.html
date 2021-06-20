@@ -31,23 +31,23 @@
               <img src="../../../assets/images/default-image.jpg" *ngIf="!item.url">
             </ion-avatar>
           </ion-col>
-          <ion-col size="4">
+          <ion-col size="4" class="ion-text-left">
             <h3 text-left>{{item.productName? item.productName: item.businessName}}</h3>
             <div class="itm-footer">
-              <span class="price">
+              <span class="price" text-left>
                 {{item.priceAfterDiscount | currency:'INR'}}
               </span>
             </div>
             <!-- <h3>Total Price:  {{itm.price * itm.count | currency:'INR'}}</h3> -->
           </ion-col>
-          <ion-col size="4" class="ion-padding-top" >
+          <ion-col size="4" class="ion-padding-top ion-text-right" >
             <p class="ion-no-margin units" *ngIf="item.productID">
               <ion-icon class="plus-minus" name="remove-circle" (click)="decrement(item)" item-right></ion-icon>
               <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="item.itemCount"></ion-input>
               <ion-icon class="plus-minus" name="add-circle" (click)="increment(item)" item-right></ion-icon>
             </p>
           </ion-col>
-          <ion-col size="1" class="ion-padding-top">
+          <ion-col size="2" class="ion-padding-top ion-text-right">
             <ion-icon class="delete" name="trash-outline" (click)="removeItem(item)"></ion-icon>
           </ion-col>
         </ion-row>

@@ -68,7 +68,7 @@ async presentAlertConfirm(message) {
     {
         text: 'Confirm',
         handler: () => {
-        
+
           alert.dismiss(true);
           return false;
         }
@@ -78,7 +78,7 @@ async presentAlertConfirm(message) {
         role: 'cancel',
         cssClass: 'secondary',
         handler: (blah) => {
-         
+
           alert.dismiss(false);
           return false;
         }
@@ -117,7 +117,7 @@ async showAlert(message){
     {
         text: 'Update',
         handler: () => {
-          this.market.open('com.velocious.my3Karrt_admin');
+          this.market.open('com.velocious.my3karrt');
         }
       }
     ]
