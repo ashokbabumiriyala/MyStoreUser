@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, NgZone, Input } from '@angula
 import { ModalController} from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 declare var google:any;
 
 @Component({
@@ -27,7 +29,8 @@ export class MapsPage implements OnInit {
   markers:any;
   searchLocation:boolean;
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder, public zone: NgZone) {
+    private nativeGeocoder: NativeGeocoder, public zone: NgZone, private androidPermissions: AndroidPermissions,
+    private locationAccuracy: LocationAccuracy) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
       this.autocomplete = { input: '' };
       this.autocompleteItems = [];
@@ -43,7 +46,6 @@ export class MapsPage implements OnInit {
       const ele = document.getElementById('mapWrapper') as HTMLElement;
       ele.classList.remove('map-size');
     }
-
   }
 
   dismiss() {
@@ -56,6 +58,7 @@ export class MapsPage implements OnInit {
     if(eve.target.value == 'secondary') {
       this.mapImage = true;
       ele.classList.remove('map-size');
+      this.checkGPSPermission();
     } else {
       this.mapImage = false;
       ele.classList.add('map-size');
@@ -79,18 +82,66 @@ export class MapsPage implements OnInit {
       }
 
       //LOAD THE MAP WITH THE PREVIOUS VALUES AS PARAMETERS.
-      this.getAddressFromCoords(resp.coords.latitude, resp.coords.longitude);
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-      this.map.addListener('tilesloaded', () => {
-      
-        this.getAddressFromCoords(this.map.center.lat(), this.map.center.lng())
-        this.lat = this.map.center.lat()
-        this.long = this.map.center.lng()
+      let marker = new google.maps.Marker({
+        position: latLng,
+        map: this.map,
+        title: 'You are here!',
+        draggable: true
       });
-      this.map.addListener('')
+      this.markers.push(marker);
+      google.maps.event.addListener(marker, 'dragend', function() {
+      });
     }).catch((error) => {
-     
+
     });
+  }
+
+  //Check if application having GPS access permission
+  checkGPSPermission() {
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+      result => {
+        if (result.hasPermission) {
+          //If having permission show 'Turn On GPS' dialogue
+          this.askToTurnOnGPS();
+        } else {
+          //If not having permission ask for permission
+          this.requestGPSPermission();
+        }
+      },
+      err => {
+        alert(err);
+      }
+    );
+  }
+  requestGPSPermission() {
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if (canRequest) {
+        console.log("4");
+      } else {
+        //Show 'GPS Permission Request' dialogue
+        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+          .then(
+            () => {
+              // call method to turn on GPS
+              this.askToTurnOnGPS();
+            },
+            error => {
+              //Show alert if user click on 'No Thanks'
+              alert('requestPermission Error requesting location permissions ' + error)
+            }
+          );
+      }
+    });
+  }
+  askToTurnOnGPS() {
+    this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+      () => {
+        // When GPS Turned ON call method to get Accurate location coordinates
+        this.tryGeolocation();
+      },
+      error => alert('Error requesting location permissions ' + JSON.stringify(error))
+    );
   }
 
   tryGeolocation(){
@@ -103,19 +154,19 @@ export class MapsPage implements OnInit {
       let marker = new google.maps.Marker({
         position: pos,
         map: this.map,
-        title: 'I am here!'
+        title: 'You are here!',
+        draggable: true
       });
       this.markers.push(marker);
-      marker.addListener("click", () => {
-        alert(1);
-      });
       this.map.setCenter(pos);
+      google.maps.event.addListener(marker, 'dragend', function() {
+      });
     }).catch((error) => {
-     
+
     });
   }
 
-  getAddressFromCoords(lattitude, longitude) {  
+  getAddressFromCoords(lattitude, longitude) {
     let options: NativeGeocoderOptions = {
       useLocale: true,
       maxResults: 5
@@ -178,7 +229,7 @@ export class MapsPage implements OnInit {
           draggable: true
         });
         this.markers.push(marker);
-        google.maps.event.addListener(marker, 'dragend', function() {         
+        google.maps.event.addListener(marker, 'dragend', function() {
         });
         this.map.setCenter(results[0].geometry.location);
       }

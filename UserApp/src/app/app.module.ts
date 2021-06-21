@@ -15,6 +15,9 @@ import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Market } from '@ionic-native/market/ngx';
 import { Camera } from '@ionic-native/camera/ngx'
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+
 
 @NgModule({
   declarations: [	AppComponent],
@@ -32,6 +35,8 @@ import { Camera } from '@ionic-native/camera/ngx'
     AppVersion,
     Market,
     Camera,
+    AndroidPermissions,
+    LocationAccuracy,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })
