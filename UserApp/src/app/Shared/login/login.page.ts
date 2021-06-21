@@ -59,18 +59,18 @@ export class LoginPage implements OnInit {
         sessionStorage.setItem("AuthToken",data.token);
         sessionStorage.setItem("UserId",data.userId);
         sessionStorage.setItem("UserName",data.userName);
-        sessionStorage.setItem("UserAddress",data.userAddress); 
-        sessionStorage.setItem("MobileNumber",data.mobileNumber); 
-        sessionStorage.setItem("Email",data.email); 
+        sessionStorage.setItem("UserAddress",data.userAddress);
+        sessionStorage.setItem("MobileNumber",data.mobileNumber);
+        sessionStorage.setItem("Email",data.email);
 
-       
+
         let providerDetails:IUserDetails
         providerDetails = {
           name:data.userName
         };
-         this.helperService.setProfileObs(providerDetails);      
+         this.helperService.setProfileObs(providerDetails);
         this.router.navigate(['category-search']);
-        this.presentToast("login success.","success");
+        this.presentToast("Explore My3Karrt!","success");
         loadingController.dismiss();
       },
         (error: any) => {

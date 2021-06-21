@@ -41,7 +41,7 @@ export class ProductInfoPage implements OnInit {
     this.autocompleteItems = [];
   }
   displayListView: boolean;
-  ngOnInit() {  
+  ngOnInit() {
     this.displayListView = true;
     this.getMerchantList();
     this.googleMapStyle();
@@ -50,13 +50,13 @@ export class ProductInfoPage implements OnInit {
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     await this.productInfoService.getMerchantList('UserMerchantSelect')
-      .subscribe((data: any) => {   
-        this.merchantList = data;  
-   
-        this.merchantList.forEach(marker => {        
-          const markerObject = { position: {lat: parseFloat(marker.latitude),  lng:parseFloat(marker.longitude)},  title: marker.name };
+      .subscribe((data: any) => {
+        this.merchantList = data;
+
+        this.merchantList.forEach(marker => {
+          const markerObject = { position: {lat: parseFloat(marker.latitude),  lng:parseFloat(marker.longitude)},  title: marker.name, data: marker };
           this.markers.push(markerObject);
-        });  
+        });
         loadingController.dismiss();
         console.log(this.markers);
       },
@@ -64,13 +64,13 @@ export class ProductInfoPage implements OnInit {
           loadingController.dismiss();
         });
   }
-  getProducts(merchant) {    
+  getProducts(merchant) {
     this.iDataTransferBetweenPages = { storeId: Number(merchant.merchantID)
      };
      sessionStorage.removeItem("Key");
      sessionStorage.removeItem("DelCharge");
-     sessionStorage.setItem("Key",merchant.razorPaymentKey); 
-     sessionStorage.setItem("DelCharge",merchant.deliveryCharges); 
+     sessionStorage.setItem("Key",merchant.razorPaymentKey);
+     sessionStorage.setItem("DelCharge",merchant.deliveryCharges);
     this.helperService.navigateWithData(['/product-list'], this.iDataTransferBetweenPages);
 
 
@@ -106,7 +106,7 @@ export class ProductInfoPage implements OnInit {
     // http:// google.com/mapfiles/ms/micons
     let url = "http://maps.google.com/mapfiles/ms/micons/";
     url += "orange-dot" + ".png";
-    return new google.maps.Marker({
+    var markerpoint = new google.maps.Marker({
       position: marker.position,
       map: this.map,
       // title: marker.title,
@@ -128,6 +128,11 @@ export class ProductInfoPage implements OnInit {
         //scaledSize: new google.maps.Size(38, 38)
       }
     });
+    google.maps.event.addListener(markerpoint, 'click', ()  => {
+      console.log(marker.data);
+      this.getProducts(marker.data);
+    });
+    return marker;
   }
 
   renderMarkers() {
