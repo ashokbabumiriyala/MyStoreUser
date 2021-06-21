@@ -1,7 +1,14 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <h2 class="page-title">
     <ion-icon name="construct-outline"></ion-icon>Services</h2>
-  <ion-searchbar placeholder="Type here to filter.."></ion-searchbar>
+
+    <ion-searchbar  *ngIf="serviceInfoList.length > 0"
+      [(ngModel)]="searchService" placeholder="Search By Product Name" 
+      (ionChange)="filterItems()"></ion-searchbar>
+  <ion-row  *ngIf="serviceInfoList.length > 0">
+    <ion-button (click)="mapView()">Map View</ion-button>
+    <ion-button (click)="listView()">List View</ion-button>
+  </ion-row>
   <ion-card class="ion-no-margin service" *ngFor="let service of serviceInfoList;let i = index;">
     <ion-row  (click)="getServices(service)">
         <ion-col size="2" style="margin: auto">
@@ -20,4 +27,8 @@
       </ion-col>
     </ion-row>
   </ion-card>
+
+  <div>  
+    <div #map id="serviceMap" class="mapView"></div>
+  </div>
 </ion-content>

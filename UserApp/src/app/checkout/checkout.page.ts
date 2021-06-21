@@ -4,7 +4,6 @@ import { CheckoutService } from '../checkout/checkout.service';
 import { ToastController } from '@ionic/angular';
 import { CategorySearchService } from '../category-search/category-search.service';
 import { Router ,ActivatedRoute} from '@angular/router';
-
 declare var RazorpayCheckout: any;
 import {environment}  from '../../environments/environment';
 @Component({
@@ -16,7 +15,7 @@ export class CheckoutPage implements OnInit {
  defaultAddress:any;
  default:boolean = true;
  cartItems: any[] = [];
- subTotal :number=10;
+ subTotal :number=0;
  deliveryCharges = 50;
 
   constructor(private helperService:HelperService, private checkoutService: CheckoutService,
@@ -30,12 +29,12 @@ export class CheckoutPage implements OnInit {
     this.helperService.getCartItems().subscribe(cartItems => {
       if(cartItems!=null){
         this.cartItems = cartItems;      
-        //this.subTotal = 0;
+        this.subTotal = 0;
         this.cartItems.forEach((item) =>{
-         // this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
+        this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
         });
       }
-    });
+    });   
   }
   removeItem(item) {
     var ind = this.cartItems.indexOf(item);
@@ -49,7 +48,6 @@ export class CheckoutPage implements OnInit {
       this.default = true;
     }
   }
-
   async payWithRazorMobileApp() {
     var options = {
       description: 'Online Shopping',
@@ -79,20 +77,18 @@ export class CheckoutPage implements OnInit {
       alert(error.description + ' (Error ' + error.code + ')');
     };
    await RazorpayCheckout.open(options, successCallback, cancelCallback); 
-
-
-
   }
   async insertOrderList(payment_id){   
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
-    const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId: payment_id, 
-     TotalAmount: String(10),
-     DeliveryCharge: 5, 
-     SubTotal : this.subTotal,transferId:sessionStorage.getItem("Key")};
-     let apiName;
-     debugger;
+    const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId:payment_id, 
+     TotalAmount: this.subTotal + this.deliveryCharges,
+     DeliveryCharge:this.deliveryCharges, 
+     SubTotal :this.subTotal + this.deliveryCharges,
+     SellerKey:sessionStorage.getItem("Key")};
+     let apiName;  
      if (this.cartItems[0].storeID) {
+       alert("UserProductOrderInsert");
       apiName = 'UserProductOrderInsert';
       dataObject['StoreId'] = this.cartItems[0].storeID;
       dataObject['OrderItems'] = [];
@@ -108,7 +104,7 @@ export class CheckoutPage implements OnInit {
         };
         dataObject['OrderItems'].push(data)
       })
-     } else if (this.cartItems[0].locationID){
+     } else if (this.cartItems[0].locationID){     
       apiName = 'UserServiceOrderInsert';
       dataObject['ServiceLocationId'] = this.cartItems[0].locationID;
       dataObject['OrderItems'] = [];
@@ -122,10 +118,9 @@ export class CheckoutPage implements OnInit {
         };
         dataObject['OrderItems'].push(data)
      });
-    }
+    }   
     await this.checkoutService.insertOrderList(apiName, dataObject)
     .subscribe((data: any) => {
-      console.log(data);
       this.cartItems = [];
       this.helperService.setCartItems(this.cartItems);
       sessionStorage.setItem('cartUpdated', 'false');

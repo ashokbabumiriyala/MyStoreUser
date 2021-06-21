@@ -2,14 +2,19 @@
   <h2 class="page-title">
     <ion-icon name="aperture-outline"></ion-icon> Merchants
   </h2>
-  <ion-searchbar placeholder="Type here to filter.."></ion-searchbar>
-  <ion-row>
+
+  <ion-searchbar  *ngIf="merchantList.length > 0"
+    [(ngModel)]="searchStore" placeholder="Search By Product Name" 
+    (ionChange)="filterItems()"></ion-searchbar>
+
+
+  <ion-row *ngIf="merchantList.length > 0">
     <ion-button (click)="mapView()">Map View</ion-button>
     <ion-button (click)="listView()">List View</ion-button>
   </ion-row>
 
   <div *ngIf="displayListView">
-    <ion-card class="ion-no-margin product" *ngFor="let merchant of merchantList; let i = index;">
+    <ion-card class="ion-no-margin product" *ngFor="let merchant of masterData; let i = index;">
       <ion-row (click)="getProducts(merchant)">
         <ion-col size="2" style="margin: auto">
           <ion-avatar>

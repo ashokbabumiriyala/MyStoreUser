@@ -27,9 +27,11 @@ export class ProductInfoPage implements OnInit {
   iDataTransferBetweenPages: iDataTransferBetweenPages;
   markers=[]
   merchantList = [];
-  constructor(
-    private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder,
+  latitude:number;
+  longitude:number;
+  public masterData:any = [];
+  public searchStore: string = "";
+  constructor(   
     public zone: NgZone,
     private router: Router,
     private helperService: HelperService, private productInfoService: ProductInfoService
@@ -52,18 +54,26 @@ export class ProductInfoPage implements OnInit {
     await this.productInfoService.getMerchantList('UserMerchantSelect')
       .subscribe((data: any) => {
         this.merchantList = data;
-
+        Object.assign(this.masterData,this.merchantList);       
         this.merchantList.forEach(marker => {
+          this.latitude=parseFloat(marker.latitude)
+          this.longitude=parseFloat(marker.longitude);
           const markerObject = { position: {lat: parseFloat(marker.latitude),  lng:parseFloat(marker.longitude)},  title: marker.name, data: marker };
           this.markers.push(markerObject);
         });
-        loadingController.dismiss();
-        console.log(this.markers);
+        loadingController.dismiss();        
       },
         (error: any) => {
           loadingController.dismiss();
         });
   }
+  filterItems() {
+    this.masterData = this.merchantList.filter(item => {
+      return item.name.toLowerCase().indexOf(this.searchStore.toLowerCase()) > -1;
+    });
+  }
+
+
   getProducts(merchant) {
     this.iDataTransferBetweenPages = { storeId: Number(merchant.merchantID)
      };
@@ -89,7 +99,7 @@ export class ProductInfoPage implements OnInit {
     const mapEle: HTMLElement = document.getElementById('map');
     mapEle.classList.add('map-view');
     // create LatLng object
-    const myLatLng = { lat: 12.972442, lng: 77.580643 };
+    const myLatLng = { lat:  this.latitude, lng:  this.longitude };
     // create map
     this.map = new google.maps.Map(mapEle, {
       center: myLatLng,
@@ -128,8 +138,7 @@ export class ProductInfoPage implements OnInit {
         //scaledSize: new google.maps.Size(38, 38)
       }
     });
-    google.maps.event.addListener(markerpoint, 'click', ()  => {
-      console.log(marker.data);
+    google.maps.event.addListener(markerpoint, 'click', ()  => {     
       this.getProducts(marker.data);
     });
     return marker;

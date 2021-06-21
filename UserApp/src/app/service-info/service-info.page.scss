@@ -26,3 +26,17 @@
 .service-name {
     margin: 5px auto;
 }
+
+.mapView {
+    display: none;
+}
+.map-view {
+      width: 100%;
+      height: 70%;
+      display: block;
+      position: absolute !important;
+      overflow: hidden;
+      left: 0px;
+      right: 0px;
+      border: 1px solid #000;
+  }
