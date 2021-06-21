@@ -20,7 +20,7 @@ export class SignupPage implements OnInit {
   geocoder:any;
   constructor(private route: ActivatedRoute, private helperService:HelperService,
      private signUpService:SignUpService, private router:Router,
-     private toastController:ToastController, private geolocation: Geolocation) { }
+     private toastController:ToastController, private geolocation: Geolocation) {this.geocoder = new google.maps.Geocoder(); }
   isignUp:IsignUp;
   signUpFormGroup:FormGroup;
   isFormSubmitted:boolean;
@@ -133,9 +133,6 @@ export class SignupPage implements OnInit {
           this.latitude = null;
           this.longitude = null;
         }
-      });
-      
-     
       this.isignUp = {
         UserName :this.UserName.value,
         MobileNumber :this.MobileNumber.value.toString(),
@@ -146,9 +143,9 @@ export class SignupPage implements OnInit {
         State: this.State.value,
         Pincode:this.Pincode.value,
         pushToken: sessionStorage.getItem('PushToken'),
-        Latitude: this.latitude, 
-        Longitude: this.longitude
-      };
+        Latitude: this.latitude.toString() , 
+        Longitude: this.longitude.toString()
+      };      
       let apiName = 'UserSignupSave';
       if(this.editProfile) {
         apiName = 'UpdateUserProfile';
@@ -157,7 +154,7 @@ export class SignupPage implements OnInit {
         delete this.isignUp['pushToken'];
       }
 
-     await this.signUpService.providerSignUp(apiName, this.isignUp)
+      this.signUpService.providerSignUp(apiName, this.isignUp)
       .subscribe((data: any) => {
         loadingController.dismiss();
         if (!this.editProfile && !this.readProfile) {
@@ -177,7 +174,7 @@ export class SignupPage implements OnInit {
           loadingController.dismiss();
         });
      
-
+      });
   }
   getPosition () {
      var options = {
