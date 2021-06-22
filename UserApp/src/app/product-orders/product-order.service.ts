@@ -13,4 +13,8 @@ export class ProductOrderService {
   getProductOrders(methodName: string, resouce: any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, resouce);
   }
+
+  getOrderItems(methodName: string, resouce: any): Observable<any> {
+    return this.commonApiServiceCallsService.select(this.apiUrl + methodName, resouce);
+  }
 }

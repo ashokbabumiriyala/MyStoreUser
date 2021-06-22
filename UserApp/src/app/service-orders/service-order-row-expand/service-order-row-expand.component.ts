@@ -15,13 +15,7 @@ export class ServiceOrderRowExpandComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.orderedItems = [
-      { name: 'Tv Repair', price: 1000, thumb: 'serviceType-1.png', units: 'item', count:1},
-      { name: 'Cooler Repair', price: 500, thumb: 'serviceType-2.png', units: 'item', count:5},
-      { name: 'AC Repair', price: 1800, thumb: 'serviceType-3.png', units: 'item', count:1},
-      { name: 'Plumber', price: 800, thumb: 'serviceType-4.png', units: 'item', count:2},
-      { name: 'Electrical', price: 500,  thumb: 'serviceType-5.png', units: 'item', count:3}
-    ];
+    this.orderedItems =this.items;
   }
   ngOnChanges(SimpleValues:any) {
     this.expanded = SimpleValues.expanded.currentValue;

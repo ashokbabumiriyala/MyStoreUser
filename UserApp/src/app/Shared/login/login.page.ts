@@ -6,6 +6,7 @@ import { LoadingController } from '@ionic/angular';
 import { RegistrationServiceService } from '../../Shared/registration-service.service';
 import { Router, NavigationStart } from '@angular/router';
 import {IUserDetails} from '../../common/provider-details';
+import {AuthenticationService}  from '../../common/authentication.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -16,6 +17,7 @@ export class LoginPage implements OnInit {
   constructor(private registrationServiceService:RegistrationServiceService,
     private toastController:ToastController,
     private helperService:HelperService,
+    private authenticationService:AuthenticationService,
     private loadingController: LoadingController, private router: Router) { }
   loginFormGroup: FormGroup;
   isFormSubmitted:boolean;
@@ -55,14 +57,13 @@ export class LoginPage implements OnInit {
     const dataObject = { UserName:this.userName.value, Password:this.password.value, pushToken: sessionStorage.getItem('PushToken') };
     await  this.registrationServiceService.validateUser('UserLogin', dataObject)
       .subscribe((data: any) => {
-        console.log(data);
+        this.authenticationService.isAuthenticated = true;
         sessionStorage.setItem("AuthToken",data.token);
         sessionStorage.setItem("UserId",data.userId);
         sessionStorage.setItem("UserName",data.userName);
         sessionStorage.setItem("UserAddress",data.userAddress);
         sessionStorage.setItem("MobileNumber",data.mobileNumber);
         sessionStorage.setItem("Email",data.email);
-
 
         let providerDetails:IUserDetails
         providerDetails = {
@@ -74,6 +75,7 @@ export class LoginPage implements OnInit {
         loadingController.dismiss();
       },
         (error: any) => {
+          this.authenticationService.isAuthenticated = false;
             this.presentToast("Invalid User Name or Password.","danger");
             loadingController.dismiss();
         });

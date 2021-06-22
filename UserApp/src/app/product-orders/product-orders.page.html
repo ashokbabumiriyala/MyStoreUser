@@ -2,8 +2,8 @@
   <h2 class="page-title">
     <ion-icon name="aperture-outline" slot="start"></ion-icon>Product Orders
   </h2>
-  <ion-list class="ion-list-ele">
-    <ion-row (click)="expandItem($event,item)" class="order-status" *ngFor="let item of orderedItems">
+  <!-- <ion-list class="ion-list-ele">
+    <ion-row (click)="expandItem($event,item)" class="order-status" *ngFor="let item of orders">
       <ion-col size="6">
         <ion-label>Store Name: <b>{{item.storeName}}</b></ion-label>
       </ion-col>
@@ -18,5 +18,28 @@
       </ion-col>
       <app-product-order-row-expand [items]="item.orderItems" [expanded]="item.expand"></app-product-order-row-expand>
     </ion-row>
-  </ion-list>
+  </ion-list> -->
+
+  <ion-grid>
+    <div  (click)="expandItem($event, item)" *ngFor="let item of orders" class="order-status">
+      <div class="body" style="display: flex;">
+        <ion-col>
+          <ion-label>Store Name: <b>{{item.storeName}}</b></ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Ordered Date: <b>{{item.createdOn|date:"dd/MM/yy"}}</b></ion-label>
+        </ion-col>
+        </div>
+        <div class="body" style="display: flex;">
+        <ion-col>
+          <ion-label>Order Id: <b>{{item.orderID}}</b></ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Delivery Status: <b>{{item.deliveryStatus}}</b></ion-label>
+        </ion-col>
+      </div>    
+      <app-product-order-row-expand *ngIf="showStoreOrders" [items]="orderedItems" 
+   [expanded]="item.expand"></app-product-order-row-expand>   
+    </div>
+</ion-grid>
 </ion-content>

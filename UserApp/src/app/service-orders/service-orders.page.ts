@@ -14,15 +14,11 @@ export class ServiceOrdersPage implements OnInit {
   orderId: any = 12345;
   deliveryStatus: any = 'Completed';
   orderedItems: any = [];
-  stores:[];
+  orders:any=[];
+  showStoreOrders:boolean;
   constructor(private router: Router, private helperService: HelperService, private serviceOrderService: ServiceOrderService) { }
 
-  ngOnInit() {
-    //  this.orderedItems = [
-    //   { name: 'store 1', date: '10/01/2021', orderId: 25678, status: 'Delivered', expand: false },
-    //   { name: 'store 2', date: '15/05/2021', orderId: 52345, status: 'Pending', expand: false },
-    //   { name: 'store 3', date: '10/05/2021', orderId: 25698, status: 'Delivered', expand: false }
-    // ];
+  ngOnInit() { 
     this.loadServiceOrders();
   }
   async loadServiceOrders(){
@@ -31,23 +27,38 @@ export class ServiceOrdersPage implements OnInit {
     const dataObject={"UserId": Number(sessionStorage.getItem('UserId'))};
     await this.serviceOrderService.getServiceOrders('UserServiceOrders', dataObject)
     .subscribe((data: any) => {
-      this.orderedItems = data.serviceOrders;
-      this.orderedItems.forEach(element => {
-        element['expand'] = false;
-      });
+      this.orders = data.serviceOrders;
       loadingController.dismiss();
     },
     (error: any) => {
       loadingController.dismiss();
     });
   }
-  expandItem(event, ele): void {
-    event.currentTarget.classList.toggle('order-status');
-    event.currentTarget.classList.toggle('row-icon');
+  expandItem(event, ele): void {  
+    this.orderedItems=[];
+    this.showStoreOrders=false;    
     if (ele.expand) {
       ele.expand = false;
+      this.showStoreOrders=false;
     } else {
       ele.expand = true;
+      this.getOrderItems(ele.orderID);   
     }
+  }
+
+  async getOrderItems(orderId:string)
+  {   
+    const loadingController = await this.helperService.createLoadingController("loading");
+    await loadingController.present(); 
+    const dataObject={OrderId: orderId};
+    await  this.serviceOrderService.getOrderItems('UserServiceOrderItems',dataObject)
+          .subscribe((data: any) => {
+           this.orderedItems=data.productorders;         
+           this.showStoreOrders=true;
+           loadingController.dismiss();
+          },
+            (error: any) => {   
+              loadingController.dismiss();
+          });
   }
 }

@@ -42,7 +42,6 @@ export class ServiceInfoPage implements OnInit {
       return item.businessName.toLowerCase().indexOf(this.searchService.toLowerCase()) > -1;
     });
   }
-
   async getserviceInfoList(){
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();

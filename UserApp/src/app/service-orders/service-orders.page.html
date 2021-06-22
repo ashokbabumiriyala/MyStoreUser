@@ -1,21 +1,26 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <h2 class="page-title">
     <ion-icon name="color-filter-outline" slot="start"></ion-icon>Service Orders</h2>
-  <ion-list class="ion-list-ele">
-    <ion-row (click)="expandItem($event,item)" class="order-status" *ngFor="let item of orderedItems">
-      <ion-col size="6">
-        <ion-label>Store Name: <b>{{item.serviceName}}</b></ion-label>
-      </ion-col>
-      <ion-col size="6">
-        <ion-label>Ordered Date: <b>{{item.createdOn | date :'mediumDate'}}</b></ion-label>
-      </ion-col>
-      <ion-col size="6">
-        <ion-label>Order Id: <b>{{item.orderID}}</b></ion-label>
-      </ion-col>
-      <ion-col size="6">
-        <ion-label>Status: <b>{{item.status}}</b></ion-label>
-      </ion-col>
-      <app-service-order-row-expand [items]="item.orderItems" [expanded]="item.expand"></app-service-order-row-expand>
-    </ion-row>
-  </ion-list>
+   <ion-grid>
+    <div  (click)="expandItem($event, item)" *ngFor="let item of orders" class="order-status">
+      <div class="body" style="display: flex;">
+        <ion-col>
+          <ion-label>Store Name: <b>{{item.storeName}}</b></ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Ordered Date: <b>{{item.createdOn|date:"dd/MM/yy"}}</b></ion-label>
+        </ion-col>
+        </div>
+        <div class="body" style="display: flex;">
+        <ion-col>
+          <ion-label>Order Id: <b>{{item.orderID}}</b></ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>Delivery Status: <b>{{item.deliveryStatus}}</b></ion-label>
+        </ion-col>
+      </div>    
+      <app-service-order-row-expand *ngIf="showStoreOrders" [items]="orderedItems" 
+      [expanded]="item.expand"></app-service-order-row-expand>   
+    </div>
+</ion-grid>
 </ion-content>
