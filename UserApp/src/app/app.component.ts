@@ -9,7 +9,7 @@ import { HelperService} from 'src/app/common/helper.service';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { CommonApiServiceCallsService} from './Shared/common-api-service-calls.service';
 import { environment} from './../environments/environment';
-
+import { Router, NavigationStart } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -20,20 +20,21 @@ export class AppComponent implements OnInit{
   userName:string;
   showMenu:boolean;
   public appPages = [
-    { title: 'Profile', url: '/signup', icon: 'person-outline' },
-    { title: 'Product Orders', url: '/product-orders', icon: 'aperture-outline' },
-    { title: 'Service Orders', url: '/service-orders', icon: 'color-filter-outline' },
-    { title: 'Raise A Complaint', url: '/complaint', icon: 'chatbox-ellipses-outline' },
-    { title: 'About My3Karrt', url: '/information-pages/about-us', icon: 'extension-puzzle-outline' },
-    { title: 'Terms and Conditions', url: '/information-pages/terms-conditions', icon: 'cog-outline' },
-    { title: 'Shipping Policies', url: '/information-pages/shipping-policies', icon: 'bus-outline' },
-    { title: 'Privacy Policies', url: '/information-pages/privacy-policies', icon: 'prism-outline' },
-    { title: 'Refunds & Cancellations', url: '/information-pages/refunds-cancellation', icon: 'wallet-outline' },
-    { title: 'Contact Us', url: '/information-pages/contact-us', icon: 'call-outline' },
-    { title: 'Log Out', url: '/login', icon: 'log-out-outline' }
+    { title: 'Profile',  icon: 'person-outline', id:1},
+    { title: 'Product Orders', icon: 'aperture-outline',id:2 },
+    { title: 'Service Orders',  icon: 'color-filter-outline',id:3 },
+    { title: 'Raise A Complaint', icon: 'chatbox-ellipses-outline',id:4},
+    { title: 'About My3Karrt',  icon: 'extension-puzzle-outline',id:5 },
+    { title: 'Terms and Conditions',icon: 'cog-outline' ,id:6},
+    { title: 'Shipping Policies',  icon: 'bus-outline',id:7 },
+    { title: 'Privacy Policies',  icon: 'prism-outline',id:8 },
+    { title: 'Refunds & Cancellations', icon: 'wallet-outline' ,id:9},
+    { title: 'Contact Us',  icon: 'call-outline',id:10 },
+    { title: 'Log Out',  icon: 'log-out-outline' ,id:11 }
    
   ];
   constructor(public modalController: ModalController,
+    private router: Router,
     public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform,
      private helperService: HelperService, private appVersion: AppVersion, private commonApiServiceCallsService: CommonApiServiceCallsService) {
       this.initializeApp();
@@ -56,6 +57,56 @@ export class AppComponent implements OnInit{
           this.cartItems = cartItems;
         }
       });
+    }
+
+    public navigatePage(menuId: number): void { 
+      
+      switch (menuId) {      
+        case 11:
+          this.showMenu=false;    
+          this.router.navigate(['/login']);
+          break;
+
+          case 1:           
+          this.router.navigate(['/signup']);
+          break;
+
+          case 2:           
+          this.router.navigate(['/product-orders']);
+          break;
+
+          case 3:           
+          this.router.navigate(['/service-orders']);
+          break;
+
+          case 4:           
+          this.router.navigate(['/complaint']);
+          break;
+
+          case 5:           
+          this.router.navigate(['/information-pages/about-us']);
+          break;
+
+          case 6:           
+          this.router.navigate(['/information-pages/terms-conditions']);
+          break;
+
+          case 7:           
+          this.router.navigate(['/information-pages/shipping-policies']);
+          break;
+
+          case 8:           
+          this.router.navigate(['/information-pages/privacy-policies']);
+          break;
+
+          case 9:           
+          this.router.navigate(['/information-pages/refunds-cancellation']);
+          break;
+          case 10:           
+          this.router.navigate(['/information-pages/contact-us']);
+          break;
+      
+      }
     }
      initializeApp() {
       this.platform.ready().then(() => {

@@ -16,6 +16,8 @@ export class ProductListPage  implements OnInit{
   productList = [];
   cartItems = [];
   merchantStoreId:number;
+  searchProduct: string = "";
+  public masterData:any = [];
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private productListService: ProductListService,
     private route: ActivatedRoute, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
@@ -34,6 +36,13 @@ export class ProductListPage  implements OnInit{
       }
     });
   }
+
+  filterItems() {
+    this.masterData = this.productList.filter(item => {
+      return item.productName.toLowerCase().indexOf(this.searchProduct.toLowerCase()) > -1;
+    });
+  }
+
   async getProductList(){
     if (this.iDataTransferBetweenPages != null) {
        const loadingController = await this.helperService.createLoadingController("loading");
@@ -42,6 +51,7 @@ export class ProductListPage  implements OnInit{
     await this.productListService.getProductList('UserMerchantProdSelect', dataObject)
     .subscribe((data: any) => {
       this.productList = data.provideMerchantProdList;
+      Object.assign(this.masterData,this.productList);       
       this.productList.forEach((product)=>{
         product['itemCount'] = 0;
         product['addedToCart'] = false;

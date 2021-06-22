@@ -48,6 +48,7 @@ export class ServiceInfoPage implements OnInit {
     await this.serviceInfoService.getServiceInfoList('UserServiceSelect')
     .subscribe((data: any) => {     
       this.serviceInfoList = data;
+     
       Object.assign(this.masterData,this.serviceInfoList);  
       this.serviceInfoList.forEach(marker => {
        this.latitude=parseFloat(marker.latitude)

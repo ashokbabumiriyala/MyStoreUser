@@ -1,7 +1,11 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <!-- <h2 class="page-title">Products</h2> -->
-  <ion-searchbar placeholder="Type here to filter.."></ion-searchbar>
-  <ion-card class="ion-no-margin product" *ngFor="let service of serviceList;let i = index;">
+ 
+  <ion-searchbar  *ngIf="serviceList.length > 0"
+    [(ngModel)]="searchService" placeholder="Search By Product Name" 
+    (ionChange)="filterItems()"></ion-searchbar>
+
+  <ion-card class="ion-no-margin product" *ngFor="let service of masterData;let i = index;">
     <ion-row>
       <ion-col size="2" style="margin: auto">
         <ion-avatar>

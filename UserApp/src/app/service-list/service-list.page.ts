@@ -16,6 +16,8 @@ export class ServiceListPage implements OnInit {
   serviceId:number;
   serviceList = [];
   cartItems:any[] = [];
+  public masterData:any = [];
+  public searchService: string = "";
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private serviceListService: ServiceListService,
     private route: ActivatedRoute, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
@@ -32,15 +34,22 @@ export class ServiceListPage implements OnInit {
       }
     });
   }
+
+  filterItems() {
+    this.masterData = this.serviceList.filter(item => {
+      return item.businessName.toLowerCase().indexOf(this.searchService.toLowerCase()) > -1;
+    });
+  }
+
   async getServiceList(){
     if (this.serviceId) {
       const loadingController = await this.helperService.createLoadingController("loading");
       await loadingController.present();
       const dataObject={locationId:this.serviceId};
       await this.serviceListService.getServiceList('UserServiceProviderServiceSelect', dataObject)
-      .subscribe((data: any) => {
-   
+      .subscribe((data: any) => {   
         this.serviceList = data.provideServiceList;
+        Object.assign(this.masterData,this.serviceList);    
         this.serviceList.forEach(service => {
           service['addedToCart'] = false;
           service['itemCount'] = 1;
