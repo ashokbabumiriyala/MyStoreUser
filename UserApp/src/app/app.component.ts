@@ -26,12 +26,13 @@ export class AppComponent implements OnInit{
     { title: 'Raise A Complaint', url: '/complaint', icon: 'chatbox-ellipses-outline' },
     { title: 'About My3Karrt', url: '/information-pages/about-us', icon: 'extension-puzzle-outline' },
     { title: 'Terms and Conditions', url: '/information-pages/terms-conditions', icon: 'cog-outline' },
-    { title: 'Shipping Policies', url: '/information-pages/shipping-policies', icon: 'bus-outline' },
+    // { title: 'Shipping Policies', url: '/information-pages/shipping-policies', icon: 'bus-outline' },
+    { title: 'FAQ', url: '/information-pages/faq', icon: 'help'},
     { title: 'Privacy Policies', url: '/information-pages/privacy-policies', icon: 'prism-outline' },
     { title: 'Refunds & Cancellations', url: '/information-pages/refunds-cancellation', icon: 'wallet-outline' },
     { title: 'Contact Us', url: '/information-pages/contact-us', icon: 'call-outline' },
     { title: 'Log Out', url: '/login', icon: 'log-out-outline' }
-   
+
   ];
   constructor(public modalController: ModalController,
     public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform,
@@ -44,10 +45,10 @@ export class AppComponent implements OnInit{
 
       this.helperService.getProfileObs().subscribe(profile => {
         if(profile!=null){
-        this.userName = profile.name; 
-        this.showMenu=true;     
+        this.userName = profile.name;
+        this.showMenu=true;
         }else{
-          this.showMenu=false;    
+          this.showMenu=false;
         }
       });
 
@@ -59,9 +60,9 @@ export class AppComponent implements OnInit{
     }
      initializeApp() {
       this.platform.ready().then(() => {
-        if (this.platform.is('android') || this.platform.is('ios')) {     
+        if (this.platform.is('android') || this.platform.is('ios')) {
           sessionStorage.setItem('mobile', 'true');
-          this.appVersion.getVersionNumber().then((res) => {       
+          this.appVersion.getVersionNumber().then((res) => {
             this.version = res;
             if (this.version){
               let apiUrl = environment.adminServiceUrl;
@@ -80,12 +81,12 @@ export class AppComponent implements OnInit{
 
           // get FCM token
           this.fcm.getToken().then(token => {
-       
+
             sessionStorage.setItem("PushToken",token);         });
 
           // ionic push notification example
           this.fcm.onNotification().subscribe(data => {
-      
+
             if (data.wasTapped) {
               console.log('Received in background');
             } else {
@@ -95,7 +96,7 @@ export class AppComponent implements OnInit{
 
           // refresh the FCM token
           this.fcm.onTokenRefresh().subscribe(token => {
-          
+
             sessionStorage.setItem("PushToken",token);
           });
         } else {

@@ -9,6 +9,7 @@ import { PrivacyPoliciesComponent } from './privacy-policies/privacy-policies.co
 import { RefundsAndCancellationComponent } from './refunds-and-cancellation/refunds-and-cancellation.component' ;
 import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
 import { ShippingPoliciesComponent } from './shipping-policies/shipping-policies.component';
+import { FaqComponent } from './faq/faq.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,12 @@ const routes: Routes = [
   {
     path: 'shipping-policies',
     component: ShippingPoliciesComponent
+  },
+  {
+    path: 'faq',
+    component: FaqComponent
   }
+
 ];
 
 @NgModule({
