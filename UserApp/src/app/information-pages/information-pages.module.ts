@@ -14,6 +14,7 @@ import { PrivacyPoliciesComponent } from './privacy-policies/privacy-policies.co
 import { RefundsAndCancellationComponent } from './refunds-and-cancellation/refunds-and-cancellation.component' ;
 import { TermsandconditionsComponent } from './termsandconditions/termsandconditions.component';
 import { ShippingPoliciesComponent } from './shipping-policies/shipping-policies.component';
+import { FaqComponent } from './faq/faq.component';
 
 
 @NgModule({
@@ -24,6 +25,6 @@ import { ShippingPoliciesComponent } from './shipping-policies/shipping-policies
     InformationPagesPageRoutingModule
   ],
   declarations: [InformationPagesPage, AboutUsComponent, ContactUsComponent, PrivacyPoliciesComponent,
-  RefundsAndCancellationComponent, TermsandconditionsComponent, ShippingPoliciesComponent]
+  RefundsAndCancellationComponent, TermsandconditionsComponent, ShippingPoliciesComponent, FaqComponent]
 })
 export class InformationPagesPageModule {}

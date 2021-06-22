@@ -30,8 +30,7 @@ export class AppComponent implements OnInit{
     { title: 'Privacy Policies',  icon: 'prism-outline',id:8 },
     { title: 'Refunds & Cancellations', icon: 'wallet-outline' ,id:9},
     { title: 'Contact Us',  icon: 'call-outline',id:10 },
-    { title: 'Log Out',  icon: 'log-out-outline' ,id:11 }
-   
+    { title: 'Log Out',  icon: 'log-out-outline' ,id:11 }   
   ];
   constructor(public modalController: ModalController,
     private router: Router,
@@ -45,10 +44,10 @@ export class AppComponent implements OnInit{
 
       this.helperService.getProfileObs().subscribe(profile => {
         if(profile!=null){
-        this.userName = profile.name; 
-        this.showMenu=true;     
+        this.userName = profile.name;
+        this.showMenu=true;
         }else{
-          this.showMenu=false;    
+          this.showMenu=false;
         }
       });
 
@@ -110,9 +109,9 @@ export class AppComponent implements OnInit{
     }
      initializeApp() {
       this.platform.ready().then(() => {
-        if (this.platform.is('android') || this.platform.is('ios')) {     
+        if (this.platform.is('android') || this.platform.is('ios')) {
           sessionStorage.setItem('mobile', 'true');
-          this.appVersion.getVersionNumber().then((res) => {       
+          this.appVersion.getVersionNumber().then((res) => {
             this.version = res;
             if (this.version){
               let apiUrl = environment.adminServiceUrl;
@@ -131,12 +130,12 @@ export class AppComponent implements OnInit{
 
           // get FCM token
           this.fcm.getToken().then(token => {
-       
+
             sessionStorage.setItem("PushToken",token);         });
 
           // ionic push notification example
           this.fcm.onNotification().subscribe(data => {
-      
+
             if (data.wasTapped) {
               console.log('Received in background');
             } else {
@@ -146,7 +145,7 @@ export class AppComponent implements OnInit{
 
           // refresh the FCM token
           this.fcm.onTokenRefresh().subscribe(token => {
-          
+
             sessionStorage.setItem("PushToken",token);
           });
         } else {
