@@ -21,7 +21,7 @@
   </ion-list> -->
 
   <ion-grid>
-    <div  (click)="expandItem($event, item)" *ngFor="let item of orders" class="order-status">
+    <div  (click)="expandItem($event, item, i)" *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}">
       <div class="body" style="display: flex;">
         <ion-col>
           <ion-label>Store Name: <b>{{item.storeName}}</b></ion-label>
@@ -37,9 +37,11 @@
         <ion-col>
           <ion-label>Delivery Status: <b>{{item.deliveryStatus}}</b></ion-label>
         </ion-col>
-      </div>    
-      <app-product-order-row-expand *ngIf="showStoreOrders" [items]="orderedItems" 
-   [expanded]="item.expand"></app-product-order-row-expand>   
+      </div> 
+      <div class="w-100">   
+      <app-product-order-row-expand *ngIf="showStoreOrders && item.expand" [items]="orderedItems" 
+   [expanded]="item.expand"></app-product-order-row-expand>
+   </div>   
     </div>
 </ion-grid>
 </ion-content>

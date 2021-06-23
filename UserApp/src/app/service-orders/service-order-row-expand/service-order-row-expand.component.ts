@@ -9,7 +9,7 @@ import { NavController, ToastController } from '@ionic/angular';
 export class ServiceOrderRowExpandComponent implements OnInit {
   @ViewChild("expandWrapper", { read: ElementRef }) expandWrapper: ElementRef;
   @Input("expandHeight") expandHeight: string = "250px";
-  @Input() items: any = [];
+  @Input() items: any;
   @Input("expanded") expanded: boolean;
   orderedItems:any = [];
   constructor() { }
@@ -19,5 +19,6 @@ export class ServiceOrderRowExpandComponent implements OnInit {
   }
   ngOnChanges(SimpleValues:any) {
     this.expanded = SimpleValues.expanded.currentValue;
+    this.orderedItems = SimpleValues.items.currentValue;
    }  
 }

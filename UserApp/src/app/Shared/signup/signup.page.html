@@ -73,7 +73,7 @@
       </ion-item>
       <small *ngIf="isFormSubmitted &&  State.errors"><span style="color: red;">*State Required
       </span>
-    </small>
+    </small>    
   <ion-item class="ion-ele">
           <ion-label position="floating">Pin Code</ion-label>
           <ion-input type="text" formControlName="Pincode" required></ion-input>
@@ -82,6 +82,15 @@
       <small *ngIf="isFormSubmitted &&  Pincode.errors"><span style="color: red;">*Pincode Required
       </span>
     </small>
+      <ion-item style="--background: transparent;" lines="none">
+          <ion-label>I agree to the <a href="javascript:;" (click)="presentAlertTermsConditions()">Terms & Conditions</a>.</ion-label>
+        
+          <ion-checkbox slot="start" style="margin-inline-end:16px;--background: transparent;"   checked="false"
+          formControlName="agreed"></ion-checkbox>
+      </ion-item> 
+      <small *ngIf="isFormSubmitted &&  agreed.errors"><span style="color: red;">*Please accept the terms
+      </span>
+      </small>     
       <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
               <ion-button *ngIf="!editProfile" type="submit" shape="round" expand="block" class="ion-margin-bottom" (click)="register();">Get Started</ion-button>

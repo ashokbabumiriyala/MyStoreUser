@@ -85,3 +85,9 @@ body {
 :host {
     font-family: sans-serif !important;
 }
+.swiper-slide img {
+    width: auto;
+    max-width: 80%;
+    height: auto;
+    max-height: 100%;
+}

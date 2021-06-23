@@ -1,10 +1,9 @@
 .expand-wrapper {
     transition: max-height 0.4s ease-in-out;
-    overflow: hidden;
     height: auto;
-    width:93vw;
-    right: 15px;
+    width:auto;
     position: relative;
+    overflow: auto;
   }
   
   .collapsed {
@@ -16,3 +15,9 @@
     overflow-y: auto;   
   }
   
+  @media screen and (max-width:430px){
+    .expand-wrapper {
+      width: calc(100vw + 0px);
+      max-width: inherit;
+    }
+  }

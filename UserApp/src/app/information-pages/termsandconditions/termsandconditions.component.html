@@ -1,6 +1,7 @@
-<ion-content class="login-form ion-padding after-login-bg">
+<ion-content class="login-form ion-padding" [ngClass]="{'after-login-bg': modal == true}">
   <h4 class="page-title">
     <ion-icon name="cog-outline"></ion-icon>Terms and Conditions of Use
+    <ion-icon name="close" slot="end" *ngIf="modal" (click)="closeModal()" class="modal-close"></ion-icon>
   </h4>
   <div class="content-section">
     <p>These are the terms and conditions (hereinafter referred as the “<b>Terms and Conditions</b>”) governing your

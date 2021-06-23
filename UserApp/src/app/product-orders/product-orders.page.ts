@@ -19,6 +19,7 @@ export class ProductOrdersPage implements OnInit {
   expand:boolean = false;
   showStoreOrders:boolean;
   stores:[];
+  selectedIndex: number;
   constructor( private router: Router, private helperService: HelperService, private productOrderService: ProductOrderService) { }
 
   ngOnInit() {
@@ -37,14 +38,17 @@ export class ProductOrdersPage implements OnInit {
       loadingController.dismiss();
     });
   }
-  expandItem(event, ele): void {  
+  expandItem(event, ele:any, index:number): void {  
     this.orderedItems=[];
-    this.showStoreOrders=false;    
+    this.showStoreOrders=false;
     if (ele.expand) {
       ele.expand = false;
       this.showStoreOrders=false;
+      this.selectedIndex = -1;
     } else {
+      this.orders.forEach(element => {element.expand = false;});
       ele.expand = true;
+      this.selectedIndex = index;
       this.getOrderItems(ele.orderID);   
     }
   }

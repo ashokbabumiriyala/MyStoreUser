@@ -4,9 +4,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmPasswordValidation } from 'src/app/common/must-match.validator';
 import { HelperService }  from 'src/app/common/helper.service';
 import {SignUpService} from 'src/app/Shared/signup/sign-up.service';
-import { ToastController } from '@ionic/angular';
-import {Geolocation} from '@ionic-native/geolocation/ngx'
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+import { ModalController, AnimationController, ToastController } from '@ionic/angular';
+import { TermsandconditionsComponent } from '../../information-pages/termsandconditions/termsandconditions.component';
 declare var google:any;
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
@@ -19,8 +21,8 @@ export class SignupPage implements OnInit {
   longitude:any;
   geocoder:any;
   constructor(private route: ActivatedRoute, private helperService:HelperService,
-     private signUpService:SignUpService, private router:Router,
-     private toastController:ToastController, private geolocation: Geolocation) {this.geocoder = new google.maps.Geocoder(); }
+     private signUpService:SignUpService, private router:Router, private modalController:ModalController,
+     private toastController:ToastController, public animationCtrl: AnimationController, private geolocation: Geolocation) {this.geocoder = new google.maps.Geocoder(); }
   isignUp:IsignUp;
   signUpFormGroup:FormGroup;
   isFormSubmitted:boolean;
@@ -94,6 +96,9 @@ export class SignupPage implements OnInit {
   get Pincode() {
     return this.signUpFormGroup.get('Pincode');
   }
+  get agreed() {
+    return this.signUpFormGroup.get('agreed');
+  }
   private signUpFormGroupCreate() {
     this.signUpFormGroup=new  FormGroup({
       UserName: new FormControl('', Validators.required),
@@ -104,7 +109,9 @@ export class SignupPage implements OnInit {
       Address:new FormControl('', Validators.required),
       City:new FormControl('', Validators.required),
       State:new FormControl('', Validators.required),
-      Pincode:new FormControl('', Validators.required)
+      Pincode:new FormControl('', Validators.required),
+      agreed:new FormControl('false',Validators.required)
+
     },
     {
       validators: [ConfirmPasswordValidation.ConfirmPassword
@@ -113,6 +120,9 @@ export class SignupPage implements OnInit {
 
   }
   async register(): Promise<void>{
+    if(this.signUpFormGroup.controls.agreed.value==="false" ||this.signUpFormGroup.controls.agreed.value===false){  
+      this.signUpFormGroup.controls['agreed'].setErrors({'error': true});
+    }
     this.isFormSubmitted = true;
     if (this.editProfile){
       this.signUpFormGroup.controls['Password'].setErrors(null);
@@ -176,6 +186,33 @@ export class SignupPage implements OnInit {
      
       });
   }
+    async presentAlertTermsConditions() {
+      const enterAnimation = (baseEl: any) => {
+        const backdropAnimation = this.animationCtrl.create()
+          .addElement(baseEl.querySelector('ion-backdrop')!)
+          .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+        const wrapperAnimation = this.animationCtrl.create()
+          .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '6%'})
+          .addElement(baseEl.querySelector('.modal-wrapper')!)
+          .fromTo('transform', 'scale(0)', 'scale(1)');
+        return this.animationCtrl.create()
+          .addElement(baseEl)
+          .easing('ease-out')
+          .duration(400)
+          .addAnimation([backdropAnimation, wrapperAnimation]);
+      }
+      const leaveAnimation = (baseEl: any) => {
+        return enterAnimation(baseEl).direction('reverse');
+      }
+      const modal = await this.modalController.create({
+        component: TermsandconditionsComponent,
+        componentProps: { modal:true },
+        enterAnimation,
+        leaveAnimation
+      });
+      return await modal.present();
+    }
+
   getPosition () {
      var options = {
         enableHighAccuracy: true,

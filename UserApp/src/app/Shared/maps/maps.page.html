@@ -62,7 +62,7 @@
       <ion-radio slot="start" value="primary" (click)="updateRadio($event)"></ion-radio>
     </ion-item>
     <ion-item>
-      <ion-label style="font-size: small;">Use different address</ion-label>
+      <ion-label style="font-size: small;">Use Maps</ion-label>: Saved Address
       <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
     </ion-item>
   </ion-radio-group>
@@ -72,7 +72,8 @@
       <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
     </ion-col>
     <ion-col  size="2" class="ion-padding-top">
-        <ion-icon name="location-outline" size="large" (click)="tryGeolocation()"></ion-icon>
+        <!-- <ion-icon name="location-outline" size="large" (click)="tryGeolocation()"></ion-icon> -->
+        <ion-button size="small" (click)="tryGeolocation()">Save</ion-button>
     </ion-col>
   </ion-row>
   <ion-list [hidden]="autocompleteItems.length == 0">

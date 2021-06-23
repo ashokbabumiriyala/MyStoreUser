@@ -26,7 +26,8 @@ export class AppComponent implements OnInit{
     { title: 'Raise A Complaint', icon: 'chatbox-ellipses-outline',id:4},
     { title: 'About My3Karrt',  icon: 'extension-puzzle-outline',id:5 },
     { title: 'Terms and Conditions',icon: 'cog-outline' ,id:6},
-    { title: 'Shipping Policies',  icon: 'bus-outline',id:7 },
+    // { title: 'Shipping Policies',  icon: 'bus-outline',id:7 },
+    { title: 'FAQ',  icon: 'logo-foursquare',id:7 },
     { title: 'Privacy Policies',  icon: 'prism-outline',id:8 },
     { title: 'Refunds & Cancellations', icon: 'wallet-outline' ,id:9},
     { title: 'Contact Us',  icon: 'call-outline',id:10 },
@@ -91,7 +92,7 @@ export class AppComponent implements OnInit{
           break;
 
           case 7:           
-          this.router.navigate(['/information-pages/shipping-policies']);
+          this.router.navigate(['/information-pages/faq']);
           break;
 
           case 8:           

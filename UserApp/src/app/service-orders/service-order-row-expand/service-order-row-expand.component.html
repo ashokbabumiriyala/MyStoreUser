@@ -1,22 +1,22 @@
 <div #expandWrapper class='expand-wrapper' [ngClass]="!expanded ? 'collapsed':'expanded'">
   <ion-list>
-    <ion-item *ngFor="let itm of  orderedItems">
+    <p class="ion-text-center" style="margin: auto;">Total Order Value:- <b>{{1500| currency:'INR'}}</b></p>    <ion-item *ngFor="let itm of  orderedItems">
       <ion-avatar slot="start">
         <img src="{{'../assets/images/dump/'+itm.thumb}}">
       </ion-avatar>
       <ion-label>
         <ion-row>
-          <ion-col size="6">
-            <h3>Name:{{itm.name}}</h3>
+          <ion-col size-xs="8" size-sm="6" size-md="6" size-lg="6">
+            <h3>Name: <b>{{itm.productName}}</b></h3>
           </ion-col>
-          <ion-col size="6">
-            <h3>Count:{{itm.count}}</h3>
+          <ion-col size-xs="4" size-sm="6" size-md="6" size-lg="6">
+            <h3>Quantity: <b>{{itm.quantity}}</b></h3>
           </ion-col>
-          <ion-col size="6">
-            <h3>Price:{{itm.price | currency:'INR'}}</h3>
+          <ion-col size-xs="8" size-sm="6" size-md="6" size-lg="6">
+            <h3>Price: <b>{{ itm.priceAfterDiscount | currency:'INR'}}</b></h3>
             </ion-col>
-            <ion-col size="6">
-            <h3>Units:{{itm.units}}</h3>
+            <ion-col size-xs="4" size-sm="6" size-md="6" size-lg="6">
+            <h3>Units: <b>{{itm.units}}</b></h3>
           </ion-col>
         </ion-row>
       </ion-label>

@@ -1,18 +1,23 @@
 .expand-wrapper {
-    transition: max-height 0.4s ease-in-out;
-    overflow: hidden;
-    height: auto;
-    width:93vw;
-    right: 15px;
-    position: relative;
+  transition: max-height 0.4s ease-in-out;
+  height: auto;
+  width:auto;
+  position: relative;
+  overflow: auto;
+}
+
+.collapsed {
+  max-height: 0px;  
+}
+.expanded {
+  height: 200px;
+  max-height: 200px;
+  overflow-y: auto;   
+}
+
+@media screen and (max-width:430px){
+  .expand-wrapper {
+    width: calc(100vw + 0px);
+    max-width: inherit;
   }
-  
-  .collapsed {
-    max-height: 0px;  
-  }
-  .expanded {
-    height: 200px;
-    max-height: 200px;
-    overflow-y: auto;   
-  }
-  
+}

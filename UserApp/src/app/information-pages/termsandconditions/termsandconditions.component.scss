@@ -6,6 +6,13 @@ p {
 }
 .content-section {
     height: auto;
-    max-height: 495px;
+    max-height: 475px;
     overflow-y: auto;
+}
+.modal-close {
+    position: absolute;
+    top: auto;
+    right: 15px;
+    border: 1px solid;
+    border-radius: 15px;
 }

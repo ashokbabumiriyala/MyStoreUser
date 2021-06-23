@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProductListPageRoutingModule } from './product-list-routing.module';
 
 import { ProductListPage } from './product-list.page';
-
+import { ViewModalComponent } from './view-modal/view-modal.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +15,6 @@ import { ProductListPage } from './product-list.page';
     IonicModule,
     ProductListPageRoutingModule
   ],
-  declarations: [ProductListPage]
+  declarations: [ProductListPage,ViewModalComponent]
 })
 export class ProductListPageModule {}

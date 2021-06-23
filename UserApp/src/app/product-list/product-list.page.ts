@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
 import { AlertController } from '@ionic/angular';
 import { CategorySearchService } from '../category-search/category-search.service';
+import { ModalController, AnimationController } from '@ionic/angular';
+import { ViewModalComponent } from './view-modal/view-modal.component';
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
@@ -20,7 +23,7 @@ export class ProductListPage  implements OnInit{
   public masterData:any = [];
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private productListService: ProductListService,
-    private route: ActivatedRoute, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
+    private route: ActivatedRoute, public animationCtrl: AnimationController, public modalController: ModalController, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
   ngOnInit(){
     // this.route.queryParams.subscribe(params => {
     //   this.merchantStoreId = JSON.parse(params.storeId);
@@ -141,6 +144,38 @@ export class ProductListPage  implements OnInit{
       (error: any) => {
       });
     }
+  }
+ 
+  async presentViewModal() {
+    const enterAnimation = (baseEl: any) => {
+      const backdropAnimation = this.animationCtrl.create()
+        // .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '16%'})
+        .addElement(baseEl.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+
+      const wrapperAnimation = this.animationCtrl.create()
+        .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '6%'})
+        .addElement(baseEl.querySelector('.modal-wrapper')!)
+        .fromTo('transform', 'scale(0)', 'scale(1)');
+
+      return this.animationCtrl.create()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(400)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    }
+
+    const leaveAnimation = (baseEl: any) => {
+      return enterAnimation(baseEl).direction('reverse');
+    }
+
+    const modal = await this.modalController.create({
+      component: ViewModalComponent,
+      componentProps: {"model_title": 'check'},
+      enterAnimation,
+      leaveAnimation
+    });
+    return await modal.present();
   }
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { $ } from 'protractor';
 
 import { HelperService } from '../common/helper.service';
 import { ServiceOrderService } from './service-order.service';
@@ -16,6 +17,7 @@ export class ServiceOrdersPage implements OnInit {
   orderedItems: any = [];
   orders:any=[];
   showStoreOrders:boolean;
+  selectedIndex: any;
   constructor(private router: Router, private helperService: HelperService, private serviceOrderService: ServiceOrderService) { }
 
   ngOnInit() { 
@@ -34,14 +36,17 @@ export class ServiceOrdersPage implements OnInit {
       loadingController.dismiss();
     });
   }
-  expandItem(event, ele): void {  
+  expandItem(event, ele:any, index:number): void {  
     this.orderedItems=[];
     this.showStoreOrders=false;    
     if (ele.expand) {
       ele.expand = false;
       this.showStoreOrders=false;
-    } else {
+      this.selectedIndex = -1;
+    } else {     
+      this.orders.forEach(element => {element.expand = false;});
       ele.expand = true;
+      this.selectedIndex = index;
       this.getOrderItems(ele.orderID);   
     }
   }

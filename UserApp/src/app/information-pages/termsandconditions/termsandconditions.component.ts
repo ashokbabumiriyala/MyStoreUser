@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input  } from '@angular/core';
+import { NavParams, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-termsandconditions',
@@ -6,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./termsandconditions.component.scss'],
 })
 export class TermsandconditionsComponent implements OnInit {
+  @Input() modal: boolean;
+  constructor(private navParams: NavParams, private modalController: ModalController) { }
 
-  constructor() { }
-
-  ngOnInit() {}
+  ngOnInit() {
+    this.navParams.get('modal');
+  }
+  closeModal() { this.modalController.dismiss(); }
 
 }

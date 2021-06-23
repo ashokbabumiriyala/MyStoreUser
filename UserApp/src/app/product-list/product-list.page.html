@@ -15,7 +15,8 @@
       <ion-col size="10">
         <ion-grid>
           <h6 class="product-name">{{product.productName}}</h6>
-          <ion-row>
+          <ion-icon name="eye-outline" size="medium" class="view" (click)="presentViewModal();"></ion-icon>
+           <ion-row>
             <ion-col size="5">
               <p class="ion-no-margin">Units:{{product.units}}</p>
             </ion-col>
