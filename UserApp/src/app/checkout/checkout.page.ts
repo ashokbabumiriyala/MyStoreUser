@@ -35,7 +35,7 @@ export class CheckoutPage implements OnInit {
         this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
         });
         if( this.subTotal>0){         
-          var money=Math.round(this.deliveryCharges);
+          var money=Math.round(this.subTotal + this.deliveryCharges);
           this.processingFee= Math.round(money/100*2.4);
         }
       }
@@ -78,7 +78,7 @@ export class CheckoutPage implements OnInit {
       this.insertOrderList(payment_id);
     }
     var cancelCallback = (error) => {
-     console.log(error);
+    
     };
    await RazorpayCheckout.open(options, successCallback, cancelCallback);
   }

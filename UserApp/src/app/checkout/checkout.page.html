@@ -37,7 +37,7 @@
     </ion-card-content>
   </ion-card>
   <h3>Sub Total: {{subTotal | currency:'INR'}}</h3>
-  <p>Delivery and Processing Fee: {{deliveryCharges | currency:'INR'}}</p>
+  <p>Delivery and Processing Fee: {{deliveryCharges+processingFee | currency:'INR'}}</p>
   <h3>Total cost: {{subTotal + deliveryCharges+ processingFee | currency:'INR'}}</h3>
 
     <ion-row>
