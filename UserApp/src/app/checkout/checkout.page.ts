@@ -80,16 +80,18 @@ export class CheckoutPage implements OnInit {
     var cancelCallback = (error) => {
     
     };
-   await RazorpayCheckout.open(options, successCallback, cancelCallback);
+   await RazorpayCheckout.open(options, successCallback, cancelCallback); 
   }
   async insertOrderList(payment_id){
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId:payment_id,
-     TotalAmount: this.subTotal + this.deliveryCharges+ this.processingFee,
+     TotalAmount: this.subTotal + this.deliveryCharges+ this.processingFee.toString(),
      DeliveryCharge:this.deliveryCharges,
      SubTotal :this.subTotal + this.deliveryCharges,
-     SellerKey:sessionStorage.getItem("Key"),ProcessingFee: Number(this.processingFee)};
+     SellerKey:sessionStorage.getItem("Key"),
+     ProcessingFee: Number(this.processingFee)
+    };
      let apiName;
      if (this.cartItems[0].storeID) {
       apiName = 'UserProductOrderInsert';
@@ -122,6 +124,8 @@ export class CheckoutPage implements OnInit {
         dataObject['OrderItems'].push(data)
      });
     }
+
+    console.log(dataObject);
     await this.checkoutService.insertOrderList(apiName, dataObject)
     .subscribe((data: any) => {
       this.cartItems = [];
