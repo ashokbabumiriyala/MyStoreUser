@@ -34,9 +34,8 @@ export class CheckoutPage implements OnInit {
         this.cartItems.forEach((item) =>{
         this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
         });
-        if( this.subTotal>0){
-          debugger;
-          var money=Math.round(this.subTotal+this.deliveryCharges);
+        if( this.subTotal>0){         
+          var money=Math.round(this.deliveryCharges);
           this.processingFee= Math.round(money/100*2.4);
         }
       }
