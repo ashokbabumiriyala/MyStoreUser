@@ -17,7 +17,7 @@ export class CheckoutPage implements OnInit {
  cartItems: any[] = [];
  subTotal :number=0;
  deliveryCharges = 50;
-
+ processingFee:number=0;
   constructor(private helperService:HelperService, private checkoutService: CheckoutService,
     private toastController: ToastController, 
     private categorySearchService: CategorySearchService,
@@ -28,11 +28,17 @@ export class CheckoutPage implements OnInit {
     this.defaultAddress = sessionStorage.getItem("UserAddress");
     this.helperService.getCartItems().subscribe(cartItems => {
       if(cartItems!=null){
+        
         this.cartItems = cartItems;      
         this.subTotal = 0;
         this.cartItems.forEach((item) =>{
         this.subTotal = this.subTotal + (item.priceAfterDiscount * item.itemCount);
         });
+        if( this.subTotal>0){
+          debugger;
+          var money=Math.round(this.subTotal+this.deliveryCharges);
+          this.processingFee= Math.round(money/100*2.4);
+        }
       }
     });   
   }
@@ -54,7 +60,7 @@ export class CheckoutPage implements OnInit {
       image: '../assets/images/logo.png',
       currency: 'INR', // your 3 letter currency code
       key: environment.razorPaymentkey, // your Key Id from Razorpay dashboard
-      amount: this.subTotal + '00',
+      amount: this.subTotal + this.deliveryCharges+ this.processingFee + '00',
       name: 'My3Karrt',
       prefill: {
         email:sessionStorage.getItem("Email"),
@@ -82,13 +88,12 @@ export class CheckoutPage implements OnInit {
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId:payment_id, 
-     TotalAmount: this.subTotal + this.deliveryCharges,
+     TotalAmount: this.subTotal + this.deliveryCharges+ this.processingFee,
      DeliveryCharge:this.deliveryCharges, 
      SubTotal :this.subTotal + this.deliveryCharges,
-     SellerKey:sessionStorage.getItem("Key")};
+     SellerKey:sessionStorage.getItem("Key"),ProcessingFee: Number(this.processingFee)};
      let apiName;  
-     if (this.cartItems[0].storeID) {
-       alert("UserProductOrderInsert");
+     if (this.cartItems[0].storeID) {     
       apiName = 'UserProductOrderInsert';
       dataObject['StoreId'] = this.cartItems[0].storeID;
       dataObject['OrderItems'] = [];
