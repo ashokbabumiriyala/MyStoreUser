@@ -1,7 +1,7 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <!-- <h2 class="page-title">Products</h2> -->
   <ion-searchbar  *ngIf="productList.length > 0"
-    [(ngModel)]="searchProduct" placeholder="Search By Product Name" 
+    [(ngModel)]="searchProduct" placeholder="Search By Product Name"
     (ionChange)="filterItems()"></ion-searchbar>
 
   <ion-card class="ion-no-margin product" *ngFor="let product of masterData;let i=index;">
@@ -15,7 +15,7 @@
       <ion-col size="10">
         <ion-grid>
           <h6 class="product-name">{{product.productName}}</h6>
-          <ion-icon name="eye-outline" size="medium" class="view" (click)="presentViewModal();"></ion-icon>
+          <!-- <ion-icon name="eye-outline" size="medium" class="view" (click)="presentViewModal();"></ion-icon> -->
            <ion-row>
             <ion-col size="5">
               <p class="ion-no-margin">Units:{{product.units}}</p>

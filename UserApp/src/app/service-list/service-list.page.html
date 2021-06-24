@@ -1,8 +1,8 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <!-- <h2 class="page-title">Products</h2> -->
- 
+
   <ion-searchbar  *ngIf="serviceList.length > 0"
-    [(ngModel)]="searchService" placeholder="Search By Product Name" 
+    [(ngModel)]="searchService" placeholder="Search By Product Name"
     (ionChange)="filterItems()"></ion-searchbar>
 
   <ion-card class="ion-no-margin product" *ngFor="let service of masterData;let i = index;">
@@ -17,13 +17,13 @@
         <ion-grid>
           <h6 class="product-name">{{service.businessName}}</h6>
           <ion-row style="align-items: center;">
-            <ion-col size="6">
+            <ion-col size="4">
               <p class="ion-no-margin">Price:{{service.priceAfterDiscount | currency:'INR'}}</p>
             </ion-col>
-            <ion-col class="ion-text-center" *ngIf="!service.addedToCart" size="6">
+            <ion-col class="ion-text-center" *ngIf="!service.addedToCart" size="8">
               <ion-button shape="round" size="small" (click)="addToCart(i)">Add To Cart</ion-button>
             </ion-col>
-            <ion-col class="ion-text-center" *ngIf="service.addedToCart" size="6">
+            <ion-col class="ion-text-center" *ngIf="service.addedToCart" size="8">
               <ion-button shape="round" size="small" (click)="removeFromCart(i)">Delete From Cart</ion-button>
             </ion-col>
           </ion-row>
