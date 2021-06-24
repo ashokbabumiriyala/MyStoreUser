@@ -70,8 +70,7 @@ export class CheckoutPage implements OnInit {
         color: '#F37254'
       },
       modal: {
-        ondismiss: function () {
-          alert('dismissed')
+        ondismiss: function () {         
         }
       }
     };
@@ -79,7 +78,7 @@ export class CheckoutPage implements OnInit {
       this.insertOrderList(payment_id);
     }
     var cancelCallback = (error) => {
-      alert(error.description + ' (Error ' + error.code + ')');
+     console.log(error);
     };
    await RazorpayCheckout.open(options, successCallback, cancelCallback); 
   }
