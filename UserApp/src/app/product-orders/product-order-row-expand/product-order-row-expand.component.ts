@@ -11,6 +11,7 @@ export class ProductOrderRowExpandComponent implements  OnInit  {
   @ViewChild("expandWrapper", { read: ElementRef }) expandWrapper: ElementRef;
   @Input("expandHeight") expandHeight: string = "250px";
   @Input() items: any;
+  @Input() TotalAmount: any;
   @Input("expanded") expanded: boolean;
   orderedItems:any = [];
 

@@ -34,8 +34,8 @@ export class LoginPage implements OnInit {
   }
   private createloginForm() {
     this.loginFormGroup = new FormGroup({
-      userName: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
+      userName: new FormControl('surajsarja', Validators.required),
+      password: new FormControl('sarja7497', Validators.required)
     });
   }
   async presentToast(data: string,tostarColor:string) {

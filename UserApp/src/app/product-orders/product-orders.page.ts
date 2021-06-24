@@ -20,6 +20,7 @@ export class ProductOrdersPage implements OnInit {
   showStoreOrders:boolean;
   stores:[];
   selectedIndex: number;
+  TotalAmount: any;
   constructor( private router: Router, private helperService: HelperService, private productOrderService: ProductOrderService) { }
 
   ngOnInit() {
@@ -62,7 +63,8 @@ export class ProductOrdersPage implements OnInit {
     const dataObject={OrderId: orderId};
     await  this.productOrderService.getOrderItems('UserProductOrderItems',dataObject)
           .subscribe((data: any) => {
-           this.orderedItems=data.productorders;         
+           this.orderedItems=data.productorders;   
+           this.TotalAmount=this.orderedItems[0].totalAmount;
            this.showStoreOrders=true;
            loadingController.dismiss();
           },

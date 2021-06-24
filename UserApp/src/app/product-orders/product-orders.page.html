@@ -39,7 +39,8 @@
         </ion-col>
       </div> 
       <div class="w-100">   
-      <app-product-order-row-expand *ngIf="showStoreOrders && item.expand" [items]="orderedItems" 
+      <app-product-order-row-expand *ngIf="showStoreOrders && item.expand"
+       [TotalAmount]="TotalAmount" [items]="orderedItems" 
    [expanded]="item.expand"></app-product-order-row-expand>
    </div>   
     </div>

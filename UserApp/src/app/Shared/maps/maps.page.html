@@ -54,19 +54,26 @@
       <ion-icon name="close-circle-outline" (click)="dismiss()"  size="large"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
-  <!-- <ion-icon name="close-circle-outline" (click)="dismiss()" class="close"></ion-icon> -->
+
   <ion-list class="location" *ngIf="!searchLocation">
-  <ion-radio-group [(ngModel)]="selectedRadio">
+  <ion-radio-group   *ngFor="let item of  userAddressData">
     <ion-item>
-      <ion-label style="font-size: small;">Suraj, H-No:1-75 ,Near Post Office, Banglore, Karnataka, India- 560002.</ion-label>
-      <ion-radio slot="start" value="primary" (click)="updateRadio($event)"></ion-radio>
-    </ion-item>
-    <ion-item>
-      <ion-label style="font-size: small;">Use Maps</ion-label>
-      <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
+      <ion-label style="font-size: small;">{{item.address}}</ion-label>
+      <ion-radio slot="start" value="primary" (click)="changeAddress($event)"></ion-radio>
     </ion-item>
   </ion-radio-group>
 </ion-list>
+ <ion-radio-group>
+  <ion-item>
+    <ion-label style="font-size: small;">Use Maps</ion-label>
+    <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
+  </ion-item>
+</ion-radio-group> 
+
+
+
+
+
   <ion-row *ngIf="mapImage">
     <ion-col size="10">
       <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>

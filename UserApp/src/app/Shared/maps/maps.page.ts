@@ -5,6 +5,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 declare var google:any;
+import {MapsService}  from '../maps/maps.service';
 
 @Component({
   selector: 'app-maps',
@@ -28,15 +29,18 @@ export class MapsPage implements OnInit {
   geocoder:any;
   markers:any;
   searchLocation:boolean;
+  userAddressData:any[];
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder, public zone: NgZone, private androidPermissions: AndroidPermissions,
-    private locationAccuracy: LocationAccuracy) {
+    private nativeGeocoder: NativeGeocoder, public zone: NgZone, 
+    private androidPermissions: AndroidPermissions,
+    private locationAccuracy: LocationAccuracy,
+    private mapsService:MapsService) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
       this.autocomplete = { input: '' };
       this.autocompleteItems = [];
       this.geocoder = new google.maps.Geocoder;
       this.markers = [];
-
+     
      }
   ngOnInit() {
     this.loadMap();
@@ -46,6 +50,24 @@ export class MapsPage implements OnInit {
       const ele = document.getElementById('mapWrapper') as HTMLElement;
       ele.classList.remove('map-size');
     }
+    this.getUserAddress();
+  }
+
+async getUserAddress() {
+ const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
+    await this.mapsService.getUserDeliveryAddress('GetUserDeliveryAddress',dataObj)
+      .subscribe((data: any) => {
+       this.userAddressData=data.deliveryAddress;
+
+       console.log( this.userAddressData);
+      },
+        (error: any) => {
+         
+        });
+  }
+
+  changeAddress(){
+   
   }
 
   dismiss() {

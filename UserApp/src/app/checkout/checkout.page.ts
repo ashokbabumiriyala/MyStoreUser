@@ -81,14 +81,16 @@ export class CheckoutPage implements OnInit {
     
     };
    await RazorpayCheckout.open(options, successCallback, cancelCallback); 
+     
   }
   async insertOrderList(payment_id){
+    var amount=this.subTotal +this.deliveryCharges + this.processingFee;
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
     const dataObject={UserId: Number(sessionStorage.getItem("UserId")), TransactionId:payment_id,
-     TotalAmount: this.subTotal + this.deliveryCharges+ this.processingFee.toString(),
+     TotalAmount:amount.toString(),
      DeliveryCharge:this.deliveryCharges,
-     SubTotal :this.subTotal + this.deliveryCharges,
+     SubTotal :this.subTotal,
      SellerKey:sessionStorage.getItem("Key"),
      ProcessingFee: Number(this.processingFee)
     };
@@ -124,8 +126,6 @@ export class CheckoutPage implements OnInit {
         dataObject['OrderItems'].push(data)
      });
     }
-
-    console.log(dataObject);
     await this.checkoutService.insertOrderList(apiName, dataObject)
     .subscribe((data: any) => {
       this.cartItems = [];

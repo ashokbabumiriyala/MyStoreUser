@@ -1,6 +1,6 @@
 <div #expandWrapper class='expand-wrapper' [ngClass]="!expanded ? 'collapsed':'expanded'">
   <ion-list>
-    <p class="ion-text-center" style="margin: auto;">Total Order Value:- <b>{{1500| currency:'INR'}}</b></p>
+    <p class="ion-text-center" style="margin: auto;">Total Order Value:- <b>{{ TotalAmount| currency:'INR'}}</b></p>
     <ion-item *ngFor="let itm of  orderedItems">
       <ion-avatar slot="start">
         <img src="{{'../assets/images/dump/'+itm.thumb}}">
