@@ -6,6 +6,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 declare var google:any;
 import {MapsService}  from '../maps/maps.service';
+import { HelperService } from '../../common/helper.service';
 
 @Component({
   selector: 'app-maps',
@@ -30,10 +31,12 @@ export class MapsPage implements OnInit {
   markers:any;
   searchLocation:boolean;
   userAddressData:any[];
+  userSelectedAddress:string;
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder, public zone: NgZone, 
     private androidPermissions: AndroidPermissions,
     private locationAccuracy: LocationAccuracy,
+    private helperService:HelperService,
     private mapsService:MapsService) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
       this.autocomplete = { input: '' };
@@ -49,8 +52,10 @@ export class MapsPage implements OnInit {
       this.mapImage = true;
       const ele = document.getElementById('mapWrapper') as HTMLElement;
       ele.classList.remove('map-size');
-    }
+    }else{
     this.getUserAddress();
+    }
+    this.userSelectedAddress='';
   }
 
 async getUserAddress() {
@@ -58,24 +63,20 @@ async getUserAddress() {
     await this.mapsService.getUserDeliveryAddress('GetUserDeliveryAddress',dataObj)
       .subscribe((data: any) => {
        this.userAddressData=data.deliveryAddress;
-
-       console.log( this.userAddressData);
       },
         (error: any) => {
          
         });
   }
-
   changeAddress(){
    
   }
-
   dismiss() {
     this.modalCtrl.dismiss({
       'dismissed': true
     });
   }
-  updateRadio(eve){
+  updateRadio(eve){    
     const ele = document.getElementById('mapWrapper') as HTMLElement;
     if(eve.target.value == 'secondary') {
       this.mapImage = true;
@@ -166,7 +167,7 @@ async getUserAddress() {
     );
   }
 
-  tryGeolocation(){
+async  tryGeolocation(){
     // this.clearMarkers();
     this.geolocation.getCurrentPosition().then((resp) => {
       let pos = {
@@ -186,6 +187,22 @@ async getUserAddress() {
     }).catch((error) => {
 
     });
+
+    if(this.userSelectedAddress!=''){
+      const loadingController = await this.helperService.createLoadingController("loading");
+      await loadingController.present(); 
+      const dataObj={UserId: Number(sessionStorage.getItem("UserId")),Address:this.userSelectedAddress};
+      await this.mapsService.getUserDeliveryAddress('UserDeliveryAddressInsert',dataObj)
+        .subscribe((data: any) => {
+          this.getUserAddress();
+          loadingController.dismiss();
+          this.userSelectedAddress='';
+          this.autocomplete.input='';
+        },
+          (error: any) => {
+            loadingController.dismiss();
+          });
+    }
   }
 
   getAddressFromCoords(lattitude, longitude) {
@@ -236,9 +253,8 @@ async getUserAddress() {
 
   //wE CALL THIS FROM EACH ITEM.
   SelectSearchResult(item){
-    //this.clearMarkers();
+    this.userSelectedAddress='';
     this.autocompleteItems = [];
-
     this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
       if(status === 'OK' && results[0]){
         let position = {
@@ -254,6 +270,10 @@ async getUserAddress() {
         google.maps.event.addListener(marker, 'dragend', function() {
         });
         this.map.setCenter(results[0].geometry.location);
+        item.terms.forEach((item) => {       
+          this.userSelectedAddress= item.value +"," + this.userSelectedAddress;
+        });
+        this.autocomplete.input= this.userSelectedAddress;
       }
     })
   }

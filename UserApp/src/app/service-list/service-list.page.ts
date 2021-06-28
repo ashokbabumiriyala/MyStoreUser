@@ -18,14 +18,15 @@ export class ServiceListPage implements OnInit {
   cartItems:any[] = [];
   public masterData:any = [];
   public searchService: string = "";
+  serviceNamme:string="";
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private serviceListService: ServiceListService,
     private route: ActivatedRoute, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
   ngOnInit(){
-    this.route.queryParams.subscribe(params => {
-      // this.serviceId = JSON.parse(params.serviceId);
+    this.route.queryParams.subscribe(params => {     
       this.iDataTransferBetweenPages = this.helperService.getPageData();
       this.serviceId = this.iDataTransferBetweenPages.serviceId;
+      this.serviceNamme=this.iDataTransferBetweenPages.serviceName;
     });
     this.getServiceList();
     this.helperService.getCartItems().subscribe(cartItems => {
@@ -87,15 +88,9 @@ export class ServiceListPage implements OnInit {
   }
   showCartClearAlert(index) {
     const prompt = this.alertCtrl.create({
-      header: 'Alert',
-      message: "Do you want to clear cart items?",
-      buttons: [
-        {
-          text: 'No',
-          handler: data => {
-          
-          }
-        },
+      header: 'Items already in Cart',
+      message: "Your cart contains items from a different provider. Would you like to reset your cart?",
+      buttons: [        
         {
           text: 'Yes',
           handler: data => {
@@ -104,6 +99,12 @@ export class ServiceListPage implements OnInit {
             this.serviceList[index].addedToCart = true;
             this.cartItems.push(this.serviceList[index]);
             this.helperService.setCartItems(this.cartItems);
+          }
+        },
+        {
+          text: 'No',
+          handler: data => {
+          
           }
         }
       ]

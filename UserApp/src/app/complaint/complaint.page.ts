@@ -39,7 +39,6 @@ export class ComplaintPage implements OnInit {
     .subscribe((data: any) => {
  
       this.issues=data.issueRelatedList;
-     
       this.complaintList = data.complaintList;
       this.issues = [
         {id:1, description:'Product'},

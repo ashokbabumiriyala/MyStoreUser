@@ -2,8 +2,9 @@
   <ion-list>
     <p class="ion-text-center" style="margin: auto;">Total Order Value:- <b>{{ TotalAmount| currency:'INR'}}</b></p>
     <ion-item *ngFor="let itm of  orderedItems">
-      <ion-avatar slot="start">
-        <img src="{{'../assets/images/dump/'+itm.thumb}}">
+      <ion-avatar>
+        <img class="product-img"src="{{itm.url}}" *ngIf="itm.url">
+        <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
       </ion-avatar>
       <ion-label>
         <ion-row>

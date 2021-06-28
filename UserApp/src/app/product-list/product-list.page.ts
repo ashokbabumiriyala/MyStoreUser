@@ -21,15 +21,14 @@ export class ProductListPage  implements OnInit{
   merchantStoreId:number;
   searchProduct: string = "";
   public masterData:any = [];
+  merchantName:string;
   iDataTransferBetweenPages:iDataTransferBetweenPages;
   constructor (private helperService: HelperService, private productListService: ProductListService,
     private route: ActivatedRoute, public animationCtrl: AnimationController, public modalController: ModalController, private alertCtrl: AlertController, private categorySearchService: CategorySearchService) { }
-  ngOnInit(){
-    // this.route.queryParams.subscribe(params => {
-    //   this.merchantStoreId = JSON.parse(params.storeId);
-    // });
+  ngOnInit(){  
     this.route.queryParams.subscribe(params => {
       this.iDataTransferBetweenPages = this.helperService.getPageData();
+      this.merchantName= this.iDataTransferBetweenPages.MerchantName;
     });
 
     this.getProductList();
@@ -73,7 +72,7 @@ export class ProductListPage  implements OnInit{
   }
 }
 
-  increment (index) {
+  increment (index) {  
   // this.currentNumber++;
   this.productList[index].itemCount++;
   if (this.productList[index].addedToCart) {
@@ -93,6 +92,7 @@ export class ProductListPage  implements OnInit{
       this.productList[index].addedToCart = false;
       this.cartItems.splice(idIndex, 1);
       this.helperService.setCartItems(this.cartItems);
+      this.productList[index].cartStatus='';
     }
   }
   addToCart(index){
@@ -100,7 +100,9 @@ export class ProductListPage  implements OnInit{
       (this.cartItems.length > 0 && this.cartItems[0].storeID == this.productList[index].storeID)) {
         if (this.productList[index].itemCount > 0 && !this.productList[index].addedToCart) {
           this.productList[index].addedToCart = true;
+          debugger;
           this.cartItems.push(this.productList[index]);
+          this.productList[index].cartStatus="Added to cart";
         }
         this.helperService.setCartItems(this.cartItems);
     } else {
@@ -109,23 +111,22 @@ export class ProductListPage  implements OnInit{
   }
   showCartClearAlert(index) {
     const prompt = this.alertCtrl.create({
-      header: 'Alert',
-      message: "Do you want to clear cart items?",
-      buttons: [
-        {
-          text: 'No',
-          handler: data => {
-           
-          }
-        },
+      header: 'Items already in Cart',
+      message: "Your cart contains items from a different provider. Would you like to reset your cart?",
+      buttons: [        
         {
           text: 'Yes',
-          handler: data => {
-          
+          handler: data => {          
             this.cartItems = [];
             this.productList[index].addedToCart = true;
             this.cartItems.push(this.productList[index]);
             this.helperService.setCartItems(this.cartItems);
+          }
+        },
+        {
+          text: 'No',
+          handler: data => {
+           
           }
         }
       ]

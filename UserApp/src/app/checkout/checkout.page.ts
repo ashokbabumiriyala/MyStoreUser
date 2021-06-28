@@ -56,7 +56,7 @@ export class CheckoutPage implements OnInit {
   async payWithRazorMobileApp() {
     var options = {
       description: 'Online Shopping',
-      image: '../assets/images/logo.png',
+      image: '../../assets/images/logo.png',
       currency: 'INR', // your 3 letter currency code
       key: environment.razorPaymentkey, // your Key Id from Razorpay dashboard
       amount: this.subTotal + this.deliveryCharges+ this.processingFee + '00',

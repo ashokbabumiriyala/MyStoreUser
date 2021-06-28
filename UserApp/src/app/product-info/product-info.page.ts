@@ -75,8 +75,7 @@ export class ProductInfoPage implements OnInit {
 
 
   getProducts(merchant) {
-    this.iDataTransferBetweenPages = { storeId: Number(merchant.merchantID)
-     };
+    this.iDataTransferBetweenPages = { storeId: Number(merchant.merchantID),MerchantName:merchant.name};
      sessionStorage.removeItem("Key");
      sessionStorage.removeItem("DelCharge");
      sessionStorage.setItem("Key",merchant.razorPaymentKey);

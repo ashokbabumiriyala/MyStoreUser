@@ -11,11 +11,12 @@ export class ServiceOrderRowExpandComponent implements OnInit {
   @Input("expandHeight") expandHeight: string = "250px";
   @Input() items: any;
   @Input("expanded") expanded: boolean;
+  @Input() totalAmount:any;
   orderedItems:any = [];
   constructor() { }
 
   ngOnInit() {
-    this.orderedItems =this.items;
+     this.orderedItems =this.items;
   }
   ngOnChanges(SimpleValues:any) {
     this.expanded = SimpleValues.expanded.currentValue;

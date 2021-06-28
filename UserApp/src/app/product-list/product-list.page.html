@@ -1,5 +1,5 @@
 <ion-content class="login-form ion-padding after-login-bg">
-  <!-- <h2 class="page-title">Products</h2> -->
+  <h2 class="page-title">Merchant: {{merchantName}}</h2>
   <ion-searchbar  *ngIf="productList.length > 0"
     [(ngModel)]="searchProduct" placeholder="Search By Product Name"
     (ionChange)="filterItems()"></ion-searchbar>
@@ -14,8 +14,8 @@
       </ion-col>
       <ion-col size="10">
         <ion-grid>
-          <h6 class="product-name">{{product.productName}}</h6>
-          <!-- <ion-icon name="eye-outline" size="medium" class="view" (click)="presentViewModal();"></ion-icon> -->
+          <h6 class="product-name">{{product.productName}}</h6>   <h6 class="product-name">{{product.cartStatus}}</h6>       
+            
            <ion-row>
             <ion-col size="5">
               <p class="ion-no-margin">Units:{{product.units}}</p>
@@ -40,140 +40,4 @@
       </ion-col>
     </ion-row>
   </ion-card>
-  <!-- <ion-card class="ion-no-margin product">
-    <ion-row>
-      <ion-col size="3">
-        <img class="product-img" src="../assets/images/dump/merchantProduct-2.jpeg">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="product-name">Lays</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="5">
-              <p class="ion-no-margin">Units:Item</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="ion-no-margin">Cost/unit: Rs.10</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="2"></ion-col>
-            <ion-col size="8">
-              <p class="ion-no-margin units">
-                  <ion-icon class="plus-minus" name="remove-circle" (click)="decrement()" item-right></ion-icon>
-                  <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="currentNumber"></ion-input>
-                  <ion-icon class="plus-minus" name="add-circle" (click)="increment()" item-right></ion-icon>
-              </p>
-            </ion-col>
-            <ion-col size="2"></ion-col>
-              <ion-col class="ion-text-center">
-                <ion-button shape="round" expand="block">Add To Cart</ion-button>
-              </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card> -->
-  <!-- <ion-card class="ion-no-margin product">
-    <ion-row>
-      <ion-col size="3">
-        <img class="product-img" src="../assets/images/dump/merchantProduct-3.jpeg">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="product-name">Biscuts</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="5">
-              <p class="ion-no-margin">Units:Item</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="ion-no-margin">Cost/unit: Rs.25</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="2"></ion-col>
-            <ion-col size="8">
-              <p class="ion-no-margin units">
-                  <ion-icon class="plus-minus" name="remove-circle" (click)="decrement()" item-right></ion-icon>
-                  <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="currentNumber"></ion-input>
-                  <ion-icon class="plus-minus" name="add-circle" (click)="increment()" item-right></ion-icon>
-              </p>
-            </ion-col>
-            <ion-col size="2"></ion-col>
-              <ion-col class="ion-text-center">
-                <ion-button shape="round" expand="block">Add To Cart</ion-button>
-              </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <ion-card class="ion-no-margin product">
-    <ion-row>
-      <ion-col size="3">
-        <img class="product-img" src="../assets/images/dump/merchantProduct-4.jpeg">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="product-name">Ground nuts</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="5">
-              <p class="ion-no-margin">Units:KG</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="ion-no-margin">Cost/unit: Rs.100</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="2"></ion-col>
-            <ion-col size="8">
-              <p class="ion-no-margin units">
-                  <ion-icon class="plus-minus" name="remove-circle" (click)="decrement()" item-right></ion-icon>
-                  <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="currentNumber"></ion-input>
-                  <ion-icon class="plus-minus" name="add-circle" (click)="increment()" item-right></ion-icon>
-              </p>
-            </ion-col>
-            <ion-col size="2"></ion-col>
-              <ion-col class="ion-text-center">
-                <ion-button shape="round" expand="block">Add To Cart</ion-button>
-              </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-  <ion-card class="ion-no-margin product">
-    <ion-row>
-      <ion-col size="3">
-        <img class="product-img" src="../assets/images/dump/merchantProduct-5.jpeg">
-      </ion-col>
-      <ion-col size="9">
-        <h3 class="product-name">Oil</h3>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="5">
-              <p class="ion-no-margin">Units: Ltrs</p>
-            </ion-col>
-            <ion-col size="7">
-              <p class="ion-no-margin">Cost/unit: Rs.200</p>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="2"></ion-col>
-            <ion-col size="8">
-              <p class="ion-no-margin units">
-                  <ion-icon class="plus-minus" name="remove-circle" (click)="decrement()" item-right></ion-icon>
-                  <ion-input class="ion-text-center" type="number" min="1" [value]="currentNumber" [(ngModel)]="currentNumber"></ion-input>
-                  <ion-icon class="plus-minus" name="add-circle" (click)="increment()" item-right></ion-icon>
-              </p>
-            </ion-col>
-            <ion-col size="2"></ion-col>
-              <ion-col class="ion-text-center">
-                <ion-button shape="round" expand="block">Add To Cart</ion-button>
-              </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-col>
-    </ion-row>
-  </ion-card> -->
 </ion-content>

@@ -63,7 +63,7 @@ export class ServiceInfoPage implements OnInit {
     });
   }
   getServices(service) {
-    this.iDataTransferBetweenPages = { serviceId: Number(service.serviceLocationID) };
+    this.iDataTransferBetweenPages = { serviceId: Number(service.serviceLocationID),serviceName:service.businessName};
     sessionStorage.removeItem("Key");
     sessionStorage.removeItem("DelCharge");
     sessionStorage.setItem("Key",service.razorPaymentKey);

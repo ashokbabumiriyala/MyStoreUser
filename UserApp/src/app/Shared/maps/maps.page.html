@@ -1,52 +1,3 @@
-<!-- <ion-content class="login-form  after-login-bg">
-  <ion-row>
-    <ion-col size="10">
-      <h2 class="page-title">Tele-Port</h2>
-    </ion-col>
-    <ion-col  size="2">
-      <ion-icon class="close-icon" name="close-outline" (click)="dismiss()"></ion-icon>
-    </ion-col>
-  </ion-row>
-  <ion-list class="location">
-    <ion-radio-group [(ngModel)]="selectedRadio">
-      <ion-item>
-        <ion-label>Use this address</ion-label>
-        <ion-radio slot="start" value="primary" (click)="updateRadio($event)"></ion-radio>
-      </ion-item>
-      <ion-item>
-        Suraj, H-No:1-75 ,Near Post Office, Banglore, Karnataka, India- 560002.
-      </ion-item>
-      <ion-item>
-        <ion-label>Use different address</ion-label>
-        <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>
-  <ion-row>
-  <div [hidden]="!mapImage">
-    <!-- <img class="product-img" src="../assets/images/dump/maps.jpeg">
-    <ion-toolbar color="primary">
-      <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
-    </ion-toolbar>
-    <ion-list [hidden]="autocompleteItems.length == 0">
-      <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
-        {{ item.description }}
-      </ion-item>
-    </ion-list>
-    <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-      <ion-fab-button (click)="loadMap()" ion-fab color="tertiary">
-        <ion-icon name="locate"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-    <div class="map-wrapper" style="height: 100%;">
-      <div id="map_center">
-        <ion-icon name="pin" size="large" color="danger"></ion-icon>
-      </div>
-      <div #map id="map"  style="height: 100%;"></div>
-    </div>
-  </div>
-</ion-row>
-</ion-content> -->
 <ion-content class="login-form  after-login-bg">
   <ion-toolbar class="after-login-bg">
     <ion-title class="ion-text-center"><strong>{{model_title}}</strong></ion-title>
@@ -54,29 +5,29 @@
       <ion-icon name="close-circle-outline" (click)="dismiss()"  size="large"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
-
-  <ion-list class="location" *ngIf="!searchLocation">
-  <ion-radio-group   *ngFor="let item of  userAddressData">
-    <ion-item>
-      <ion-label style="font-size: small;">{{item.address}}</ion-label>
-      <ion-radio slot="start" value="primary" (click)="changeAddress($event)"></ion-radio>
+<ion-list>
+  <ion-radio-group allow-empty-selection="true" name="radio-group" #radioGroup> 
+    <ion-item *ngFor="let item of userAddressData" >
+      <ion-label>{{item.address}}</ion-label>
+      <ion-radio slot="start" name="{{item.address}}" 
+      ></ion-radio>
     </ion-item>
+
   </ion-radio-group>
 </ion-list>
- <ion-radio-group>
+
+ <ion-radio-group allow-empty-selection="true" name="radio-group"  #radioMaps  
+ *ngIf="this.model_title == 'Delivery Address'">
   <ion-item>
     <ion-label style="font-size: small;">Use Maps</ion-label>
     <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
   </ion-item>
 </ion-radio-group> 
 
-
-
-
-
   <ion-row *ngIf="mapImage">
     <ion-col size="10">
-      <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="autocomplete.input"  (ionInput)="UpdateSearchResults()" placeholder="Search for a place" 
+       (ionClear)="ClearAutocomplete()"></ion-searchbar>
     </ion-col>
     <ion-col  size="2" class="ion-padding-top">
         <!-- <ion-icon name="location-outline" size="large" (click)="tryGeolocation()"></ion-icon> -->
