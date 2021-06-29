@@ -20,6 +20,11 @@ export class CategorySearchService {
   getCartItems(methodName: string, data:any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, data);
   }
+
+  searchFromHome(methodName: string): Observable<any> {
+    return this.commonApiServiceCallsService.getAll(this.apiUrl + methodName);
+  }
+
   insertCartItems(methodName: string): Observable<any> {
     const dataObject={UserId: Number(sessionStorage.getItem('UserId')), ServiceLocationId: 0, StoreId : 0,
        ProductCartItems: [], ServiceCartItems: []};

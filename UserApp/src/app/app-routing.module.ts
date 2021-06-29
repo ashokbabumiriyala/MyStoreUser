@@ -66,7 +66,8 @@ const routes: Routes = [
   {
     path: 'complaint',
     loadChildren: () => import('./complaint/complaint.module').then( m => m.ComplaintPageModule)
-  },  {
+  },
+  {
     path: 'information-pages',
     loadChildren: () => import('./information-pages/information-pages.module').then( m => m.InformationPagesPageModule)
   }

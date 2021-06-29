@@ -32,6 +32,7 @@ export class MapsPage implements OnInit {
   searchLocation:boolean;
   userAddressData:any[];
   userSelectedAddress:string;
+  
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder, public zone: NgZone, 
     private androidPermissions: AndroidPermissions,
@@ -68,8 +69,17 @@ async getUserAddress() {
          
         });
   }
-  changeAddress(){
-   
+  async addressChange(data:any){
+
+    const dataObj={UserId: Number(sessionStorage.getItem("UserId")),Id:data.id};
+    await this.mapsService.userDeliveryAddressUpdate('UserDefaultDeliveryAddressUpdate',dataObj)
+      .subscribe((data: any) => {  
+        this.helperService.presentToast("Delivery address updated","success");    
+      },
+        (error: any) => {
+         
+        });
+    
   }
   dismiss() {
     this.modalCtrl.dismiss({

@@ -18,9 +18,12 @@
   </ion-card>
 </ion-col>
 </ion-row>
-<!-- <ion-row class="search-bar">
-  <h2 class="page-title">Or</h2>
-  <ion-searchbar placeholder="Search for favorite Store/Location"></ion-searchbar>
-</ion-row> -->
+<ion-row class="search-bar"> 
+  <ion-searchbar debounce="500" (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location"></ion-searchbar>
+</ion-row>
+
+<ion-list *ngIf="isItemAvailable">
+  <ion-item  button (click)="itemClick(item)" *ngFor="let item of masterData">{{ item.address }}</ion-item>
+</ion-list>
 
 </ion-content>

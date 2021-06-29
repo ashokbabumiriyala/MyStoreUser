@@ -7,7 +7,7 @@
   </ion-toolbar>
 <ion-list>
   <ion-radio-group allow-empty-selection="true" name="radio-group" #radioGroup> 
-    <ion-item *ngFor="let item of userAddressData" >
+    <ion-item *ngFor="let item of userAddressData"  button (click)="addressChange(item)" >
       <ion-label>{{item.address}}</ion-label>
       <ion-radio slot="start" name="{{item.address}}" 
       ></ion-radio>

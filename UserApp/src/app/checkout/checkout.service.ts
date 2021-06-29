@@ -12,4 +12,8 @@ export class CheckoutService {
   insertOrderList(methodName: string, data:any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, data);
   }
+
+  getCheckOutAddress(methodName: string, data:any): Observable<any> {
+    return this.commonApiServiceCallsService.select(this.apiUrl + methodName, data);
+  }
 }

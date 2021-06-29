@@ -24,8 +24,8 @@ export class CheckoutPage implements OnInit {
      private router: Router,
      private route: ActivatedRoute,
   ) {}
-  ngOnInit() {
-    this.defaultAddress = sessionStorage.getItem("UserAddress");
+  ngOnInit() {  
+    this.getUserCheckOutAddress();
     this.helperService.getCartItems().subscribe(cartItems => {
       if(cartItems!=null){
 
@@ -41,6 +41,19 @@ export class CheckoutPage implements OnInit {
       }
     });
   }
+
+  async getUserCheckOutAddress() {
+    const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
+    
+       await this.checkoutService.insertOrderList('GetUserCheckOutAddress',dataObj)
+         .subscribe((data: any) => {
+          this.defaultAddress=data.checkoutAddress[0].address;
+         },
+           (error: any) => {
+            
+           });
+     }
+  
   removeItem(item) {
     var ind = this.cartItems.indexOf(item);
     this.cartItems.splice(ind, 1);

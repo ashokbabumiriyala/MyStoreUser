@@ -99,8 +99,7 @@ export class ProductListPage  implements OnInit{
     if(this.cartItems.length == 0 ||
       (this.cartItems.length > 0 && this.cartItems[0].storeID == this.productList[index].storeID)) {
         if (this.productList[index].itemCount > 0 && !this.productList[index].addedToCart) {
-          this.productList[index].addedToCart = true;
-          debugger;
+          this.productList[index].addedToCart = true;         
           this.cartItems.push(this.productList[index]);
           this.productList[index].cartStatus="Added to cart";
         }
