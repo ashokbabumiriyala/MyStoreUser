@@ -51,7 +51,8 @@ export class ProductInfoPage implements OnInit {
   async getMerchantList() {
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
-    await this.productInfoService.getMerchantList('UserMerchantSelect')
+    const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
+    await this.productInfoService.getMerchantList('UserMerchantSelect',dataObj)
       .subscribe((data: any) => {
         this.merchantList = data;
         Object.assign(this.masterData,this.merchantList);       

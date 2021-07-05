@@ -45,7 +45,8 @@ export class ServiceInfoPage implements OnInit {
   async getserviceInfoList(){
     const loadingController = await this.helperService.createLoadingController("loading");
     await loadingController.present();
-    await this.serviceInfoService.getServiceInfoList('UserServiceSelect')
+    const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
+    await this.serviceInfoService.getServiceInfoList('UserServiceSelect',dataObj)
     .subscribe((data: any) => {     
       this.serviceInfoList = data;
      

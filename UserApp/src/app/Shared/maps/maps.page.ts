@@ -7,7 +7,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 declare var google:any;
 import {MapsService}  from '../maps/maps.service';
 import { HelperService } from '../../common/helper.service';
-
+// import { CheckoutPage } from 'src/app/checkout/checkout.page';
 @Component({
   selector: 'app-maps',
   templateUrl: './maps.page.html',
@@ -32,7 +32,7 @@ export class MapsPage implements OnInit {
   searchLocation:boolean;
   userAddressData:any[];
   userSelectedAddress:string;
-  
+  // @ViewChild(CheckoutPage,null)checkoutPage:CheckoutPage;
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder, public zone: NgZone, 
     private androidPermissions: AndroidPermissions,
@@ -70,11 +70,12 @@ async getUserAddress() {
         });
   }
   async addressChange(data:any){
-
+    
     const dataObj={UserId: Number(sessionStorage.getItem("UserId")),Id:data.id};
     await this.mapsService.userDeliveryAddressUpdate('UserDefaultDeliveryAddressUpdate',dataObj)
       .subscribe((data: any) => {  
-        this.helperService.presentToast("Delivery address updated","success");    
+        this.helperService.presentToast("Delivery address updated","success");
+        this.helperService.setDeliveryAddress(data.address);
       },
         (error: any) => {
          
@@ -143,7 +144,7 @@ async getUserAddress() {
         }
       },
       err => {
-        alert(err);
+        // alert(err);
       }
     );
   }
@@ -241,7 +242,7 @@ async  tryGeolocation(){
 
   //FUNCTION SHOWING THE COORDINATES OF THE POINT AT THE CENTER OF THE MAP
   ShowCords(){
-    alert('lat' +this.lat+', long'+this.long )
+    // alert('lat' +this.lat+', long'+this.long )
   }
 
   //AUTOCOMPLETE, SIMPLY LOAD THE PLACE USING GOOGLE PREDICTIONS AND RETURNING THE ARRAY.

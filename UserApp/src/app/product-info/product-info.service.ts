@@ -8,7 +8,7 @@ import { CommonApiServiceCallsService} from '../Shared/common-api-service-calls.
 export class ProductInfoService {
   private apiUrl = environment.userOperationServiceUrl;
   constructor(private commonApiServiceCallsService: CommonApiServiceCallsService) { }
-  getMerchantList(methodName: string): Observable<any> {
-    return this.commonApiServiceCallsService.getAll(this.apiUrl + methodName);
+  getMerchantList(methodName: string,resource: any): Observable<any> {  
+    return this.commonApiServiceCallsService.select(this.apiUrl + methodName,resource);
   }
 }

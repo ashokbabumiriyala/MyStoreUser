@@ -18,6 +18,7 @@ constructor(private loadingController:LoadingController, private router:Router,
 
 private profileObs$: BehaviorSubject<IUserDetails> = new BehaviorSubject(null);
 private cartItems$: BehaviorSubject<any[]> = new BehaviorSubject(null);
+private deliveryAddress$: BehaviorSubject<any[]> = new BehaviorSubject(null);
 
 getProfileObs(): Observable<any> {
     return this.profileObs$.asObservable();
@@ -32,6 +33,13 @@ setCartItems(cartItems: any[]) {
   sessionStorage.setItem('cartUpdated', 'true');
   this.cartItems$.next(cartItems);
 }
+getDeliveryAddress(): Observable<any> {
+  return this.deliveryAddress$.asObservable();
+}
+setDeliveryAddress(deliveryAddress: any) { 
+  this.deliveryAddress$.next(deliveryAddress);
+}
+
 async createLoadingController(displayMessage:string): Promise<any> {
   const loadingController = await this.loadingController.create({
       message: displayMessage

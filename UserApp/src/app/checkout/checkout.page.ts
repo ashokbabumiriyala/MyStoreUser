@@ -40,14 +40,20 @@ export class CheckoutPage implements OnInit {
         }
       }
     });
+
+    this.helperService.getDeliveryAddress().subscribe(address => {
+      if(address!=null){
+        this.defaultAddress=address;      
+      }
+    });
   }
 
   async getUserCheckOutAddress() {
-    const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
-    
+    const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};    
        await this.checkoutService.insertOrderList('GetUserCheckOutAddress',dataObj)
          .subscribe((data: any) => {
           this.defaultAddress=data.checkoutAddress[0].address;
+          this.helperService.setDeliveryAddress(this.defaultAddress);
          },
            (error: any) => {
             
@@ -67,34 +73,34 @@ export class CheckoutPage implements OnInit {
     }
   }
   async payWithRazorMobileApp() {
-    var options = {
-      description: 'Online Shopping',
-      image: '../../assets/images/logo.png',
-      currency: 'INR', // your 3 letter currency code
-      key: environment.razorPaymentkey, // your Key Id from Razorpay dashboard
-      amount: this.subTotal + this.deliveryCharges+ this.processingFee + '00',
-      name: 'My3Karrt',
-      prefill: {
-        email:sessionStorage.getItem("Email"),
-        contact:sessionStorage.getItem("MobileNumber"),
-        name: sessionStorage.getItem("UserName"),
-      },
-      theme: {
-        color: '#F37254'
-      },
-      modal: {
-        ondismiss: function () {         
-        }
-      }
-    };
-    var successCallback = (payment_id) =>{
-      this.insertOrderList(payment_id);
-    }
-    var cancelCallback = (error) => {
+  //   var options = {
+  //     description: 'Online Shopping',
+  //     image: '../../assets/images/logo.png',
+  //     currency: 'INR', // your 3 letter currency code
+  //     key: environment.razorPaymentkey, // your Key Id from Razorpay dashboard
+  //     amount: this.subTotal + this.deliveryCharges+ this.processingFee + '00',
+  //     name: 'My3Karrt',
+  //     prefill: {
+  //       email:sessionStorage.getItem("Email"),
+  //       contact:sessionStorage.getItem("MobileNumber"),
+  //       name: sessionStorage.getItem("UserName"),
+  //     },
+  //     theme: {
+  //       color: '#F37254'
+  //     },
+  //     modal: {
+  //       ondismiss: function () {         
+  //       }
+  //     }
+  //   };
+  //   var successCallback = (payment_id) =>{
+  //     this.insertOrderList(payment_id);
+  //   }
+  //   var cancelCallback = (error) => {
     
-    };
-   await RazorpayCheckout.open(options, successCallback, cancelCallback); 
-     
+  //   };
+  //  await RazorpayCheckout.open(options, successCallback, cancelCallback); 
+     this.insertOrderList("sdfsdfsdf");
   }
   async insertOrderList(payment_id){
     var amount=this.subTotal +this.deliveryCharges + this.processingFee;
