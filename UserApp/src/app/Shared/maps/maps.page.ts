@@ -7,6 +7,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 declare var google:any;
 import {MapsService}  from '../maps/maps.service';
 import { HelperService } from '../../common/helper.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 // import { CheckoutPage } from 'src/app/checkout/checkout.page';
 @Component({
   selector: 'app-maps',
@@ -202,7 +203,8 @@ async  tryGeolocation(){
     if(this.userSelectedAddress!=''){
       const loadingController = await this.helperService.createLoadingController("loading");
       await loadingController.present(); 
-      const dataObj={UserId: Number(sessionStorage.getItem("UserId")),Address:this.userSelectedAddress};
+      const dataObj={UserId: Number(sessionStorage.getItem("UserId")),
+       Address:this.userSelectedAddress,Latitude:this.lat.toString(),Longitude:this.long.toString()};
       await this.mapsService.getUserDeliveryAddress('UserDeliveryAddressInsert',dataObj)
         .subscribe((data: any) => {
           this.getUserAddress();
@@ -264,6 +266,7 @@ async  tryGeolocation(){
 
   //wE CALL THIS FROM EACH ITEM.
   SelectSearchResult(item){
+   
     this.userSelectedAddress='';
     this.autocompleteItems = [];
     this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
@@ -281,12 +284,22 @@ async  tryGeolocation(){
         google.maps.event.addListener(marker, 'dragend', function() {
         });
         this.map.setCenter(results[0].geometry.location);
+        debugger;
         item.terms.forEach((item) => {       
           this.userSelectedAddress= item.value +"," + this.userSelectedAddress;
         });
-        this.autocomplete.input= this.userSelectedAddress;
+        this.autocomplete.input= this.userSelectedAddress;        
+        this.geocoder.geocode( { 'address': this.userSelectedAddress}, (results, status) =>{
+          debugger;
+          if (status == google.maps.GeocoderStatus.OK) {
+            this.lat =  results[0].geometry.location.lat();
+            this.long =  results[0].geometry.location.lng();
+          } 
+        })
       }
     })
+
+
   }
   ClearAutocomplete(){
     this.autocompleteItems = []
