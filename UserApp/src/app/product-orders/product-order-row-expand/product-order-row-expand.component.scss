@@ -10,14 +10,18 @@
     max-height: 0px;  
   }
   .expanded {
-    height: 200px;
+    // height: 200px;
     max-height: 200px;
-    overflow-y: auto;   
+    overflow-y: auto;
+    margin-top: 10px;   
   }
   
   @media screen and (max-width:430px){
     .expand-wrapper {
-      width: calc(100vw + 0px);
+      // width: calc(100vw + 0px);
       max-width: inherit;
     }
+  }
+  table {
+    font-size: small;
   }

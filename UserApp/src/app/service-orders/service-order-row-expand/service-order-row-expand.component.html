@@ -6,18 +6,32 @@
         <img class="product-img"src="{{itm.url}}" *ngIf="itm.url">
         <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
       </ion-avatar>
-      <ion-label>
-        <ion-row>
+      <ion-label style="white-space: break-spaces;">
+        <!-- <ion-row>
           <ion-col size-xs="8" size-sm="6" size-md="6" size-lg="6">
             <h3>Name: <b>{{itm.businessName}}</b></h3>
           </ion-col>
           <ion-col size-xs="8" size-sm="6" size-md="6" size-lg="6">
             <h3>Price: <b>{{ itm.priceAfterDiscount | currency:'INR'}}</b></h3>
             </ion-col>
-            <!-- <ion-col size-xs="4" size-sm="6" size-md="6" size-lg="6">
+             <ion-col size-xs="4" size-sm="6" size-md="6" size-lg="6">
             <h3>Units: <b>{{itm.units}}</b></h3>
-          </ion-col> -->
-        </ion-row>
+          </ion-col>
+        </ion-row> -->
+        <table class="table">      
+          <tbody>
+            <tr>
+              <td><b>Name:</b></td>
+              <td class="label" colspan="3">{{itm.businessName}}</td>              
+            </tr>
+            <tr>
+              <td><b>Price:</b></td>
+              <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
+              <td><b>Units:</b></td>
+              <td class="label">{{itm.units}}</td>
+            </tr>
+            </tbody>
+        </table>
       </ion-label>
     </ion-item>
   </ion-list>

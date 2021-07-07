@@ -1,7 +1,7 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <h2 class="page-title">
     <ion-icon name="color-filter-outline" slot="start"></ion-icon>Service Orders</h2>
-   <ion-grid>
+   <!-- <ion-grid>
     <div  (click)="expandItem($event, item, i)" *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}" >
       <div class="body" style="display: flex;">
         <ion-col>
@@ -22,5 +22,25 @@
       <app-service-order-row-expand *ngIf="showStoreOrders  && item.expand" [totalAmount]="totalAmount" [items]="orderedItems" 
       [expanded]="item.expand"></app-service-order-row-expand>   
     </div>
-</ion-grid>
+</ion-grid> -->
+<table class="table">
+  <tbody>
+    <div (click)="expandItem($event, item, i)" *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}">
+      <tr>
+        <td><b>Service Name:</b></td>
+        <td class="label" style="width: 140px;">{{item.serviceName}}</td>
+        <td><b>Ordered Date:</b></td>
+        <td class="label">{{item.createdOn|date:"dd/MM/yy"}}</td>
+      </tr>
+      <tr>
+        <td><b>Order Id:</b></td>
+        <td class="label">{{item.orderID}}</td>
+        <td><b>Delivery Status:</b></td>
+        <td class="label">{{item.status}}</td>
+      </tr>
+      <app-service-order-row-expand *ngIf="showStoreOrders  && item.expand" [totalAmount]="totalAmount" [items]="orderedItems" 
+      [expanded]="item.expand"></app-service-order-row-expand>
+    </div>
+  </tbody>
+</table>
 </ion-content>

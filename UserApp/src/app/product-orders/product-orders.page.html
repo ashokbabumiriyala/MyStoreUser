@@ -2,25 +2,7 @@
   <h2 class="page-title">
     <ion-icon name="aperture-outline" slot="start"></ion-icon>Product Orders
   </h2>
-  <!-- <ion-list class="ion-list-ele">
-    <ion-row (click)="expandItem($event,item)" class="order-status" *ngFor="let item of orders">
-      <ion-col size="6">
-        <ion-label>Store Name: <b>{{item.storeName}}</b></ion-label>
-      </ion-col>
-      <ion-col size="6">
-        <ion-label>Ordered Date: <b>{{item.createdOn |  date :'mediumDate'}}</b></ion-label>
-      </ion-col>
-      <ion-col size="6">
-        <ion-label>Order Id: <b>{{item.orderID}}</b></ion-label>
-      </ion-col>
-      <ion-col size="6">
-        <ion-label>Delivery Status: <b>{{item.deliveryStatus}}</b></ion-label>
-      </ion-col>
-      <app-product-order-row-expand [items]="item.orderItems" [expanded]="item.expand"></app-product-order-row-expand>
-    </ion-row>
-  </ion-list> -->
-
-  <ion-grid>
+  <!-- <ion-grid>
     <div  (click)="expandItem($event, item, i)" *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}">
       <div class="body" style="display: flex;">
         <ion-col>
@@ -44,5 +26,28 @@
    [expanded]="item.expand"></app-product-order-row-expand>
    </div>   
     </div>
-</ion-grid>
+</ion-grid> -->
+  <div direction="x" class="wide-as-needed">
+    <table class="table">
+      <tbody>
+        <div (click)="expandItem($event, item, i)" *ngFor="let item of orders;let i = index;" class="order-status"
+          [ngClass]="{'selected': i == selectedIndex}">
+          <tr>
+            <td><b>Store Name:</b></td>
+            <td class="label" style="width: 140px;">{{item.storeName}}</td>
+            <td><b>Ordered Date:</b></td>
+            <td class="label">{{item.createdOn|date:"dd/MM/yy"}}</td>
+          </tr>
+          <tr>
+            <td><b>Order Id:</b></td>
+            <td class="label">{{item.orderID}}</td>
+            <td><b>Delivery Status:</b></td>
+            <td class="label">{{item.deliveryStatus}}</td>
+          </tr>
+          <app-product-order-row-expand *ngIf="showStoreOrders && item.expand" [TotalAmount]="TotalAmount"
+            [items]="orderedItems" [expanded]="item.expand"></app-product-order-row-expand>
+        </div>
+      </tbody>
+    </table>
+  </div>
 </ion-content>

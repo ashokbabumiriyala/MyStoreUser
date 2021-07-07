@@ -23,7 +23,11 @@
     <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
   </ion-item>
 </ion-radio-group> 
-
+<ion-list [hidden]="autocompleteItems.length == 0">
+  <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
+    {{ item.description }}
+  </ion-item>
+</ion-list>
   <ion-row *ngIf="mapImage">
     <ion-col size="10">
       <ion-searchbar [(ngModel)]="autocomplete.input"  (ionInput)="UpdateSearchResults()" placeholder="Search for a place" 
@@ -34,11 +38,7 @@
         <ion-button size="small" (click)="tryGeolocation()">Save</ion-button>
     </ion-col>
   </ion-row>
-  <ion-list [hidden]="autocompleteItems.length == 0">
-    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
-      {{ item.description }}
-    </ion-item>
-  </ion-list>
+  
   <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="mapImage">
     <ion-fab-button (click)="ShowCords()" ion-fab color="tertiary">
       <ion-icon name="information-circle-outline"></ion-icon>

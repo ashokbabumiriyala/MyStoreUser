@@ -30,21 +30,21 @@
     margin-bottom: 5px;
     overflow-y: auto;
     max-width: 100%;
-    white-space: nowrap;
+    white-space: break-spaces;
     padding: 10px;
     position: relative;
     padding-left: 20px;
 }
 .order-status::before{
-    content: '>';
+    content: '+';
     position: absolute;
     font-size: 32px;
     left: 0px;
     color: darkorange;
-    top: 19px;
-    left: 1px;
+    top: 8px;
+    left: 2px;
 }
 .selected::before{
-    transform: rotate(90deg);
-    top: 18px;
+    content: '-';
+    left: 4px;
 }
