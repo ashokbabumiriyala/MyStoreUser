@@ -72,6 +72,7 @@ export class LoginPage implements OnInit {
          this.helperService.setProfileObs(providerDetails);
         this.router.navigate(['category-search']);
         this.presentToast("Explore My3Karrt!","success");
+        this.getLocation();
         loadingController.dismiss();
       },
         (error: any) => {
@@ -80,6 +81,22 @@ export class LoginPage implements OnInit {
             loadingController.dismiss();
         });
 
+  }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: Position) => {
+        if (position) {
+          console.log("Latitude: " + position.coords.latitude +
+            "Longitude: " + position.coords.longitude);
+            sessionStorage.setItem("lat",position.coords.latitude.toString());
+            sessionStorage.setItem("lng",position.coords.longitude.toString());         
+        }
+      },
+        (error: PositionError) => console.log(error));
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
   }
 
 }
