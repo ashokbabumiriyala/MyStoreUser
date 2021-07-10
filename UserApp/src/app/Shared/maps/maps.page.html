@@ -5,14 +5,14 @@
       <ion-icon name="close-circle-outline" (click)="dismiss()"  size="large"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
-<ion-list>
-  <ion-radio-group allow-empty-selection="true" name="radio-group" #radioGroup> 
-    <ion-item *ngFor="let item of userAddressData"  button (click)="addressChange(item)" >
-      <ion-label>{{item.address}}</ion-label>
-      <ion-radio slot="start" name="{{item.address}}" 
-      ></ion-radio>
+  
+<ion-list class="paymenttype-group">
+  <ion-radio-group name="paymenttype" [(ngModel)]="selectedAddress">
+    <ion-item class="ion-add"   button (click)="addressChange(ing)" 
+     *ngFor="let ing of userAddressData; let i = index">
+      <ion-radio slot="start"   value="{{ing.id}}"  checked="ing.checked"></ion-radio>
+      <ion-label>{{ing.address}}</ion-label>
     </ion-item>
-
   </ion-radio-group>
 </ion-list>
 
@@ -23,6 +23,8 @@
     <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>
   </ion-item>
 </ion-radio-group> 
+
+
 <ion-list [hidden]="autocompleteItems.length == 0">
   <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
     {{ item.description }}

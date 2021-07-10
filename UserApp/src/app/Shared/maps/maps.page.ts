@@ -35,6 +35,7 @@ export class MapsPage implements OnInit {
   userSelectedAddress:string;
   currentLocation :any;
   style = [];
+  selectedAddress:string;
   // @ViewChild(CheckoutPage,null)checkoutPage:CheckoutPage;
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder, public zone: NgZone, 
@@ -67,10 +68,11 @@ async getUserAddress() {
  const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
     await this.mapsService.getUserDeliveryAddress('GetUserDeliveryAddress',dataObj)
       .subscribe((data: any) => {
-       this.userAddressData=data.deliveryAddress;      
+       this.userAddressData=data.deliveryAddress; 
+       const defaultAddress= this.userAddressData.find(x=>x.checked===true);
+       this.selectedAddress=defaultAddress.id.toString();
       },
-        (error: any) => {
-         
+        (error: any) => {         
         });
   }
   async addressChange(data:any){
