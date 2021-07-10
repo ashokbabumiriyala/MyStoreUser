@@ -33,6 +33,7 @@ export class MapsPage implements OnInit {
   searchLocation:boolean;
   userAddressData:any[];
   userSelectedAddress:string;
+  currentLocation :any;
   style = [];
   // @ViewChild(CheckoutPage,null)checkoutPage:CheckoutPage;
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
@@ -66,7 +67,7 @@ async getUserAddress() {
  const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
     await this.mapsService.getUserDeliveryAddress('GetUserDeliveryAddress',dataObj)
       .subscribe((data: any) => {
-       this.userAddressData=data.deliveryAddress;
+       this.userAddressData=data.deliveryAddress;      
       },
         (error: any) => {
          
@@ -110,7 +111,7 @@ async getUserAddress() {
       maximumAge: 30000, // milliseconds e.g., 30000 === 30 seconds
       timeout: 27000
     };
-    this.geolocation.getCurrentPosition(options).then((resp) => {
+    this.geolocation.getCurrentPosition(options).then((resp) => {    
       let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
       let mapOptions = {
         center: latLng,
@@ -118,7 +119,6 @@ async getUserAddress() {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         styles: this.style
       }
-
       //LOAD THE MAP WITH THE PREVIOUS VALUES AS PARAMETERS.
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
       let marker = new google.maps.Marker({
@@ -130,20 +130,20 @@ async getUserAddress() {
       this.markers.push(marker);
       google.maps.event.addListener(marker, 'dragend', function() {
       });
+    if(this.model_title != "Delivery Address"){    
+   
+    }
     }).catch((error) => {
 
     });
   }
-
   //Check if application having GPS access permission
   checkGPSPermission() {
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
       result => {
-        if (result.hasPermission) {
-          //If having permission show 'Turn On GPS' dialogue
+        if (result.hasPermission) {        
           this.askToTurnOnGPS();
-        } else {
-          //If not having permission ask for permission
+        } else {         
           this.requestGPSPermission();
         }
       },
@@ -188,7 +188,7 @@ async  tryGeolocation(){
       let pos = {
         lat: resp.coords.latitude,
         lng: resp.coords.longitude
-      };
+      };     
       let marker = new google.maps.Marker({
         position: pos,
         map: this.map,
@@ -203,6 +203,9 @@ async  tryGeolocation(){
 
     });
 
+   
+
+if(this.model_title === "Delivery Address"){
     if(this.userSelectedAddress!=''){
       const loadingController = await this.helperService.createLoadingController("loading");
       await loadingController.present(); 
@@ -210,6 +213,7 @@ async  tryGeolocation(){
        Address:this.userSelectedAddress,Latitude:this.lat.toString(),Longitude:this.long.toString()};
       await this.mapsService.getUserDeliveryAddress('UserDeliveryAddressInsert',dataObj)
         .subscribe((data: any) => {
+         
           this.getUserAddress();
           loadingController.dismiss();
           this.userSelectedAddress='';
@@ -220,6 +224,7 @@ async  tryGeolocation(){
           });
     }
   }
+}
 
   getAddressFromCoords(lattitude, longitude) {
     let options: NativeGeocoderOptions = {
@@ -268,8 +273,7 @@ async  tryGeolocation(){
   }
 
   //wE CALL THIS FROM EACH ITEM.
-  SelectSearchResult(item){
-   
+  SelectSearchResult(item){   
     this.userSelectedAddress='';
     this.autocompleteItems = [];
     this.geocoder.geocode({'placeId': item.place_id}, (results, status) => {
@@ -277,7 +281,7 @@ async  tryGeolocation(){
         let position = {
             lat: results[0].geometry.location.lat,
             lng: results[0].geometry.location.lng
-        };
+        };    
         let marker = new google.maps.Marker({
           position: results[0].geometry.location,
           map: this.map,
@@ -286,23 +290,21 @@ async  tryGeolocation(){
         this.markers.push(marker);
         google.maps.event.addListener(marker, 'dragend', function() {
         });
-        this.map.setCenter(results[0].geometry.location);
-        debugger;
+        this.map.setCenter(results[0].geometry.location);       
         item.terms.forEach((item) => {       
           this.userSelectedAddress= item.value +"," + this.userSelectedAddress;
         });
         this.autocomplete.input= this.userSelectedAddress;        
         this.geocoder.geocode( { 'address': this.userSelectedAddress}, (results, status) =>{
-          debugger;
           if (status == google.maps.GeocoderStatus.OK) {
             this.lat =  results[0].geometry.location.lat();
             this.long =  results[0].geometry.location.lng();
+            sessionStorage.setItem("lat",this.lat);
+            sessionStorage.setItem("lng",this.long);  
           } 
         })
       }
     })
-
-
   }
   ClearAutocomplete(){
     this.autocompleteItems = []

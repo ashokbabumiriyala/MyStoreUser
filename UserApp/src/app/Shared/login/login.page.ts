@@ -7,6 +7,7 @@ import { RegistrationServiceService } from '../../Shared/registration-service.se
 import { Router, NavigationStart } from '@angular/router';
 import {IUserDetails} from '../../common/provider-details';
 import {AuthenticationService}  from '../../common/authentication.service';
+declare var google:any;
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -22,6 +23,8 @@ export class LoginPage implements OnInit {
   loginFormGroup: FormGroup;
   isFormSubmitted:boolean;
   menus: any[];
+  lat:any;
+  lng:any;
   ngOnInit() {
     this.createloginForm();
     this.helperService.setProfileObs(null);
@@ -80,23 +83,20 @@ export class LoginPage implements OnInit {
             this.presentToast("Invalid User Name or Password.","danger");
             loadingController.dismiss();
         });
-
   }
-
   getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position: Position) => {
         if (position) {
-          console.log("Latitude: " + position.coords.latitude +
-            "Longitude: " + position.coords.longitude);
-            sessionStorage.setItem("lat",position.coords.latitude.toString());
-            sessionStorage.setItem("lng",position.coords.longitude.toString());         
+          this.lat=position.coords.latitude;
+          this.lng=position.coords.longitude
+            sessionStorage.setItem("lat",this.lat);
+            sessionStorage.setItem("lng",this.lng); 
         }
       },
-        (error: PositionError) => console.log(error));
+        (error: PositionError) => console.log(error));        
     } else {
       alert("Geolocation is not supported by this browser.");
     }
   }
-
 }

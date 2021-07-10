@@ -28,6 +28,9 @@
     {{ item.description }}
   </ion-item>
 </ion-list>
+
+<ion-title *ngIf="this.model_title == 'Change Location of Search'" class="ion-text-center"><strong>{{currentLocation}}</strong></ion-title>
+
   <ion-row *ngIf="mapImage">
     <ion-col size="10">
       <ion-searchbar [(ngModel)]="autocomplete.input"  (ionInput)="UpdateSearchResults()" placeholder="Search for a place" 
@@ -44,7 +47,8 @@
       <ion-icon name="information-circle-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  
   <div class="map-wrapper" id="mapWrapper">
-    <div #map id="map"  style="height: 100%;"></div>
+    <div #map id="map"  lang=""    style="height: 100%;"></div>
   </div>
 </ion-content>
