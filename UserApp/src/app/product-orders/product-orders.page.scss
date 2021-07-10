@@ -40,10 +40,14 @@
     font-size: 32px;
     left: 0px;
     color: darkorange;
-    top: 8px;
-    left: 2px;
+    top: 0px;
+    left: 1px;
 }
 .selected::before{
     content: '-';
     left: 4px;
+    top: -2px;
+}
+table {
+    width: -webkit-fill-available;
 }

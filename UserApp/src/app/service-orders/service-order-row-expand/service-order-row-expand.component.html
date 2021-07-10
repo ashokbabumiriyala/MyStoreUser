@@ -1,27 +1,72 @@
 <div #expandWrapper class='expand-wrapper' [ngClass]="!expanded ? 'collapsed':'expanded'">
   <ion-list>
-    <p style="margin: auto;" *ngIf="orderDetails.paymentType == 0">transaction Id:- <b>{{ orderDetails.transactionId}}</b></p>
+    <table class="table1" style=" margin-left: 10px;">
+      <tbody>
+        <tr>
+          <td><b>Service Name: </b></td>
+          <td> {{orderDetails.serviceName}}</td>
+          </tr>
+          <tr>
+          <td><b>Ordered Date: </b></td>
+          <td> {{orderDetails.createdOn|date:"dd/MM/yy"}}</td>
+        </tr>
+        <tr>
+          <td><b>Delivery Status: </b></td>
+          <td> {{orderDetails.status}}</td>
+        </tr>
+        <tr *ngIf="orderDetails.paymentType == 0">
+          <td><b>Transaction Id: </b></td>
+          <td class="label" style="width: 140px;"> {{orderDetails.transactionId}}</td>
+        </tr>
+        <tr>
+          <td><b>Payment Type: </b></td>
+          <td class="label" style="width: 140px;"> {{ orderDetails.paymentType == 1 ? 'Cash On Delivery' : 'Online Payment'}}</td>
+        </tr>
+        <tr>
+          <td><b>Sub Total: </b></td>
+          <td class="label" style="width: 140px;"> {{ orderDetails.subTotal | currency:'INR'}}</td>
+        </tr>
+        <tr *ngIf="orderDetails.processingFee != null">
+          <td><b>Processing Fee: </b></td>
+          <td class="label" style="width: 140px;"> {{ orderDetails.processingFee |currency:'INR'}}</td>
+        </tr>
+        <tr>
+          <td><b>Total Order Value: </b></td>
+          <td class="label" style="width: 140px;"> {{ orderDetails.totalAmount | currency:'INR'}}</td>
+        </tr>
+    </tbody>
+    </table>
+
+    <table style="width: -webkit-fill-available;text-align:left;">
+      <thead>
+        <th></th>
+        <th>Name</th>
+        <th>Price</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let itm of  orderedItems">
+          <td>
+            <ion-avatar>
+              <img class="product-img" src="{{itm.url}}" *ngIf="itm.url">
+              <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
+            </ion-avatar>        
+          </td>
+            <td>{{itm.businessName}}</td>
+            <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <p style="margin: auto;" *ngIf="orderDetails.paymentType == 0">transaction Id:- <b>{{ orderDetails.transactionId}}</b></p>
     <p style="margin: auto;">Payment Type:- <b>{{ orderDetails.paymentType == 1 ? 'Cash On Delivery' : 'Online Payment' }}</b></p>
     <p style="margin: auto;">Sub Total:- <b>{{ orderDetails.subTotal | currency:'INR'}}</b></p>
     <p style="margin: auto;" *ngIf="orderDetails.processingFee != null">Processing Fee:- <b>{{ orderDetails.processingFee | currency:'INR'}}</b></p>
-    <p style="margin: auto;">Total Order Value:- <b>{{ orderDetails.totalAmount | currency:'INR'}}</b></p>
-    <ion-item *ngFor="let itm of  orderedItems">
+    <p style="margin: auto;">Total Order Value:- <b>{{ orderDetails.totalAmount | currency:'INR'}}</b></p> -->
+    <!-- <ion-item *ngFor="let itm of  orderedItems">
       <ion-avatar>
         <img class="product-img" src="{{itm.url}}" *ngIf="itm.url">
         <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
       </ion-avatar>
-      <ion-label style="white-space: break-spaces;">
-        <!-- <ion-row>
-          <ion-col size-xs="8" size-sm="6" size-md="6" size-lg="6">
-            <h3>Name: <b>{{itm.businessName}}</b></h3>
-          </ion-col>
-          <ion-col size-xs="8" size-sm="6" size-md="6" size-lg="6">
-            <h3>Price: <b>{{ itm.priceAfterDiscount | currency:'INR'}}</b></h3>
-            </ion-col>
-             <ion-col size-xs="4" size-sm="6" size-md="6" size-lg="6">
-            <h3>Units: <b>{{itm.units}}</b></h3>
-          </ion-col>
-        </ion-row> -->
+      <ion-label style="white-space: break-spaces;">      
         <table class="table">
           <tbody>
             <tr>
@@ -31,12 +76,12 @@
             <tr>
               <td><b>Price:</b></td>
               <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
-              <!-- <td><b>Units:</b></td>
-              <td class="label">{{itm.units}}</td> -->
+              <td><b>Units:</b></td>
+              <td class="label">{{itm.units}}</td>
             </tr>
           </tbody>
         </table>
       </ion-label>
-    </ion-item>
+    </ion-item> -->
   </ion-list>
 </div>
