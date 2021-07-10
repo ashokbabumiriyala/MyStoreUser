@@ -96,7 +96,7 @@
       </div>
       <div *ngSwitchCase="1">
         <h6>Processing Fee: {{processingFee | currency:'INR'}}</h6>
-        <h3>Total cost: {{subTotal + processingFee | currency:'INR'}}</h3>
+        <h3>Total cost: {{subTotal + processingFee-deliveryCharges | currency:'INR'}}</h3>
       </div>
     </div>
 
