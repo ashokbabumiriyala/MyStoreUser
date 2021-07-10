@@ -1,4 +1,12 @@
-import { Component, AfterViewInit, Input, ViewChild,  ElementRef, Renderer2, OnInit } from "@angular/core";
+import {
+  Component,
+  AfterViewInit,
+  Input,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  OnInit,
+} from '@angular/core';
 import { NavController, ToastController } from '@ionic/angular';
 
 @Component({
@@ -7,19 +15,19 @@ import { NavController, ToastController } from '@ionic/angular';
   styleUrls: ['./service-order-row-expand.component.scss'],
 })
 export class ServiceOrderRowExpandComponent implements OnInit {
-  @ViewChild("expandWrapper", { read: ElementRef }) expandWrapper: ElementRef;
-  @Input("expandHeight") expandHeight: string = "250px";
+  @ViewChild('expandWrapper', { read: ElementRef }) expandWrapper: ElementRef;
+  @Input('expandHeight') expandHeight: string = '250px';
   @Input() items: any;
-  @Input("expanded") expanded: boolean;
-  @Input() totalAmount:any;
-  orderedItems:any = [];
-  constructor() { }
+  @Input() orderDetails: any;
+  @Input('expanded') expanded: boolean;
+  orderedItems: any = [];
+  constructor() {}
 
   ngOnInit() {
-     this.orderedItems =this.items;
+    this.orderedItems = this.items;
   }
-  ngOnChanges(SimpleValues:any) {
+  ngOnChanges(SimpleValues: any) {
     this.expanded = SimpleValues.expanded.currentValue;
     this.orderedItems = SimpleValues.items.currentValue;
-   }  
+  }
 }

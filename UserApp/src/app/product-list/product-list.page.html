@@ -1,22 +1,21 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <h2 class="page-title">Merchant: {{merchantName}}</h2>
-  <ion-searchbar  *ngIf="productList.length > 0"
-    [(ngModel)]="searchProduct" placeholder="Search By Product Name"
-    (ionChange)="filterItems()"></ion-searchbar>
+  <ion-searchbar *ngIf="productList.length > 0" [(ngModel)]="searchProduct" placeholder="Search By Product Name" (ionChange)="filterItems()"></ion-searchbar>
 
   <ion-card class="ion-no-margin product" *ngFor="let product of masterData;let i=index;">
     <ion-row>
       <ion-col size="2" style="margin: auto">
         <ion-avatar>
-          <img  class="product-img" src="{{product.url}}" *ngIf="product.url">
-          <img  class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">
+          <img class="product-img" src="{{product.url}}" *ngIf="product.url">
+          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">
         </ion-avatar>
       </ion-col>
       <ion-col size="10">
         <ion-grid>
-          <h6 class="product-name">{{product.productName}}</h6>   <h6 class="product-name">{{product.cartStatus}}</h6>       
-            
-           <ion-row>
+          <h6 class="product-name">{{product.productName}}</h6>
+          <h6 class="product-name">{{product.cartStatus}}</h6>
+
+          <ion-row>
             <ion-col size="5">
               <p class="ion-no-margin">Units:{{product.units}}</p>
             </ion-col>
@@ -27,14 +26,15 @@
           <ion-row>
             <ion-col size="6">
               <p class="ion-no-margin units">
-                  <ion-icon class="plus-minus" name="remove-circle" (click)="decrement(i)" item-right></ion-icon>
-                  <ion-input type="number" min="1" [value]="product.itemCount" [(ngModel)]="product.itemCount"></ion-input>
-                  <ion-icon class="plus-minus" name="add-circle" (click)="increment(i)" item-right></ion-icon>
+                <ion-icon class="plus-minus" name="remove-circle" [attr.disabled]="!product.isAvailable" (click)="decrement(i)" item-right></ion-icon>
+                <ion-input type="number" min="1" [value]="product.itemCount" [attr.disabled]="!product.isAvailable" [(ngModel)]="product.itemCount"></ion-input>
+                <ion-icon class="plus-minus" name="add-circle" [attr.disabled]="!product.isAvailable" (click)="increment(i)" item-right></ion-icon>
               </p>
             </ion-col>
-              <ion-col class="ion-text-center" size="6">
-                <ion-button shape="round" size="small" (click)="addToCart(i)">Add To Cart</ion-button>
-              </ion-col>
+            <ion-col class="ion-text-center" size="6">
+              <ion-button shape="round" size="small" [attr.disabled]="!product.isAvailable" (click)="addToCart(i)">Add To Cart</ion-button>
+              <p *ngIf=!product.isAvailable style="color:red"><b>*Out of stock</b></p>
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
