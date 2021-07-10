@@ -10,61 +10,74 @@ import { ServiceOrderService } from './service-order.service';
   styleUrls: ['./service-orders.page.scss'],
 })
 export class ServiceOrdersPage implements OnInit {
-  storeName: any = "Plumber";
-  orderedDate: any = new Date(); 
+  storeName: any = 'Plumber';
+  orderedDate: any = new Date();
   deliveryStatus: any = 'Completed';
   orderedItems: any = [];
-  orders:any=[];
-  showStoreOrders:boolean;
+  orders: any = [];
+  showStoreOrders: boolean;
   selectedIndex: any;
-  totalAmount:any;
-  constructor(private router: Router, private helperService: HelperService, private serviceOrderService: ServiceOrderService) { }
+  constructor(
+    private router: Router,
+    private helperService: HelperService,
+    private serviceOrderService: ServiceOrderService
+  ) {}
 
-  ngOnInit() { 
+  ngOnInit() {
     this.loadServiceOrders();
   }
-  async loadServiceOrders(){
-    const loadingController = await this.helperService.createLoadingController("loading");
+  async loadServiceOrders() {
+    const loadingController = await this.helperService.createLoadingController(
+      'loading'
+    );
     await loadingController.present();
-    const dataObject={"UserId": Number(sessionStorage.getItem('UserId'))};
-    await this.serviceOrderService.getServiceOrders('UserServiceOrders', dataObject)
-    .subscribe((data: any) => {
-      this.orders = data.serviceOrders;     
-      loadingController.dismiss();
-    },
-    (error: any) => {
-      loadingController.dismiss();
-    });
+    const dataObject = { UserId: Number(sessionStorage.getItem('UserId')) };
+    await this.serviceOrderService
+      .getServiceOrders('UserServiceOrders', dataObject)
+      .subscribe(
+        (data: any) => {
+          this.orders = data.serviceOrders;
+          loadingController.dismiss();
+        },
+        (error: any) => {
+          loadingController.dismiss();
+        }
+      );
   }
-  expandItem(event, ele:any, index:number): void {  
-    this.orderedItems=[];
-    this.showStoreOrders=false;    
+  expandItem(event, ele: any, index: number): void {
+    this.orderedItems = [];
+    this.showStoreOrders = false;
     if (ele.expand) {
       ele.expand = false;
-      this.showStoreOrders=false;
+      this.showStoreOrders = false;
       this.selectedIndex = -1;
-    } else {     
-      this.orders.forEach(element => {element.expand = false;});
+    } else {
+      this.orders.forEach((element) => {
+        element.expand = false;
+      });
       ele.expand = true;
       this.selectedIndex = index;
-      this.getOrderItems(ele.orderID);   
+      this.getOrderItems(ele.orderID);
     }
   }
 
-  async getOrderItems(orderId:string)
-  {   
-    const loadingController = await this.helperService.createLoadingController("loading");
-    await loadingController.present(); 
-    const dataObject={OrderId: orderId};
-    await  this.serviceOrderService.getOrderItems('UserServiceOrderItems',dataObject)
-          .subscribe((data: any) => {
-           this.orderedItems=data.serviceOrders;
-           this.totalAmount=this.orderedItems[0].totalAmount;
-           this.showStoreOrders=true;
-           loadingController.dismiss();
-          },
-            (error: any) => {   
-              loadingController.dismiss();
-          });
+  async getOrderItems(orderId: string) {
+    const loadingController = await this.helperService.createLoadingController(
+      'loading'
+    );
+    await loadingController.present();
+    const dataObject = { OrderId: orderId };
+    await this.serviceOrderService
+      .getOrderItems('UserServiceOrderItems', dataObject)
+      .subscribe(
+        (data: any) => {
+          this.orderedItems = data.serviceOrders;
+          this.showStoreOrders = true;
+          loadingController.dismiss();
+        },
+        (error: any) => {
+          loadingController.dismiss();
+        }
+      );
   }
 }

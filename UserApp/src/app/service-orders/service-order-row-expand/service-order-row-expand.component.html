@@ -1,9 +1,13 @@
 <div #expandWrapper class='expand-wrapper' [ngClass]="!expanded ? 'collapsed':'expanded'">
   <ion-list>
-    <p class="ion-text-center" style="margin: auto;">Total Order Value:- <b>{{totalAmount| currency:'INR'}}</b></p>    
+    <p style="margin: auto;" *ngIf="orderDetails.paymentType == 0">transaction Id:- <b>{{ orderDetails.transactionId}}</b></p>
+    <p style="margin: auto;">Payment Type:- <b>{{ orderDetails.paymentType == 1 ? 'Cash On Delivery' : 'Online Payment' }}</b></p>
+    <p style="margin: auto;">Sub Total:- <b>{{ orderDetails.subTotal | currency:'INR'}}</b></p>
+    <p style="margin: auto;" *ngIf="orderDetails.processingFee != null">Processing Fee:- <b>{{ orderDetails.processingFee | currency:'INR'}}</b></p>
+    <p style="margin: auto;">Total Order Value:- <b>{{ orderDetails.totalAmount | currency:'INR'}}</b></p>
     <ion-item *ngFor="let itm of  orderedItems">
       <ion-avatar>
-        <img class="product-img"src="{{itm.url}}" *ngIf="itm.url">
+        <img class="product-img" src="{{itm.url}}" *ngIf="itm.url">
         <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
       </ion-avatar>
       <ion-label style="white-space: break-spaces;">
@@ -18,19 +22,19 @@
             <h3>Units: <b>{{itm.units}}</b></h3>
           </ion-col>
         </ion-row> -->
-        <table class="table">      
+        <table class="table">
           <tbody>
             <tr>
               <td><b>Name:</b></td>
-              <td class="label" colspan="3">{{itm.businessName}}</td>              
+              <td class="label" colspan="3">{{itm.businessName}}</td>
             </tr>
             <tr>
               <td><b>Price:</b></td>
               <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
-              <td><b>Units:</b></td>
-              <td class="label">{{itm.units}}</td>
+              <!-- <td><b>Units:</b></td>
+              <td class="label">{{itm.units}}</td> -->
             </tr>
-            </tbody>
+          </tbody>
         </table>
       </ion-label>
     </ion-item>

@@ -17,6 +17,21 @@
         --background: transparent;
     }
 }
+
+.deliverytype-group {
+    background: transparent;
+    .ion-add {
+        --background: transparent;
+    }
+}
+
+.paymenttype-group {
+    background: transparent;
+    .ion-add {
+        --background: transparent;
+    }
+}
+
 .cart-list {
     border: 1px solid #bbb;
     border-radius: 10px;
@@ -33,4 +48,19 @@
            height: 100%;
        }
    }
+}
+
+.provider-address {
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    padding:10px;
+    background: transparent;
+}
+
+.selectionLabel {
+    font-size: 14px;
+}
+
+.labelHeader{
+    font-size:16px;
 }
