@@ -5,26 +5,28 @@ import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { RegistrationServiceService } from '../../Shared/registration-service.service';
 import { Router, NavigationStart } from '@angular/router';
-import {IUserDetails} from '../../common/provider-details';
-import {AuthenticationService}  from '../../common/authentication.service';
-declare var google:any;
+import { IUserDetails } from '../../common/provider-details';
+import { AuthenticationService } from '../../common/authentication.service';
+declare var google: any;
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
-  constructor(private registrationServiceService:RegistrationServiceService,
-    private toastController:ToastController,
-    private helperService:HelperService,
-    private authenticationService:AuthenticationService,
-    private loadingController: LoadingController, private router: Router) { }
+  constructor(
+    private registrationServiceService: RegistrationServiceService,
+    private toastController: ToastController,
+    private helperService: HelperService,
+    private authenticationService: AuthenticationService,
+    private loadingController: LoadingController,
+    private router: Router
+  ) {}
   loginFormGroup: FormGroup;
-  isFormSubmitted:boolean;
+  isFormSubmitted: boolean;
   menus: any[];
-  lat:any;
-  lng:any;
+  lat: any;
+  lng: any;
   ngOnInit() {
     this.createloginForm();
     this.helperService.setProfileObs(null);
@@ -35,18 +37,20 @@ export class LoginPage implements OnInit {
   get password() {
     return this.loginFormGroup.get('password');
   }
+
   private createloginForm() {
     this.loginFormGroup = new FormGroup({
-      userName: new FormControl('sharan', Validators.required),
-      password: new FormControl('sbg123', Validators.required)
+      userName: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
     });
   }
-  async presentToast(data: string,tostarColor:string) {
+
+  async presentToast(data: string, tostarColor: string) {
     const toast = await this.toastController.create({
       message: data,
       duration: 2000,
       position: 'bottom',
-      color: tostarColor
+      color: tostarColor,
     });
     toast.present();
   }
@@ -55,48 +59,59 @@ export class LoginPage implements OnInit {
     if (this.loginFormGroup.invalid) {
       return;
     }
-    const loadingController = await this.helperService.createLoadingController("loading");
+    const loadingController = await this.helperService.createLoadingController(
+      'loading'
+    );
     await loadingController.present();
-    const dataObject = { UserName:this.userName.value, Password:this.password.value, pushToken: sessionStorage.getItem('PushToken') };
-    await  this.registrationServiceService.validateUser('UserLogin', dataObject)
-      .subscribe((data: any) => {
-        this.authenticationService.isAuthenticated = true;
-        sessionStorage.setItem("AuthToken",data.token);
-        sessionStorage.setItem("UserId",data.userId);
-        sessionStorage.setItem("UserName",data.userName);
-        sessionStorage.setItem("UserAddress",data.userAddress);
-        sessionStorage.setItem("MobileNumber",data.mobileNumber);
-        sessionStorage.setItem("Email",data.email);
+    const dataObject = {
+      UserName: this.userName.value,
+      Password: this.password.value,
+      pushToken: sessionStorage.getItem('PushToken'),
+    };
+    await this.registrationServiceService
+      .validateUser('UserLogin', dataObject)
+      .subscribe(
+        (data: any) => {
+          this.authenticationService.isAuthenticated = true;
+          sessionStorage.setItem('AuthToken', data.token);
+          sessionStorage.setItem('UserId', data.userId);
+          sessionStorage.setItem('UserName', data.userName);
+          sessionStorage.setItem('UserAddress', data.userAddress);
+          sessionStorage.setItem('MobileNumber', data.mobileNumber);
+          sessionStorage.setItem('Email', data.email);
 
-        let providerDetails:IUserDetails
-        providerDetails = {
-          name:data.userName
-        };
-         this.helperService.setProfileObs(providerDetails);
-        this.router.navigate(['category-search']);
-        this.presentToast("Explore My3Karrt!","success");
-        this.getLocation();
-        loadingController.dismiss();
-      },
+          let providerDetails: IUserDetails;
+          providerDetails = {
+            name: data.userName,
+          };
+          this.helperService.setProfileObs(providerDetails);
+          this.router.navigate(['category-search']);
+          this.presentToast('Explore My3Karrt!', 'success');
+          this.getLocation();
+          loadingController.dismiss();
+        },
         (error: any) => {
           this.authenticationService.isAuthenticated = false;
-            this.presentToast("Invalid User Name or Password.","danger");
-            loadingController.dismiss();
-        });
+          this.presentToast('Invalid User Name or Password.', 'danger');
+          loadingController.dismiss();
+        }
+      );
   }
   getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position: Position) => {
-        if (position) {
-          this.lat=position.coords.latitude;
-          this.lng=position.coords.longitude
-            sessionStorage.setItem("lat",this.lat);
-            sessionStorage.setItem("lng",this.lng); 
-        }
-      },
-        (error: PositionError) => console.log(error));        
+      navigator.geolocation.getCurrentPosition(
+        (position: Position) => {
+          if (position) {
+            this.lat = position.coords.latitude;
+            this.lng = position.coords.longitude;
+            sessionStorage.setItem('lat', this.lat);
+            sessionStorage.setItem('lng', this.lng);
+          }
+        },
+        (error: PositionError) => console.log(error)
+      );
     } else {
-      alert("Geolocation is not supported by this browser.");
+      alert('Geolocation is not supported by this browser.');
     }
   }
 }
