@@ -36,7 +36,6 @@ export class MapsPage implements OnInit {
   currentLocation :any;
   style = [];
   selectedAddress:string;
-  // @ViewChild(CheckoutPage,null)checkoutPage:CheckoutPage;
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder, public zone: NgZone, 
     private androidPermissions: AndroidPermissions,
@@ -47,8 +46,7 @@ export class MapsPage implements OnInit {
       this.autocomplete = { input: '' };
       this.autocompleteItems = [];
       this.geocoder = new google.maps.Geocoder;
-      this.markers = [];
-     
+      this.markers = [];     
      }
   ngOnInit() {
     this.loadMap();
@@ -57,31 +55,31 @@ export class MapsPage implements OnInit {
       this.mapImage = true;
       const ele = document.getElementById('mapWrapper') as HTMLElement;
       ele.classList.remove('map-size');
-    }else{
+    }else{    
     this.getUserAddress();
     }
     this.userSelectedAddress='';
     this.googleMapStyle();
   }
 
-async getUserAddress() {
+async getUserAddress() { 
  const dataObj={UserId: Number(sessionStorage.getItem("UserId"))};
     await this.mapsService.getUserDeliveryAddress('GetUserDeliveryAddress',dataObj)
       .subscribe((data: any) => {
        this.userAddressData=data.deliveryAddress; 
        const defaultAddress= this.userAddressData.find(x=>x.checked===true);
        this.selectedAddress=defaultAddress.id.toString();
+       this.helperService.setDeliveryAddress(defaultAddress);
       },
         (error: any) => {         
         });
   }
-  async addressChange(data:any){
-    
+  async addressChange(data:any){    
     const dataObj={UserId: Number(sessionStorage.getItem("UserId")),Id:data.id};
     await this.mapsService.userDeliveryAddressUpdate('UserDefaultDeliveryAddressUpdate',dataObj)
-      .subscribe((data: any) => {  
+      .subscribe((resultdata: any) => {  
         this.helperService.presentToast("Delivery address updated","success");
-        this.helperService.setDeliveryAddress(data.address);
+       this.getUserAddress();
       },
         (error: any) => {
          
@@ -104,17 +102,16 @@ async getUserAddress() {
       ele.classList.add('map-size');
     }
   }
-  loadMap() {
+  loadMap() {    
     const ele = document.getElementById('mapWrapper') as HTMLElement;
     ele.classList.add('map-size');
-    //FIRST GET THE LOCATION FROM THE DEVICE.
     var options = {
       enableHighAccuracy: true,
       maximumAge: 30000, // milliseconds e.g., 30000 === 30 seconds
       timeout: 27000
     };
-    this.geolocation.getCurrentPosition(options).then((resp) => {    
-      let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+    this.geolocation.getCurrentPosition(options).then((resp) => {
+      let latLng = new google.maps.LatLng( sessionStorage.getItem("lat"),  sessionStorage.getItem("lng"));
       let mapOptions = {
         center: latLng,
         zoom: 12,
@@ -132,9 +129,6 @@ async getUserAddress() {
       this.markers.push(marker);
       google.maps.event.addListener(marker, 'dragend', function() {
       });
-    if(this.model_title != "Delivery Address"){    
-   
-    }
     }).catch((error) => {
 
     });
@@ -184,13 +178,12 @@ async getUserAddress() {
     );
   }
 
-async  tryGeolocation(){
-    // this.clearMarkers();
+async  tryGeolocation(){ 
     this.geolocation.getCurrentPosition().then((resp) => {
       let pos = {
-        lat: resp.coords.latitude,
-        lng: resp.coords.longitude
-      };     
+        lat:  sessionStorage.getItem("lat"),
+        lng: sessionStorage.getItem("lng")
+      }; 
       let marker = new google.maps.Marker({
         position: pos,
         map: this.map,
@@ -202,10 +195,7 @@ async  tryGeolocation(){
       google.maps.event.addListener(marker, 'dragend', function() {
       });
     }).catch((error) => {
-
     });
-
-   
 
 if(this.model_title === "Delivery Address"){
     if(this.userSelectedAddress!=''){
@@ -215,7 +205,6 @@ if(this.model_title === "Delivery Address"){
        Address:this.userSelectedAddress,Latitude:this.lat.toString(),Longitude:this.long.toString()};
       await this.mapsService.getUserDeliveryAddress('UserDeliveryAddressInsert',dataObj)
         .subscribe((data: any) => {
-         
           this.getUserAddress();
           loadingController.dismiss();
           this.userSelectedAddress='';
@@ -312,12 +301,10 @@ if(this.model_title === "Delivery Address"){
     this.autocompleteItems = []
     this.autocomplete.input = ''
   }
-
   //sIMPLE EXAMPLE TO OPEN AN URL WITH THE PLACEID AS PARAMETER.
   GoTo(){
     return window.location.href = 'https://www.google.com/maps/search/?api=1&query=Google&query_place_id='+this.placeid;
   }
-
    //convert Address string to lat and long
   geoCode(address:any) {
     let geocoder = new google.maps.Geocoder();

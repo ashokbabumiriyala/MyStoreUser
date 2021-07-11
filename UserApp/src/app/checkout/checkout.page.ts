@@ -47,7 +47,7 @@ export class CheckoutPage implements OnInit {
     this.deliveryType = DeliveryType.HomeDelivery.toString();
     this.paymentType = PaymentType.OnlinePayment.toString();
     this.deliveryCharges = Number(sessionStorage.getItem('DelCharge'));
-    this.getUserCheckOutAddress();
+   
     this.helperService.getCartItemsType().subscribe((currentCartItemType) => {
       if (currentCartItemType == AvailableStoreTypes.ServiceType) {
         this.isServiceType = true;
@@ -70,10 +70,12 @@ export class CheckoutPage implements OnInit {
         }
       }
     });
-
-    this.helperService.getDeliveryAddress().subscribe((address) => {
-      if (address != null) {
-        this.defaultAddress = address;
+    this.helperService.getDeliveryAddress().subscribe((currentAddress) => {
+      
+      if (currentAddress != null) {
+        this.defaultAddress =currentAddress.address;        
+      }else{
+         this.getUserCheckOutAddress();
       }
     });
 
@@ -162,8 +164,7 @@ export class CheckoutPage implements OnInit {
       .insertOrderList('GetUserCheckOutAddress', dataObj)
       .subscribe(
         (data: any) => {
-          this.defaultAddress = data.checkoutAddress[0].address;
-          this.helperService.setDeliveryAddress(this.defaultAddress);
+          this.defaultAddress = data.checkoutAddress[0].address;          
         },
         (error: any) => {}
       );

@@ -34,7 +34,7 @@ export class AppComponent implements OnInit{
     { title: 'Log Out',  icon: 'log-out-outline' ,id:11 }   
   ];
   constructor(public modalController: ModalController,
-    private router: Router,
+    private router: Router,   
     public animationCtrl: AnimationController, private fcm: FCM, private platform: Platform,
      private helperService: HelperService, private appVersion: AppVersion, private commonApiServiceCallsService: CommonApiServiceCallsService) {
       this.initializeApp();
@@ -42,7 +42,6 @@ export class AppComponent implements OnInit{
      cartItems =[];
      version:any;
     ngOnInit(): void {
-
       this.helperService.getProfileObs().subscribe(profile => {
         if(profile!=null){
         this.userName = profile.name;
@@ -51,16 +50,13 @@ export class AppComponent implements OnInit{
           this.showMenu=false;
         }
       });
-
       this.helperService.getCartItems().subscribe(cartItems => {
         if(cartItems!=null){
           this.cartItems = cartItems;
         }
-      });
+      });     
     }
-
-    public navigatePage(menuId: number): void { 
-      
+    public navigatePage(menuId: number): void {       
       switch (menuId) {      
         case 11:
           this.showMenu=false;    
@@ -156,11 +152,9 @@ export class AppComponent implements OnInit{
     }
     async presentModal(title) {
       const enterAnimation = (baseEl: any) => {
-        const backdropAnimation = this.animationCtrl.create()
-          // .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '16%'})
+        const backdropAnimation = this.animationCtrl.create()         
           .addElement(baseEl.querySelector('ion-backdrop')!)
           .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
-
         const wrapperAnimation = this.animationCtrl.create()
           .beforeStyles({ 'opacity': 1,'height': '83%','width': 'auto','min-width': '96vw','margin-top': '6%'})
           .addElement(baseEl.querySelector('.modal-wrapper')!)
