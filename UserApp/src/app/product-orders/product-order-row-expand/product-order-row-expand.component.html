@@ -2,7 +2,7 @@
   <ion-list>
     <p style="margin: auto;">Delivery Type:- <b>{{ orderDetails.deliveryType == 1 ? 'Self Pickup': 'Home Delivery'}}</b></p>
     <p style="margin: auto;">Payment Type:- <b>{{ orderDetails.paymentType == 1 ? 'Cash On Delivery' : 'Online Payment' }}</b></p>
-    <p style="margin: auto;" *ngIf="orderDetails.paymentType == 0">transaction Id:- <b>{{ orderDetails.transactionId}}</b></p>
+    <p style="margin: auto;" *ngIf="orderDetails.paymentType == 0">Transaction Id:- <b>{{ orderDetails.transactionId}}</b></p>
     <p style="margin: auto;">Sub Total:- <b>{{ orderDetails.subTotal | currency:'INR'}}</b></p>
     <p style="margin: auto;" *ngIf="orderDetails.deliveryType == 0">Delivery Charges& Processing Fee:- <b>{{ orderDetails.deliveryCharge + orderDetails.processingFee | currency:'INR'}}</b></p>
     <p style="margin: auto;" *ngIf="orderDetails.deliveryType != 1">Processing Fee:- <b>{{ orderDetails.processingFee | currency:'INR'}}</b></p>
