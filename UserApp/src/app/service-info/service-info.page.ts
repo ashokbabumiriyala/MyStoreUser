@@ -68,7 +68,7 @@ export class ServiceInfoPage implements OnInit {
     sessionStorage.removeItem("Key");
     sessionStorage.removeItem("DelCharge");
     sessionStorage.setItem("Key",service.razorPaymentKey);
-    sessionStorage.setItem("DelCharge",service.deliveryCharges);  
+    sessionStorage.setItem("DelCharge","0");  
     this.helperService.navigateWithData(['service-list'], this.iDataTransferBetweenPages);
   }
   mapView(){  
