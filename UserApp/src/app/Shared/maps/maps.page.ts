@@ -59,7 +59,7 @@ export class MapsPage implements OnInit {
     this.getUserAddress();
     }
     this.userSelectedAddress='';
-    this.googleMapStyle();
+    this.googleMapStyle();   
   }
 
 async getUserAddress() { 
@@ -129,8 +129,8 @@ async getUserAddress() {
       this.markers.push(marker);
       google.maps.event.addListener(marker, 'dragend', function() {
       });
+      this.map.setCenter(latLng);
     }).catch((error) => {
-
     });
   }
   //Check if application having GPS access permission
@@ -316,6 +316,13 @@ if(this.model_title === "Delivery Address"){
  } private googleMapStyle(){
   this.style =  
   [
+    {
+      "featureType": "poi",
+      "elementType": "labels",
+      "stylers": [
+            { "visibility": "off" }
+      ]
+  },
     {
       "elementType": "geometry",
       "stylers": [

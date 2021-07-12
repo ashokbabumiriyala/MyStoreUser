@@ -92,3 +92,6 @@ body {
     max-height: 100%;
 }
 .searchbar-clear-icon { display: none !important; }
+.menu-content-open {
+    pointer-events: auto !important;
+}

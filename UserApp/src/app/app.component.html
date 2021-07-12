@@ -1,6 +1,6 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay"  *ngIf="showMenu">
+    <ion-menu contentId="main-content" type="overlay"  *ngIf="showMenu" (ionWillClose)="index = 0" (ionWillOpen)="index = -1">
       <ion-content>
         <ion-list id="inbox-list">
           <ion-list-header>{{userName}}</ion-list-header>
@@ -18,7 +18,7 @@
     </ion-menu>
   <ion-header class="header" *ngIf="showHead">
             <ion-toolbar>
-                <ion-buttons style="color: orangered;" slot="start">
+                <ion-buttons style="color: orangered;" slot="start" *ngIf="showMenu">
                     <ion-menu-button></ion-menu-button>
                   </ion-buttons>
                 <ion-title class="ion-text-center">
@@ -52,7 +52,7 @@
           </ion-row>
         </ion-footer>
   </ion-split-pane>
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed" edge="false" *ngIf="showMenu">
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed" edge="false" *ngIf="showMenu" [ngStyle]="{'z-index': index}">
     <ion-fab-button type="button">
         <img src="assets/images/icon-footer.png">
     </ion-fab-button>

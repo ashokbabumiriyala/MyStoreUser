@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   showHead: boolean = true;
   userName: string;
   showMenu: boolean;
+  index:any = 0;
   public appPages = [
     { title: 'Profile', icon: 'person-outline', id: 1 },
     { title: 'Product Orders', icon: 'aperture-outline', id: 2 },
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit {
   version: any;
   ngOnInit(): void {
     this.helperService.getProfileObs().subscribe((profile) => {
+      this.index = 0;
       if (profile != null) {
         this.userName = profile.name;
         this.showMenu = true;

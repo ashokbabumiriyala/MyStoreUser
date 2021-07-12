@@ -152,7 +152,13 @@ export class ProductInfoPage implements OnInit {
 
   private googleMapStyle(){
     this.style =  
-  [
+  [{
+    "featureType": "poi",
+    "elementType": "labels",
+    "stylers": [
+          { "visibility": "off" }
+    ]
+},
     {
       "elementType": "geometry",
       "stylers": [
