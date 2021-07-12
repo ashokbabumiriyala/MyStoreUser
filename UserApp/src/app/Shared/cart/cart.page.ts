@@ -15,63 +15,73 @@ export class CartPage implements OnInit {
   totalAmount: number = 0;
   isCartItemLoaded: boolean = false;
   isEmptyCart: boolean = true;
+  disableCheckout: boolean = false;
 
-  constructor(private modalCtrl: ModalController, private router: Router, private helperService: HelperService,
-     private categorySearchService: CategorySearchService) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private router: Router,
+    private helperService: HelperService,
+    private categorySearchService: CategorySearchService
+  ) {}
   ngOnInit() {
     this.loadCartItems();
   }
   dismiss() {
     this.modalCtrl.dismiss({
-      'dismissed': true
+      dismissed: true,
     });
   }
   increment(itm) {
+    this.disableCheckout = false;
     var ind = this.cartItems.indexOf(itm);
-    this.cartItems[ind].itemCount ++;
+    this.cartItems[ind].itemCount++;
     this.helperService.setCartItems(this.cartItems);
   }
 
   decrement(itm) {
     var ind = this.cartItems.indexOf(itm);
-    if(this.cartItems[ind].itemCount > 0) {
-    this.cartItems[ind].itemCount --;
-    this.helperService.setCartItems(this.cartItems);
+    if (this.cartItems[ind].itemCount > 1) {
+      this.cartItems[ind].itemCount--;
+      this.helperService.setCartItems(this.cartItems);
     } else {
       this.removeItem(itm);
     }
   }
 
   loadCartItems() {
-    this.helperService.getCartItems().subscribe(cartItems => {
-      if(cartItems!=null){
+    this.helperService.getCartItems().subscribe((cartItems) => {
+      if (cartItems != null) {
         this.cartItems = cartItems;
-       
+
         this.isEmptyCart = false;
       } else {
         this.isEmptyCart = true;
       }
     });
-
   }
   removeItem(itm) {
     var ind = this.cartItems.indexOf(itm);
     this.cartItems.splice(ind, 1);
+    if (this.cartItems.length == 0) {
+      this.disableCheckout = true;
+    }
     this.helperService.setCartItems(this.cartItems);
   }
   navigateTo(ele) {
-    var route = '/'+ele;
+    var route = '/' + ele;
     this.router.navigate([route]);
     this.dismiss();
   }
-  async ionViewDidLeave () {
-    if (sessionStorage.getItem('cartUpdated') == 'true'){
-      await this.categorySearchService.insertCartItems('UserCartItemsInsert')
-      .subscribe((data: any) => {
-        sessionStorage.setItem('cartUpdated', 'false');
-      },
-      (error: any) => {
-      });
+  async ionViewDidLeave() {
+    if (sessionStorage.getItem('cartUpdated') == 'true') {
+      await this.categorySearchService
+        .insertCartItems('UserCartItemsInsert')
+        .subscribe(
+          (data: any) => {
+            sessionStorage.setItem('cartUpdated', 'false');
+          },
+          (error: any) => {}
+        );
     }
   }
 }

@@ -18,7 +18,7 @@
   <ion-row class="btm-btn" *ngIf="!isEmptyCart">
     <ion-button type="submit" shape="round"  class="ion-margin-bottom"
       (click)="navigateTo('category-search')">Continue <ion-icon name="cart-outline" color="#FFF"></ion-icon></ion-button>
-    <ion-button type="submit" shape="round" class="ion-margin-bottom" (click)="navigateTo('checkout')">
+    <ion-button type="submit" shape="round" [attr.disabled]="disableCheckout" class="ion-margin-bottom" (click)="navigateTo('checkout')">
       Proceed To Checkout</ion-button>
   </ion-row>
   <div *ngIf="!isEmptyCart" class="cart-itm-wrap">
