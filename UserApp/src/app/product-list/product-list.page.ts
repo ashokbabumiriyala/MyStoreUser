@@ -69,7 +69,7 @@ export class ProductListPage implements OnInit {
             this.productList = data.provideMerchantProdList;
             Object.assign(this.masterData, this.productList);
             this.productList.forEach((product) => {
-              product['isAvailable'] = Number(product.quantity) > 0;
+              product['isAvailable'] = Number(product.availableQty) > 0;
               product['itemCount'] = 0;
               product['addedToCart'] = false;
               this.cartItems.forEach((item) => {
@@ -89,7 +89,7 @@ export class ProductListPage implements OnInit {
   }
 
   increment(index) {
-    if (Number(this.productList[index].quantity) > 0) {
+    if (Number(this.productList[index].availableQty) > 0) {
       // this.currentNumber++;
       this.productList[index].itemCount++;
       if (this.productList[index].addedToCart) {
@@ -103,7 +103,7 @@ export class ProductListPage implements OnInit {
   }
 
   decrement(index) {
-    if (Number(this.productList[index].quantity) > 0) {
+    if (Number(this.productList[index].availableQty) > 0) {
       if (this.productList[index].itemCount > 0) {
         this.productList[index].itemCount--;
       }
@@ -126,11 +126,11 @@ export class ProductListPage implements OnInit {
         this.cartItems[0].storeID == this.productList[index].storeID)
     ) {
       if (
-        Number(this.productList[index].quantity) <
+        Number(this.productList[index].availableQty) <
         this.productList[index].itemCount
       ) {
         this.helperService.presentToast(
-          `Only ${this.productList[index].quantity} items are available in the stock`,
+          `Only ${this.productList[index].availableQty} items are available in the stock`,
           'warning'
         );
       } else {

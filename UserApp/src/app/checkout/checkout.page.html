@@ -105,14 +105,14 @@
       <div *ngSwitchCase="0">
         <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
-            <ion-button type="submit" shape="round" expand="block" (click)="payWithRazorMobileApp();" class="ion-margin-bottom">Make payment</ion-button>
+            <ion-button type="submit" shape="round" expand="block" [attr.enabled]="isValidAmount" (click)="payWithRazorMobileApp();" class="ion-margin-bottom">Make payment</ion-button>
           </ion-col>
         </ion-row>
       </div>
       <div *ngSwitchCase="1">
         <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
-            <ion-button type="submit" shape="round" expand="block" (click)="makeAnOrder();" class="ion-margin-bottom">Place an order</ion-button>
+            <ion-button type="submit" shape="round" expand="block" [attr.enabled]="isValidAmount" (click)="makeAnOrder();" class="ion-margin-bottom">Place an order</ion-button>
           </ion-col>
         </ion-row>
       </div>
