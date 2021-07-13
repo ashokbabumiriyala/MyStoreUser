@@ -281,8 +281,8 @@ if(this.model_title === "Delivery Address"){
         this.markers.push(marker);
         google.maps.event.addListener(marker, 'dragend', function() {
         });
-        this.map.setCenter(results[0].geometry.location);       
-        item.terms.forEach((item) => {       
+        this.map.setCenter(results[0].geometry.location); 
+        item.terms.reverse().forEach((item) => {       
           this.userSelectedAddress= item.value +"," + this.userSelectedAddress;
         });
         this.autocomplete.input= this.userSelectedAddress;        
