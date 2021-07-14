@@ -42,8 +42,8 @@ export class LoginPage implements OnInit {
 
   private createloginForm() {
     this.loginFormGroup = new FormGroup({
-      userName: new FormControl('sharan', Validators.required),
-      password: new FormControl('sbg123', Validators.required),
+      userName: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
     });
   }
 

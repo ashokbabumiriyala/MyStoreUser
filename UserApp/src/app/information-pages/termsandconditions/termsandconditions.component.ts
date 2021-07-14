@@ -8,10 +8,11 @@ import { NavParams, ModalController } from '@ionic/angular';
 })
 export class TermsandconditionsComponent implements OnInit {
   @Input() modal: boolean;
-  constructor(private navParams: NavParams, private modalController: ModalController) { }
+  constructor( private modalController: ModalController) { }
 
   ngOnInit() {
-    this.navParams.get('modal');
+    //this.navParams.get('modal');
+    //NavParams
   }
   closeModal() { this.modalController.dismiss(); }
 
