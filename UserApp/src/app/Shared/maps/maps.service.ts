@@ -19,4 +19,8 @@ export class MapsService {
   userDeliveryAddressUpdate(methodName: string, data:any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, data);
   }
+
+  userStores(methodName: string, resouce: any): Observable<any> {
+    return this.commonApiServiceCallsService.select(this.apiUrl + methodName, resouce);
+  }
 }

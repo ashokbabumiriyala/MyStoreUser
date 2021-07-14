@@ -37,6 +37,9 @@ export class HelperService {
   );
   private deliveryAddress$: BehaviorSubject<any[]> = new BehaviorSubject(null);
 
+  private products$: BehaviorSubject<any[]> = new BehaviorSubject(null);
+  private services$: BehaviorSubject<any[]> = new BehaviorSubject(null);
+
   getProfileObs(): Observable<any> {
     return this.profileObs$.asObservable();
   }
@@ -46,19 +49,15 @@ export class HelperService {
   getCartItemsType(): Observable<AvailableStoreTypes> {
     return this.cartItemsType$.asObservable();
   }
-
   setCartItemsType(availableStoreType: AvailableStoreTypes) {
     this.cartItemsType$.next(availableStoreType);
   }
-
   getStoreLocationDetails(): Observable<string> {
     return this.storeLocationDetails$.asObservable();
   }
-
   setStoreLocationDetails(storeDetails: string) {
     this.storeLocationDetails$.next(storeDetails);
   }
-
   getCartItems(): Observable<any> {
     return this.cartItems$.asObservable();
   }
@@ -66,14 +65,12 @@ export class HelperService {
     sessionStorage.setItem('cartUpdated', 'true');
     this.cartItems$.next(cartItems);
   }
-
   getDeliveryAddress(): Observable<any> {
     return this.deliveryAddress$.asObservable();
   }
   setDeliveryAddress(deliveryAddress: any) {
     this.deliveryAddress$.next(deliveryAddress);
   }
-
   async createLoadingController(displayMessage: string): Promise<any> {
     const loadingController = await this.loadingController.create({
       message: displayMessage,
@@ -164,8 +161,19 @@ export class HelperService {
     });
     await alert.present();
   }
+  getProducts(): Observable<any> {
+    return this.products$.asObservable();
+  }
+  setProducts(products: any[]) {
+    this.products$.next(products);
+  }
+  getServices(): Observable<any> {
+    return this.services$.asObservable();
+  }
+  setServices(services: any[]) {
+    this.services$.next(services);
+  }
 }
-
 export interface iDropdown {
   label: string;
   value: number;

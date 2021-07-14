@@ -9,6 +9,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 })
 export class RegistrationServiceService {
   private apiUrl = environment.authenticationServiceUrl;
+  private UserapiUrl = environment.userOperationServiceUrl;
   constructor(private commonApiServiceCallsService:CommonApiServiceCallsService,
     private http:HttpClient) { }
 
@@ -17,6 +18,10 @@ export class RegistrationServiceService {
   }
   retrieveUserNameOrPassword(methodName: string, resouce: any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, resouce);
+  }
+
+  userStores(methodName: string, resouce: any): Observable<any> {
+    return this.commonApiServiceCallsService.select(this.UserapiUrl + methodName, resouce);
   }
 
 }

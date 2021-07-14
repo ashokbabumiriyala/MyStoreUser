@@ -32,9 +32,27 @@ export class ServiceInfoPage implements OnInit {
     this.autocompleteItems = [];}
 
   ngOnInit() {
+   this.pageLoad();
+  }
+
+  public pageLoad(){
     this.displayListView = true;
-    this.getserviceInfoList();
     this.googleMapStyle();
+    this.helperService.getServices().subscribe((services) => {      
+      if (services != null) {
+      this.masterData=[];
+      this.serviceInfoList = services;
+      Object.assign(this.masterData,this.serviceInfoList);  
+      this.serviceInfoList.forEach(marker => {
+       this.latitude=parseFloat(marker.latitude)
+       this.longitude=parseFloat(marker.longitude);
+        const markerObject = { position: {lat: parseFloat(marker.latitude),  lng:parseFloat(marker.longitude)},  title: marker.name, data: marker };
+        this.markers.push(markerObject);
+      });
+      }else{
+        this.getserviceInfoList();
+      }
+    });
   }
 
   filterItems() {

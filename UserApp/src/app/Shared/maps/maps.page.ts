@@ -8,7 +8,7 @@ declare var google:any;
 import {MapsService}  from '../maps/maps.service';
 import { HelperService } from '../../common/helper.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-// import { CheckoutPage } from 'src/app/checkout/checkout.page';
+
 @Component({
   selector: 'app-maps',
   templateUrl: './maps.page.html',
@@ -36,11 +36,13 @@ export class MapsPage implements OnInit {
   currentLocation :any;
   style = [];
   selectedAddress:string;
+
   constructor(public modalCtrl: ModalController,private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder, public zone: NgZone, 
     private androidPermissions: AndroidPermissions,
     private locationAccuracy: LocationAccuracy,
     private helperService:HelperService,
+    
     private mapsService:MapsService) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
       this.autocomplete = { input: '' };
@@ -215,6 +217,20 @@ if(this.model_title === "Delivery Address"){
           });
     }
   }
+  else{
+   this.getUserStores();
+  }
+}
+async getUserStores() {  
+  const dataObj={Latitude: sessionStorage.getItem("lat"),Longitude: sessionStorage.getItem("lng")};
+  await this.mapsService.userStores('userStores',dataObj)
+    .subscribe((data: any) => {       
+     this.helperService.setProducts(data.userMerchant);
+     this.helperService.setServices(data.userService);
+    },
+      (error: any) => {
+    
+      });
 }
 
   getAddressFromCoords(lattitude, longitude) {

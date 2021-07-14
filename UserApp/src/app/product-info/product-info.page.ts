@@ -44,9 +44,28 @@ export class ProductInfoPage implements OnInit {
   }
   displayListView: boolean;
   ngOnInit() {
+  this.pageLoad();
+  }
+  public pageLoad(){
     this.displayListView = true;
-    this.getMerchantList();
+   
     this.googleMapStyle();
+
+    this.helperService.getProducts().subscribe((merchants) => {      
+      if (merchants != null) {
+        this.masterData=[];
+        this.merchantList = merchants;
+        Object.assign(this.masterData,this.merchantList);       
+        this.merchantList.forEach(marker => {
+          this.latitude=parseFloat(marker.latitude)
+          this.longitude=parseFloat(marker.longitude);
+          const markerObject = { position: {lat: parseFloat(marker.latitude),  lng:parseFloat(marker.longitude)},  title: marker.name, data: marker };
+          this.markers.push(markerObject);
+        });
+      }else{
+        this.getMerchantList();
+      }
+    });
   }
   async getMerchantList() {
     const loadingController = await this.helperService.createLoadingController("loading");

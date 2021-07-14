@@ -7,6 +7,7 @@ import { RegistrationServiceService } from '../../Shared/registration-service.se
 import { Router, NavigationStart } from '@angular/router';
 import { IUserDetails } from '../../common/provider-details';
 import { AuthenticationService } from '../../common/authentication.service';
+
 declare var google: any;
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginPage implements OnInit {
     private helperService: HelperService,
     private authenticationService: AuthenticationService,
     private loadingController: LoadingController,
+
     private router: Router
   ) {}
   loginFormGroup: FormGroup;
@@ -40,8 +42,8 @@ export class LoginPage implements OnInit {
 
   private createloginForm() {
     this.loginFormGroup = new FormGroup({
-      userName: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      userName: new FormControl('sharan', Validators.required),
+      password: new FormControl('sbg123', Validators.required),
     });
   }
 
@@ -106,6 +108,7 @@ export class LoginPage implements OnInit {
             this.lng = position.coords.longitude;
             sessionStorage.setItem('lat', this.lat);
             sessionStorage.setItem('lng', this.lng);
+            this.getUserStores();           
           }
         },
         (error: PositionError) => console.log(error)
@@ -113,5 +116,16 @@ export class LoginPage implements OnInit {
     } else {
       alert('Geolocation is not supported by this browser.');
     }
+  }
+  async getUserStores() {  
+    const dataObj={Latitude: sessionStorage.getItem("lat"),Longitude: sessionStorage.getItem("lng")};
+    await this.registrationServiceService.userStores('userStores',dataObj)
+      .subscribe((data: any) => {       
+       this.helperService.setProducts(data.userMerchant);
+       this.helperService.setServices(data.userService);
+      },
+        (error: any) => {
+      
+        });
   }
 }
