@@ -20,6 +20,7 @@ export class SignupPage implements OnInit {
   latitude:any;
   longitude:any;
   geocoder:any;
+  showTermsAndConditions:boolean;
   constructor(private route: ActivatedRoute, private helperService:HelperService,
      private signUpService:SignUpService, private router:Router, private modalController:ModalController,
      private toastController:ToastController, public animationCtrl: AnimationController, private geolocation: Geolocation) {this.geocoder = new google.maps.Geocoder(); }
@@ -29,6 +30,7 @@ export class SignupPage implements OnInit {
   userProfile:any = {};
   ngOnInit() {
     this.signUpFormGroupCreate();
+    this.showTermsAndConditions=true;
     this.route.queryParams.subscribe(params => {
       if(Object.keys(params).length > 0) {
         if(JSON.parse(params.signup)) {
@@ -120,6 +122,7 @@ export class SignupPage implements OnInit {
 
   }
   async register(): Promise<void>{
+    debugger;
     if(this.signUpFormGroup.controls.agreed.value==="false" ||this.signUpFormGroup.controls.agreed.value===false){  
       this.signUpFormGroup.controls['agreed'].setErrors({'error': true});
     }
@@ -127,6 +130,7 @@ export class SignupPage implements OnInit {
     if (this.editProfile){
       this.signUpFormGroup.controls['Password'].setErrors(null);
       this.signUpFormGroup.controls['confirmPassword'].setErrors(null);
+      this.signUpFormGroup.controls['agreed'].setErrors(null);
     }
       if (this.signUpFormGroup.invalid) {
         return;
@@ -246,10 +250,29 @@ export class SignupPage implements OnInit {
   async UpdateProfile() {
     this.editProfile = true;
     this.readProfile = false;
-    if (this.userProfile.UserName) {
-      this.signUpFormGroup.setValue(this.userProfile)
-    }
+   this.setForamADetailsToPage(this.userProfile);
   }
+
+
+  
+private setForamADetailsToPage(data: any): void {
+ this.UserName.disable();
+ this.MobileNumber.disable();
+  this.showTermsAndConditions=false;
+  this.signUpFormGroup.patchValue({
+    UserName:data.UserName,
+    MobileNumber:data.MobileNumber,
+    Email: data.Email,
+    Address:data.Address,
+    City:data.City,
+    State:data.State,
+    Pincode:data.Pincode,
+    agreed:true
+   
+});
+}
+
+
   async backToScreen() {
     this.editProfile = false;
     this.readProfile = true;

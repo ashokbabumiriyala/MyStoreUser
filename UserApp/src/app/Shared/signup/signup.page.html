@@ -82,7 +82,7 @@
       <small *ngIf="isFormSubmitted &&  Pincode.errors"><span style="color: red;">*Pincode Required
       </span>
     </small>
-      <ion-item style="--background: transparent;" lines="none">
+      <ion-item style="--background: transparent;" lines="none" *ngIf="showTermsAndConditions">
           <ion-label>I agree to the <a href="javascript:;" (click)="presentAlertTermsConditions()">Terms & Conditions</a>.</ion-label>
         
           <ion-checkbox slot="start" style="margin-inline-end:16px;--background: transparent;"   checked="false"
