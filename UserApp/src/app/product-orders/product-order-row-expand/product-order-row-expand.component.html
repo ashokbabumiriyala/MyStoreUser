@@ -6,6 +6,14 @@
           <td><b>Delivery Status: </b></td>
           <td class="label"> {{orderDetails.deliveryStatus}}</td>
         </tr>
+        <tr *ngIf="orderDetails.executiveName">
+          <td><b>Executive Name: </b></td>
+          <td class="label"> {{orderDetails.executiveName}}</td>
+        </tr>
+        <tr *ngIf="orderDetails.executiveMobileNumber">
+          <td><b>Executive Mobile Number: </b></td>
+          <td class="label"> {{orderDetails.executiveMobileNumber}}</td>
+        </tr>
         <tr>
           <td><b>Store Name: </b></td>
           <td class="label" style="width: 140px;"> {{orderDetails.storeName}}</td>
@@ -55,27 +63,27 @@
     <p style="margin: auto;" *ngIf="orderDetails.deliveryType != 1">Processing Fee:- <b>{{ orderDetails.processingFee |
         currency:'INR'}}</b></p>
     <p style="margin: auto;">Total Order Value:- <b>{{ orderDetails.totalAmount | currency:'INR'}}</b></p> -->
-<table style="width: -webkit-fill-available;text-align:left;">
-  <thead>
-    <th></th>
-    <th>Name</th>
-    <th>Qty</th>
-    <th>Price</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let itm of  orderedItems">
-      <td>
-        <ion-avatar>
-          <img class="product-img" src="{{itm.url}}" *ngIf="itm.url">
-          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
-        </ion-avatar>        
-      </td>
-        <td>{{itm.productName}}</td>
-        <td class="label">{{itm.quantity}}</td>    
-        <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
-    </tr>
-  </tbody>
-</table>
+    <table style="width: -webkit-fill-available;text-align:left;">
+      <thead>
+        <th></th>
+        <th>Name</th>
+        <th>Qty</th>
+        <th>Price</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let itm of  orderedItems">
+          <td>
+            <ion-avatar>
+              <img class="product-img" src="{{itm.url}}" *ngIf="itm.url">
+              <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
+            </ion-avatar>
+          </td>
+          <td>{{itm.productName}}</td>
+          <td class="label">{{itm.quantity}}</td>
+          <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
+        </tr>
+      </tbody>
+    </table>
     <!-- <ion-item *ngFor="let itm of  orderedItems">     
       <ion-avatar>
         <img class="product-img" src="{{itm.url}}" *ngIf="itm.url">
