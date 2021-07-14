@@ -38,7 +38,7 @@
           <td><b>Delivery Charges& Processing Fee: </b></td>
           <td class="label" style="width: 140px;"> {{orderDetails.deliveryCharge + orderDetails.processingFee | currency:'INR'}}</td>
         </tr>
-        <tr *ngIf="orderDetails.deliveryType != 1">
+        <tr *ngIf="orderDetails.deliveryType == 1">
           <td><b>Processing Fee: </b></td>
           <td class="label" style="width: 140px;"> {{ orderDetails.processingFee |currency:'INR'}}</td>
         </tr>
