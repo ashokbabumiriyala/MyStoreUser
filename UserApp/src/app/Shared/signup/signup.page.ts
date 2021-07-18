@@ -183,7 +183,6 @@ export class SignupPage implements OnInit {
         City: this.City.value,
         State: this.State.value,
         Pincode: this.Pincode.value,
-        pushToken: sessionStorage.getItem('PushToken'),
         Latitude: this.latitude?.toString(),
         Longitude: this.longitude?.toString(),
       };
@@ -192,7 +191,6 @@ export class SignupPage implements OnInit {
         apiName = 'UpdateUserProfile';
         this.isignUp['UserId'] = Number(sessionStorage.getItem('UserId'));
         delete this.isignUp['Password'];
-        delete this.isignUp['pushToken'];
       }
 
       this.signUpService.providerSignUp(apiName, this.isignUp).subscribe(
@@ -318,7 +316,6 @@ interface IsignUp {
   MobileNumber: string;
   Email: string;
   Password: string;
-  pushToken: string;
   Address: string;
   City: string;
   State: string;

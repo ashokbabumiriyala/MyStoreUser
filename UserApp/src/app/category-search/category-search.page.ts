@@ -49,7 +49,9 @@ gethomeSearchResult(ev:any){
   if (val && val.trim() !== '' && val.length>=4) {
       this.isItemAvailable = true;
       this.masterData = this.homeResult.filter((item) => {
-          return (item.address.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        if (item.address != null) {
+          return item.address.toLowerCase().indexOf(val.toLowerCase()) > -1;
+        }
       })
   } else {
       this.isItemAvailable = false;

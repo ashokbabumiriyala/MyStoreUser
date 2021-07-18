@@ -10,6 +10,8 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
 import { CommonApiServiceCallsService } from './Shared/common-api-service-calls.service';
 import { environment } from './../environments/environment';
 import { Router, NavigationStart } from '@angular/router';
+import { PushTokenService } from './common/pushTokenService';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -19,7 +21,7 @@ export class AppComponent implements OnInit {
   showHead: boolean = true;
   userName: string;
   showMenu: boolean;
-  index:any = 0;
+  index: any = 0;
   public appPages = [
     { title: 'Profile', icon: 'person-outline', id: 1 },
     { title: 'Product Orders', icon: 'aperture-outline', id: 2 },
@@ -42,7 +44,8 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private helperService: HelperService,
     private appVersion: AppVersion,
-    private commonApiServiceCallsService: CommonApiServiceCallsService
+    private commonApiServiceCallsService: CommonApiServiceCallsService,
+    private pushTokenService: PushTokenService
   ) {
     this.initializeApp();
   }
@@ -144,6 +147,10 @@ export class AppComponent implements OnInit {
 
         // get FCM token
         this.fcm.getToken().then((token) => {
+          console.log('push token' + token);
+          this.pushTokenService.registerPushToken(token).subscribe((result) => {
+            console.log('successfully registered push token, result:' + result);
+          });
           sessionStorage.setItem('PushToken', token);
         });
 
@@ -158,6 +165,10 @@ export class AppComponent implements OnInit {
 
         // refresh the FCM token
         this.fcm.onTokenRefresh().subscribe((token) => {
+          console.log('push token' + token);
+          this.pushTokenService.registerPushToken(token).subscribe((result) => {
+            console.log('successfully registered push token, result:' + result);
+          });
           sessionStorage.setItem('PushToken', token);
         });
       } else {

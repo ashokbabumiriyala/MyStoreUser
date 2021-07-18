@@ -68,7 +68,6 @@ export class LoginPage implements OnInit {
     const dataObject = {
       UserName: this.userName.value,
       Password: this.password.value,
-      pushToken: sessionStorage.getItem('PushToken'),
     };
     await this.registrationServiceService
       .validateUser('UserLogin', dataObject)
@@ -108,7 +107,7 @@ export class LoginPage implements OnInit {
             this.lng = position.coords.longitude;
             sessionStorage.setItem('lat', this.lat);
             sessionStorage.setItem('lng', this.lng);
-            this.getUserStores();           
+            this.getUserStores();
           }
         },
         (error: PositionError) => console.log(error)
@@ -117,15 +116,19 @@ export class LoginPage implements OnInit {
       alert('Geolocation is not supported by this browser.');
     }
   }
-  async getUserStores() {  
-    const dataObj={Latitude: sessionStorage.getItem("lat"),Longitude: sessionStorage.getItem("lng")};
-    await this.registrationServiceService.userStores('userStores',dataObj)
-      .subscribe((data: any) => {       
-       this.helperService.setProducts(data.userMerchant);
-       this.helperService.setServices(data.userService);
-      },
-        (error: any) => {
-      
-        });
+  async getUserStores() {
+    const dataObj = {
+      Latitude: sessionStorage.getItem('lat'),
+      Longitude: sessionStorage.getItem('lng'),
+    };
+    await this.registrationServiceService
+      .userStores('userStores', dataObj)
+      .subscribe(
+        (data: any) => {
+          this.helperService.setProducts(data.userMerchant);
+          this.helperService.setServices(data.userService);
+        },
+        (error: any) => {}
+      );
   }
 }

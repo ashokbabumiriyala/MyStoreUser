@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import {AuthenticationService} from '../common/authentication.service'
-import { CanLoad, CanActivate, Route, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { AuthenticationService } from '../common/authentication.service';
+import {
+  CanLoad,
+  CanActivate,
+  Route,
+  Router,
+  ActivatedRouteSnapshot,
+} from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthGuardService  implements CanLoad, CanActivate {
-
-  constructor(private authenticationService:AuthenticationService,private router: Router) { }
+export class AuthGuardService implements CanLoad, CanActivate {
+  constructor(
+    private authenticationService: AuthenticationService,
+    private router: Router
+  ) {}
 
   canLoad(route: Route): boolean {
     const customRedirect = route.data.authGuardRedirect;
