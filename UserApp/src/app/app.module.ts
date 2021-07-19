@@ -8,36 +8,41 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
-import {CategorySearchPageModule} from 'src/app/category-search/category-search.module'
+import { CategorySearchPageModule } from 'src/app/category-search/category-search.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
+import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Market } from '@ionic-native/market/ngx';
-import { Camera } from '@ionic-native/camera/ngx'
+import { Camera } from '@ionic-native/camera/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @NgModule({
-  declarations: [	AppComponent],
+  declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(),
-    AppRoutingModule,FormsModule,
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    FormsModule,
     CategorySearchPageModule,
-    HttpClientModule
+    HttpClientModule,
   ],
 
   providers: [
     Geolocation,
     NativeGeocoder,
     FCM,
+    LocalNotifications,
     AppVersion,
     Market,
     Camera,
     AndroidPermissions,
     LocationAccuracy,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

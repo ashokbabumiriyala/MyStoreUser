@@ -7,6 +7,7 @@ import { RegistrationServiceService } from '../../Shared/registration-service.se
 import { Router, NavigationStart } from '@angular/router';
 import { IUserDetails } from '../../common/provider-details';
 import { AuthenticationService } from '../../common/authentication.service';
+import { PushTokenService } from 'src/app/common/pushTokenService';
 
 declare var google: any;
 @Component({
@@ -21,8 +22,8 @@ export class LoginPage implements OnInit {
     private helperService: HelperService,
     private authenticationService: AuthenticationService,
     private loadingController: LoadingController,
-
-    private router: Router
+    private router: Router,
+    private pushTokenService: PushTokenService
   ) {}
   loginFormGroup: FormGroup;
   isFormSubmitted: boolean;
@@ -80,7 +81,17 @@ export class LoginPage implements OnInit {
           sessionStorage.setItem('UserAddress', data.userAddress);
           sessionStorage.setItem('MobileNumber', data.mobileNumber);
           sessionStorage.setItem('Email', data.email);
-
+          var pushToken = sessionStorage.getItem('PushToken');
+          var userId = Number(data.userId);
+          if (userId != 0 && pushToken != null) {
+            this.pushTokenService
+              .registerUserPushToken(userId, pushToken)
+              .subscribe((result) => {
+                console.log(
+                  'successfully registered push token, result:' + result
+                );
+              });
+          }
           let providerDetails: IUserDetails;
           providerDetails = {
             name: data.userName,

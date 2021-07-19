@@ -11,6 +11,7 @@ import { CommonApiServiceCallsService } from './Shared/common-api-service-calls.
 import { environment } from './../environments/environment';
 import { Router, NavigationStart } from '@angular/router';
 import { PushTokenService } from './common/pushTokenService';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-root',
@@ -45,7 +46,8 @@ export class AppComponent implements OnInit {
     private helperService: HelperService,
     private appVersion: AppVersion,
     private commonApiServiceCallsService: CommonApiServiceCallsService,
-    private pushTokenService: PushTokenService
+    private pushTokenService: PushTokenService,
+    private localNotifications: LocalNotifications
   ) {
     this.initializeApp();
   }
@@ -148,27 +150,46 @@ export class AppComponent implements OnInit {
         // get FCM token
         this.fcm.getToken().then((token) => {
           console.log('push token' + token);
-          this.pushTokenService.registerPushToken(token).subscribe((result) => {
-            console.log('successfully registered push token, result:' + result);
-          });
+          var userId = Number(sessionStorage.getItem('UserId'));
+          if (userId != 0 && token != null) {
+            this.pushTokenService
+              .registerUserPushToken(userId, token)
+              .subscribe((result) => {
+                console.log(
+                  'successfully registered push token, result:' + result
+                );
+              });
+          }
           sessionStorage.setItem('PushToken', token);
         });
 
         // ionic push notification example
         this.fcm.onNotification().subscribe((data) => {
+          console.log(JSON.stringify(data));
           if (data.wasTapped) {
             console.log('Received in background');
           } else {
             console.log('Received in foreground');
+            this.localNotifications.schedule({
+              title: data.title,
+              text: data.body,
+            });
           }
         });
 
         // refresh the FCM token
         this.fcm.onTokenRefresh().subscribe((token) => {
           console.log('push token' + token);
-          this.pushTokenService.registerPushToken(token).subscribe((result) => {
-            console.log('successfully registered push token, result:' + result);
-          });
+          var userId = Number(sessionStorage.getItem('UserId'));
+          if (userId != 0 && token != null) {
+            this.pushTokenService
+              .registerUserPushToken(+userId, token)
+              .subscribe((result) => {
+                console.log(
+                  'successfully registered push token, result:' + result
+                );
+              });
+          }
           sessionStorage.setItem('PushToken', token);
         });
       } else {

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
+import { CommonApiServiceCallsService } from '../Shared/common-api-service-calls.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +11,20 @@ import { environment } from 'src/environments/environment.prod';
 export class PushTokenService {
   isAuthenticated = false;
   token: string;
-  private apiUrl;
-  constructor(private httpClient: HttpClient) {
-    this.apiUrl = environment.pushTokenServiceUrl + 'UpdatePushToken';
+  private registerUserPushTokenUrl: string;
+  constructor(
+    private commonApiServiceCallsService: CommonApiServiceCallsService
+  ) {
+    this.registerUserPushTokenUrl =
+      environment.pushTokenServiceUrl + 'UpdateUserPushToken';
   }
 
-  public registerPushToken(token: string): Observable<any> {
-    return this.httpClient
-      .post(this.apiUrl, token)
+  public registerUserPushToken(userId: number, token: string): Observable<any> {
+    return this.commonApiServiceCallsService
+      .select(this.registerUserPushTokenUrl, {
+        userId: +userId,
+        pushToken: token,
+      })
       .pipe(catchError((error) => this.handleRegisterTokenError(error)));
   }
 
