@@ -197,7 +197,7 @@ export class SignupPage implements OnInit {
         (data: any) => {
           loadingController.dismiss();
           if (!this.editProfile && !this.readProfile) {
-            if (data?.operationStatusDTO?.transactionStatus == -1) {
+            if (data?.operationStatusDTO?.transactionStatus == 10) {
               this.presentToast('This user already exists', 'danger');
             } else {
               this.signUpFormGroup.reset();
