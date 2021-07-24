@@ -8,6 +8,9 @@ declare var RazorpayCheckout: any;
 import { environment } from '../../environments/environment';
 import { AvailableStoreTypes } from '../common/Enums';
 import { ɵangular_packages_platform_browser_dynamic_testing_testing_a } from '@angular/platform-browser-dynamic/testing';
+import { ProductInfoService } from '../product-info/product-info.service';
+import { CommonApiServiceCallsService } from '../Shared/common-api-service-calls.service';
+import { StorageService } from '../common/storage.service';
 
 enum DeliveryType {
   HomeDelivery = 0,
@@ -36,18 +39,23 @@ export class CheckoutPage implements OnInit {
   storeOrServiceName: string;
   storeOrServiceAddress: string;
   isValidAmount: boolean = true;
+  storeOrServiceLocationId: string;
   constructor(
     private helperService: HelperService,
     private checkoutService: CheckoutService,
     private toastController: ToastController,
     private categorySearchService: CategorySearchService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private productInfoService: ProductInfoService,
+    private commonApiServiceCallsService: CommonApiServiceCallsService,
+    private storageService: StorageService
   ) {}
-  ngOnInit() {
+
+  async ngOnInit(): Promise<void> {
     this.deliveryType = DeliveryType.HomeDelivery.toString();
     this.paymentType = PaymentType.OnlinePayment.toString();
-    this.deliveryCharges = Number(sessionStorage.getItem('DelCharge'));
+    this.deliveryCharges = Number(await this.storageService.get('DelCharge'));
 
     this.helperService.getCartItemsType().subscribe((currentCartItemType) => {
       if (currentCartItemType == AvailableStoreTypes.ServiceType) {
@@ -57,6 +65,44 @@ export class CheckoutPage implements OnInit {
         this.isServiceType = false;
       }
     });
+
+    this.helperService.getStoreLocationDetails().subscribe((storeDetails) => {
+      this.storeOrServiceLocationId = storeDetails;
+    });
+
+    this.helperService
+      .getDeliveryAddress()
+      .subscribe(async (currentAddress) => {
+        if (currentAddress != null) {
+          this.defaultAddress = currentAddress.address;
+          var calAddressObj = {
+            storeId: this.storeOrServiceLocationId,
+            latitude: currentAddress.latitude,
+            longitude: currentAddress.longitude,
+          };
+          const loadingController =
+            await this.helperService.createLoadingController('loading');
+          await loadingController.present();
+
+          await this.productInfoService
+            .getCalculateDistance('CalculateDistance', calAddressObj)
+            .subscribe(
+              (data: any) => {
+                if (data != null) {
+                  this.deliveryCharges = data.deliveryCharges;
+                }
+                console.log(data);
+                loadingController.dismiss();
+              },
+              (error: any) => {
+                loadingController.dismiss();
+              }
+            );
+        } else {
+          this.getUserCheckOutAddress();
+        }
+      });
+
     this.helperService.getCartItems().subscribe((cartItems) => {
       if (cartItems != null) {
         this.cartItems = cartItems;
@@ -66,31 +112,26 @@ export class CheckoutPage implements OnInit {
             this.subTotal + item.priceAfterDiscount * item.itemCount;
         });
         if (this.subTotal > 0) {
-          var money = Math.round(this.subTotal + this.deliveryCharges);
-          this.processingFee = Math.round((money / 100) * 2.4);
+          this.processingFee = Math.round(
+            ((this.subTotal + this.deliveryCharges) / 100) * 2.4
+          );
         }
+      }
+      if (this.subTotal <= 0) {
+        this.isValidAmount = false;
+        this.processingFee = 0;
       }
     });
     if (this.subTotal <= 0) {
       this.isValidAmount = false;
+      this.processingFee = 0;
     }
-    this.helperService.getDeliveryAddress().subscribe((currentAddress) => {
-      if (currentAddress != null) {
-        this.defaultAddress = currentAddress.address;
-      } else {
-        this.getUserCheckOutAddress();
-      }
-    });
 
-    let storeOrServiceLocationId = null;
-    this.helperService.getStoreLocationDetails().subscribe((storeDetails) => {
-      storeOrServiceLocationId = storeDetails;
-    });
     if (this.isServiceType == true) {
       this.checkoutService
         .getStoreDetails(
           'GetProviderServiceLocation',
-          Number(storeOrServiceLocationId)
+          Number(this.storeOrServiceLocationId)
         )
         .subscribe(
           (data: any) => {
@@ -126,10 +167,10 @@ export class CheckoutPage implements OnInit {
       this.checkoutService
         .getStoreDetails(
           'GetProviderStoreLocation',
-          Number(storeOrServiceLocationId)
+          Number(this.storeOrServiceLocationId)
         )
         .subscribe(
-          (data: any) => {
+          async (data: any) => {
             if (data != null && data.locationDetails != null) {
               this.storeOrServiceName =
                 data.locationDetails.businessName != undefined
@@ -160,14 +201,58 @@ export class CheckoutPage implements OnInit {
         );
     }
   }
+  onDeliveryTypeChange() {
+    if (this.deliveryType == DeliveryType.HomeDelivery.toString()) {
+      if (this.subTotal > 0) {
+        this.processingFee = Math.round(
+          ((this.subTotal + this.deliveryCharges) / 100) * 2.4
+        );
+      }
+    } else if (this.deliveryType == DeliveryType.SelfPickup.toString()) {
+      if (this.subTotal > 0) {
+        this.processingFee = Math.round((this.subTotal / 100) * 2.4);
+      }
+    }
+  }
 
   async getUserCheckOutAddress() {
-    const dataObj = { UserId: Number(sessionStorage.getItem('UserId')) };
+    const dataObj = { UserId: Number(await this.storageService.get('UserId')) };
     await this.checkoutService
       .insertOrderList('GetUserCheckOutAddress', dataObj)
       .subscribe(
-        (data: any) => {
+        async (data: any) => {
           this.defaultAddress = data.checkoutAddress[0].address;
+          var calAddressObj = {
+            storeId: this.storeOrServiceLocationId,
+            latitude: data.checkoutAddress[0].latitude,
+            longitude: data.checkoutAddress[0].longitude,
+          };
+          const loadingController =
+            await this.helperService.createLoadingController('loading');
+          await loadingController.present();
+
+          await this.commonApiServiceCallsService
+            .select(
+              environment.userOperationServiceUrl + 'CalculateDistance',
+              calAddressObj
+            )
+            .subscribe(
+              (data: any) => {
+                if (data != null) {
+                  this.deliveryCharges = data.deliveryCharges;
+                  if (this.subTotal > 0) {
+                    this.processingFee = Math.round(
+                      ((this.subTotal + this.deliveryCharges) / 100) * 2.4
+                    );
+                  }
+                }
+                console.log(data);
+                loadingController.dismiss();
+              },
+              (error: any) => {
+                loadingController.dismiss();
+              }
+            );
         },
         (error: any) => {}
       );
@@ -177,7 +262,11 @@ export class CheckoutPage implements OnInit {
     var ind = this.cartItems.indexOf(item);
     this.cartItems.splice(ind, 1);
     this.helperService.setCartItems(this.cartItems);
+    if (this.cartItems.length == 0) {
+      this.deliveryCharges = 0;
+    }
   }
+
   selectedAddr(addr) {
     if (addr.target.value != 'default') {
       this.default = false;
@@ -191,12 +280,18 @@ export class CheckoutPage implements OnInit {
       image: '../../assets/images/logo.png',
       currency: 'INR', // your 3 letter currency code
       key: environment.razorPaymentkey, // your Key Id from Razorpay dashboard
-      amount: this.subTotal + this.deliveryCharges + this.processingFee + '00',
+      amount:
+        (this.deliveryType == DeliveryType.HomeDelivery.toString()
+          ? this.deliveryCharges
+          : 0) +
+        this.subTotal +
+        this.processingFee +
+        '00',
       name: 'My3Karrt',
       prefill: {
-        email: sessionStorage.getItem('Email'),
-        contact: sessionStorage.getItem('MobileNumber'),
-        name: sessionStorage.getItem('UserName'),
+        email: await this.storageService.get('Email'),
+        contact: await this.storageService.get('MobileNumber'),
+        name: await this.storageService.get('UserName'),
       },
       theme: {
         color: '#F37254',
@@ -215,18 +310,25 @@ export class CheckoutPage implements OnInit {
     this.insertOrderList(null);
   }
   async insertOrderList(payment_id = null) {
-    var amount = this.subTotal + this.deliveryCharges + this.processingFee;
+    var amount =
+      this.subTotal +
+      (this.deliveryType == DeliveryType.SelfPickup.toString()
+        ? 0
+        : this.deliveryCharges) +
+      this.processingFee;
     const loadingController = await this.helperService.createLoadingController(
       'loading'
     );
     await loadingController.present();
     const dataObject = {
-      UserId: Number(sessionStorage.getItem('UserId')),
+      UserId: Number(await this.storageService.get('UserId')),
       TransactionId: payment_id,
       TotalAmount: amount.toString(),
-      DeliveryCharge: this.deliveryCharges,
+      DeliveryCharge: DeliveryType.SelfPickup.toString()
+        ? 0
+        : this.deliveryCharges,
       SubTotal: this.subTotal,
-      SellerKey: sessionStorage.getItem('Key'),
+      SellerKey: await this.storageService.get('Key'),
       ProcessingFee: Number(this.processingFee),
       PaymentType:
         this.paymentType == PaymentType.CashOnDelivery.toString() ? 1 : 0,
@@ -268,10 +370,10 @@ export class CheckoutPage implements OnInit {
       });
     }
     await this.checkoutService.insertOrderList(apiName, dataObject).subscribe(
-      (data: any) => {
+      async (data: any) => {
         this.cartItems = [];
         this.helperService.setCartItems(this.cartItems);
-        sessionStorage.setItem('cartUpdated', 'false');
+        await this.storageService.set('cartUpdated', 'false');
         let orderId = data.operationStatusDTO.orderId;
         this.presentToast(
           'your order is placed successfully. Order Id is ' + orderId,
@@ -296,15 +398,15 @@ export class CheckoutPage implements OnInit {
     toast.present();
   }
   async ionViewDidLeave() {
-    if (sessionStorage.getItem('cartUpdated') == 'true') {
-      await this.categorySearchService
-        .insertCartItems('UserCartItemsInsert')
-        .subscribe(
-          (data: any) => {
-            sessionStorage.setItem('cartUpdated', 'false');
-          },
-          (error: any) => {}
-        );
+    if ((await this.storageService.get('cartUpdated')) == 'true') {
+      (
+        await this.categorySearchService.insertCartItems('UserCartItemsInsert')
+      ).subscribe(
+        async (data: any) => {
+          await this.storageService.set('cartUpdated', 'false');
+        },
+        (error: any) => {}
+      );
     }
   }
 

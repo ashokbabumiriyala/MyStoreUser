@@ -10,6 +10,10 @@ import { AppVersion } from '@ionic-native/app-version/ngx';
 import { CommonApiServiceCallsService } from './Shared/common-api-service-calls.service';
 import { environment } from './../environments/environment';
 import { Router, NavigationStart } from '@angular/router';
+import { PushTokenService } from './common/pushTokenService';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { StorageService } from './common/storage.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -19,11 +23,12 @@ export class AppComponent implements OnInit {
   showHead: boolean = true;
   userName: string;
   showMenu: boolean;
-  index:any = 0;
+  index: any = 0;
   public appPages = [
     { title: 'Profile', icon: 'person-outline', id: 1 },
     { title: 'Product Orders', icon: 'aperture-outline', id: 2 },
-    { title: 'Service Orders', icon: 'color-filter-outline', id: 3 },
+    //need to revert -- TODO
+    // { title: 'Service Orders', icon: 'color-filter-outline', id: 3 },
     { title: 'Raise A Complaint', icon: 'chatbox-ellipses-outline', id: 4 },
     { title: 'About My3Karrt', icon: 'extension-puzzle-outline', id: 5 },
     { title: 'Terms and Conditions', icon: 'cog-outline', id: 6 },
@@ -42,13 +47,16 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private helperService: HelperService,
     private appVersion: AppVersion,
-    private commonApiServiceCallsService: CommonApiServiceCallsService
+    private commonApiServiceCallsService: CommonApiServiceCallsService,
+    private pushTokenService: PushTokenService,
+    private localNotifications: LocalNotifications,
+    private storageService: StorageService
   ) {
     this.initializeApp();
   }
   cartItems = [];
   version: any;
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.helperService.getProfileObs().subscribe((profile) => {
       this.index = 0;
       if (profile != null) {
@@ -64,10 +72,11 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  public navigatePage(menuId: number): void {
+  public async navigatePage(menuId: number): Promise<void>{
     switch (menuId) {
       case 11:
         this.showMenu = false;
+        await this.storageService.clear();
         this.router.navigate(['/login']);
         break;
 
@@ -112,9 +121,9 @@ export class AppComponent implements OnInit {
     }
   }
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       if (this.platform.is('android') || this.platform.is('ios')) {
-        sessionStorage.setItem('mobile', 'true');
+        await this.storageService.set('mobile', 'true');
         this.appVersion.getVersionNumber().then((res) => {
           this.version = res;
           if (this.version) {
@@ -140,28 +149,55 @@ export class AppComponent implements OnInit {
           }
         });
         // subscribe to a topic
-        this.fcm.subscribeToTopic('Users');
+        //this.fcm.subscribeToTopic('Users');
 
         // get FCM token
-        this.fcm.getToken().then((token) => {
-          sessionStorage.setItem('PushToken', token);
+        this.fcm.getToken().then(async (token) => {
+          console.log('push token' + token);
+          var userId = Number(await this.storageService.get('UserId'));
+          if (userId != 0 && token != null) {
+            this.pushTokenService
+              .registerUserPushToken(userId, token)
+              .subscribe((result) => {
+                console.log(
+                  'successfully registered push token, result:' + result
+                );
+              });
+          }
+          await this.storageService.set('PushToken', token);
         });
 
         // ionic push notification example
         this.fcm.onNotification().subscribe((data) => {
+          console.log(JSON.stringify(data));
           if (data.wasTapped) {
             console.log('Received in background');
           } else {
             console.log('Received in foreground');
+            this.localNotifications.schedule({
+              title: data.title,
+              text: data.body,
+            });
           }
         });
 
         // refresh the FCM token
-        this.fcm.onTokenRefresh().subscribe((token) => {
-          sessionStorage.setItem('PushToken', token);
+        this.fcm.onTokenRefresh().subscribe(async (token) => {
+          console.log('push token' + token);
+          var userId = Number(await this.storageService.get('UserId'));
+          if (userId != 0 && token != null) {
+            this.pushTokenService
+              .registerUserPushToken(+userId, token)
+              .subscribe((result) => {
+                console.log(
+                  'successfully registered push token, result:' + result
+                );
+              });
+          }
+          await this.storageService.set('PushToken', token);
         });
       } else {
-        sessionStorage.setItem('mobile', 'false');
+        await this.storageService.set('mobile', 'false');
       }
     });
   }

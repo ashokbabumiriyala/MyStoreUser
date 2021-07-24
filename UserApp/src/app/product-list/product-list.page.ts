@@ -8,6 +8,7 @@ import { CategorySearchService } from '../category-search/category-search.servic
 import { ModalController, AnimationController } from '@ionic/angular';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { AvailableStoreTypes } from '../common/Enums';
+import { StorageService } from '../common/storage.service';
 
 @Component({
   selector: 'app-product-list',
@@ -30,7 +31,8 @@ export class ProductListPage implements OnInit {
     public animationCtrl: AnimationController,
     public modalController: ModalController,
     private alertCtrl: AlertController,
-    private categorySearchService: CategorySearchService
+    private categorySearchService: CategorySearchService,
+    private storageService: StorageService
   ) {}
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -41,7 +43,28 @@ export class ProductListPage implements OnInit {
     this.getProductList();
     this.helperService.getCartItems().subscribe((cartItems) => {
       if (cartItems != null) {
-        this.cartItems = cartItems;
+        {
+          this.productList.forEach((product) => {
+            var foundProduct = cartItems.find(
+              (cartItem) => cartItem.productID == product.productID
+            );
+            if (foundProduct != null) {
+              product.itemCount = foundProduct.itemCount;
+              if (foundProduct.itemCount > 0) {
+                product.cartStatus = 'Added to cart';
+                product.addedToCart = true;
+              } else {
+                product.cartStatus = '';
+                product.addedToCart = false;
+              }
+            } else {
+              product.cartStatus = '';
+              product.addedToCart = false;
+              product.itemCount = 0;
+            }
+          });
+          this.cartItems = cartItems;
+        }
       }
     });
   }
@@ -134,11 +157,18 @@ export class ProductListPage implements OnInit {
           'warning'
         );
       } else {
-        if (
-          this.productList[index].itemCount > 0 &&
-          !this.productList[index].addedToCart
-        ) {
-          this.productList[index].addedToCart = true;
+        if (this.productList[index].itemCount > 0) {
+          var addedProduct = this.cartItems.find(
+            (o) => o.productID === this.productList[index].productID
+          );
+          if (addedProduct != null) {
+            addedProduct.itemCount = this.productList[index].itemCount;
+          } else {
+            this.cartItems.push(this.productList[index]);
+            this.productList[index].cartStatus = 'Added to cart';
+          }
+        } else {
+          this.productList[index].itemCount = 1;
           this.cartItems.push(this.productList[index]);
           this.productList[index].cartStatus = 'Added to cart';
         }
@@ -181,15 +211,15 @@ export class ProductListPage implements OnInit {
       });
   }
   async ionViewDidLeave() {
-    if (sessionStorage.getItem('cartUpdated') == 'true') {
-      await this.categorySearchService
-        .insertCartItems('UserCartItemsInsert')
-        .subscribe(
-          (data: any) => {
-            sessionStorage.setItem('cartUpdated', 'false');
-          },
-          (error: any) => {}
-        );
+    if ((await this.storageService.get('cartUpdated')) == 'true') {
+      (
+        await this.categorySearchService.insertCartItems('UserCartItemsInsert')
+      ).subscribe(
+        async (data: any) => {
+          await this.storageService.set('cartUpdated', 'false');
+        },
+        (error: any) => {}
+      );
     }
   }
 

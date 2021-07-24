@@ -16,8 +16,8 @@
     </div>
   </div>
   <ion-row class="btm-btn" *ngIf="!isEmptyCart">
-    <ion-button type="submit" shape="round"  class="ion-margin-bottom"
-      (click)="navigateTo('category-search')">Continue <ion-icon name="cart-outline" color="#FFF"></ion-icon></ion-button>
+    <ion-button type="submit" shape="round" class="ion-margin-bottom" (click)="navigateTo('category-search')">Continue <ion-icon name="cart-outline" color="#FFF"></ion-icon>
+    </ion-button>
     <ion-button type="submit" shape="round" [attr.disabled]="disableCheckout" class="ion-margin-bottom" (click)="navigateTo('checkout')">
       Proceed To Checkout</ion-button>
   </ion-row>
@@ -40,10 +40,10 @@
             </div>
             <!-- <h3>Total Price:  {{itm.price * itm.count | currency:'INR'}}</h3> -->
           </ion-col>
-          <ion-col size="4" class="ion-padding-top ion-text-right" >
+          <ion-col size="4" class="ion-padding-top ion-text-right">
             <p class="ion-no-margin units" *ngIf="item.productID">
               <ion-icon class="plus-minus" name="remove-circle" (click)="decrement(item)" item-right></ion-icon>
-              <ion-input type="number" min="1" [value]="currentNumber" [(ngModel)]="item.itemCount"></ion-input>
+              <ion-input type="number" min="1" [value]="currentNumber" disabled [(ngModel)]="item.itemCount"></ion-input>
               <ion-icon class="plus-minus" name="add-circle" (click)="increment(item)" item-right></ion-icon>
             </p>
           </ion-col>

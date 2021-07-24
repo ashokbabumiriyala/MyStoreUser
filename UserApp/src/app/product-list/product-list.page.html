@@ -27,7 +27,7 @@
             <ion-col size="6">
               <p class="ion-no-margin units">
                 <ion-icon class="plus-minus" name="remove-circle" [attr.disabled]="!product.isAvailable" (click)="decrement(i)" item-right></ion-icon>
-                <ion-input type="number" min="1" [value]="product.itemCount" [attr.disabled]="!product.isAvailable" [(ngModel)]="product.itemCount"></ion-input>
+                <ion-input type="number" min="1" [value]="product.itemCount" disabled [(ngModel)]="product.itemCount"></ion-input>
                 <ion-icon class="plus-minus" name="add-circle" [attr.disabled]="!product.isAvailable" (click)="increment(i)" item-right></ion-icon>
               </p>
             </ion-col>

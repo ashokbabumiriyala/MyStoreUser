@@ -2,7 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HelperService } from '../common/helper.service';
 import { ServiceInfoService } from '../service-info/service-info.service';
-import {iDataTransferBetweenPages}  from '../common/data-transfer-between-pages';
+import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages';
+import { StorageService } from '../common/storage.service';
 declare var google;
 @Component({
   selector: 'app-service-info',
@@ -12,88 +13,127 @@ declare var google;
 export class ServiceInfoPage implements OnInit {
   serviceInfoList = [];
   displayListView: boolean;
-  markers=[]
+  markers = [];
   @ViewChild('serviceMap', { static: false }) mapElement: ElementRef;
   map: any;
   style = [];
   GoogleAutocomplete: any;
-  autocomplete: { input: string; };
+  autocomplete: { input: string };
   autocompleteItems: any[];
-  latitude:number;
-  longitude:number;
+  latitude: number;
+  longitude: number;
   iDataTransferBetweenPages: iDataTransferBetweenPages;
-  public masterData:any = [];
-  public searchService: string = "";
-  constructor(private router:Router, private serviceInfoService: ServiceInfoService,
-    private helperService: HelperService) {  if (google) {
+  public masterData: any = [];
+  public searchService: string = '';
+  constructor(
+    private router: Router,
+    private serviceInfoService: ServiceInfoService,
+    private helperService: HelperService,
+    private storageService: StorageService
+  ) {
+    if (google) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     }
     this.autocomplete = { input: '' };
-    this.autocompleteItems = [];}
-
-  ngOnInit() {
-   this.pageLoad();
+    this.autocompleteItems = [];
   }
 
-  public pageLoad(){
+  ngOnInit() {
+    this.pageLoad();
+  }
+
+  public pageLoad() {
     this.displayListView = true;
     this.googleMapStyle();
-    this.helperService.getServices().subscribe((services) => {      
+    this.helperService.getServices().subscribe((services) => {
       if (services != null) {
-      this.masterData=[];
-      this.serviceInfoList = services;
-      Object.assign(this.masterData,this.serviceInfoList);  
-      this.serviceInfoList.forEach(marker => {
-       this.latitude=parseFloat(marker.latitude)
-       this.longitude=parseFloat(marker.longitude);
-        const markerObject = { position: {lat: parseFloat(marker.latitude),  lng:parseFloat(marker.longitude)},  title: marker.name, data: marker };
-        this.markers.push(markerObject);
-      });
-      }else{
+        this.masterData = [];
+        this.serviceInfoList = services;
+        Object.assign(this.masterData, this.serviceInfoList);
+        this.serviceInfoList.forEach((marker) => {
+          this.latitude = parseFloat(marker.latitude);
+          this.longitude = parseFloat(marker.longitude);
+          const markerObject = {
+            position: {
+              lat: parseFloat(marker.latitude),
+              lng: parseFloat(marker.longitude),
+            },
+            title: marker.name,
+            data: marker,
+          };
+          this.markers.push(markerObject);
+        });
+      } else {
         this.getserviceInfoList();
       }
     });
   }
 
   filterItems() {
-    this.masterData = this.serviceInfoList.filter(item => {
-      return item.businessName.toLowerCase().indexOf(this.searchService.toLowerCase()) > -1;
+    this.masterData = this.serviceInfoList.filter((item) => {
+      return (
+        item.businessName
+          .toLowerCase()
+          .indexOf(this.searchService.toLowerCase()) > -1
+      );
     });
   }
-  async getserviceInfoList(){
-    const loadingController = await this.helperService.createLoadingController("loading");
+  async getserviceInfoList() {
+    const loadingController = await this.helperService.createLoadingController(
+      'loading'
+    );
     await loadingController.present();
-    const dataObj={Latitude: sessionStorage.getItem("lat"),Longitude: sessionStorage.getItem("lng")};
-    await this.serviceInfoService.getServiceInfoList('UserServiceSelect',dataObj)
-    .subscribe((data: any) => {     
-      this.serviceInfoList = data;
-     
-      Object.assign(this.masterData,this.serviceInfoList);  
-      this.serviceInfoList.forEach(marker => {
-       this.latitude=parseFloat(marker.latitude)
-       this.longitude=parseFloat(marker.longitude);
-        const markerObject = { position: {lat: parseFloat(marker.latitude),  lng:parseFloat(marker.longitude)},  title: marker.name, data: marker };
-        this.markers.push(markerObject);
-      });
-      loadingController.dismiss();
-    },
-    (error: any) => {
-      loadingController.dismiss();
-    });
+    const dataObj = {
+      Latitude: await this.storageService.get('lat'),
+      Longitude: await this.storageService.get('lng'),
+    };
+    await this.serviceInfoService
+      .getServiceInfoList('UserServiceSelect', dataObj)
+      .subscribe(
+        (data: any) => {
+          this.serviceInfoList = data;
+
+          Object.assign(this.masterData, this.serviceInfoList);
+          this.serviceInfoList.forEach((marker) => {
+            this.latitude = parseFloat(marker.latitude);
+            this.longitude = parseFloat(marker.longitude);
+            const markerObject = {
+              position: {
+                lat: parseFloat(marker.latitude),
+                lng: parseFloat(marker.longitude),
+              },
+              title: marker.name,
+              data: marker,
+            };
+            this.markers.push(markerObject);
+          });
+          loadingController.dismiss();
+        },
+        (error: any) => {
+          loadingController.dismiss();
+        }
+      );
   }
-  getServices(service) {
-    this.iDataTransferBetweenPages = { serviceId: Number(service.serviceLocationID),serviceName:service.businessName};
-    sessionStorage.removeItem("Key");
-    sessionStorage.removeItem("DelCharge");
-    sessionStorage.setItem("Key",service.razorPaymentKey);
-    sessionStorage.setItem("DelCharge","0");  
-    this.helperService.navigateWithData(['service-list'], this.iDataTransferBetweenPages);
+
+  async getServices(service) {
+    this.iDataTransferBetweenPages = {
+      serviceId: Number(service.serviceLocationID),
+      serviceName: service.businessName,
+    };
+    await this.storageService.remove('Key');
+    await this.storageService.remove('DelCharge');
+    await this.storageService.set('Key', service.razorPaymentKey);
+    await this.storageService.set('DelCharge', '0');
+    this.helperService.navigateWithData(
+      ['service-list'],
+      this.iDataTransferBetweenPages
+    );
   }
-  mapView(){  
-    this.displayListView=false;
+  mapView() {
+    this.displayListView = false;
     this.loadMap();
   }
-  listView(){
+  listView() {
     const mapEle: HTMLElement = document.getElementById('serviceMap');
     mapEle.classList.remove('map-view');
     this.displayListView = true;
@@ -101,13 +141,13 @@ export class ServiceInfoPage implements OnInit {
   loadMap() {
     // create a new map by passing HTMLElement
     const mapEle: HTMLElement = document.getElementById('serviceMap');
-    mapEle.classList.add('map-view');    
-    const myLatLng = { lat:  this.latitude, lng:  this.longitude };
+    mapEle.classList.add('map-view');
+    const myLatLng = { lat: this.latitude, lng: this.longitude };
     // create map
     this.map = new google.maps.Map(mapEle, {
       center: myLatLng,
       zoom: 12,
-      styles: this.style
+      styles: this.style,
     });
     google.maps.event.addListenerOnce(this.map, 'idle', () => {
       this.renderMarkers();
@@ -116,14 +156,14 @@ export class ServiceInfoPage implements OnInit {
   }
 
   renderMarkers() {
-    this.markers.forEach(marker => {
+    this.markers.forEach((marker) => {
       this.addMarker(marker);
     });
   }
   addMarker(marker: any) {
     // http:// google.com/mapfiles/ms/micons
-    let url = "http://maps.google.com/mapfiles/ms/micons/";
-    url += "orange-dot" + ".png";
+    let url = 'http://maps.google.com/mapfiles/ms/micons/';
+    url += 'orange-dot' + '.png';
     var markerpoint = new google.maps.Marker({
       position: marker.position,
       map: this.map,
@@ -131,32 +171,31 @@ export class ServiceInfoPage implements OnInit {
       label: {
         color: 'red',
         fontWeight: 'bold',
-        text: marker.title
-      },      
+        text: marker.title,
+      },
       icon: {
         url: url,
 
         labelOrigin: new google.maps.Point(10, 45),
-      }
+      },
     });
-    google.maps.event.addListener(markerpoint, 'click', ()  => {   
+    google.maps.event.addListener(markerpoint, 'click', () => {
       this.getServices(marker.data);
     });
     return marker;
   }
 
-  private googleMapStyle(){
-    this.style =
-    [
+  private googleMapStyle() {
+    this.style = [
       {
-          "featureType": "administrative.country",
-          "elementType": "labels.icon",
-          "stylers": [
-              {
-                  "visibility": "on"
-              }
-          ]
-      }
-  ]
+        featureType: 'administrative.country',
+        elementType: 'labels.icon',
+        stylers: [
+          {
+            visibility: 'on',
+          },
+        ],
+      },
+    ];
   }
 }

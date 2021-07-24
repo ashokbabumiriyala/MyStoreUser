@@ -11,6 +11,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { TermsandconditionsComponent } from '../../information-pages/termsandconditions/termsandconditions.component';
+import { StorageService } from 'src/app/common/storage.service';
 declare var google: any;
 
 @Component({
@@ -33,7 +34,8 @@ export class SignupPage implements OnInit {
     private modalController: ModalController,
     private toastController: ToastController,
     public animationCtrl: AnimationController,
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
+    private storageService: StorageService
   ) {
     this.geocoder = new google.maps.Geocoder();
   }
@@ -64,7 +66,7 @@ export class SignupPage implements OnInit {
       'loading'
     );
     await loadingController.present();
-    let data = { UserId: Number(sessionStorage.getItem('UserId')) };
+    let data = { UserId: Number(await this.storageService.get('UserId')) };
     await this.signUpService
       .getProfileData('UserProfileSelect', data)
       .subscribe(
@@ -166,7 +168,7 @@ export class SignupPage implements OnInit {
       this.State.value +
       ',' +
       this.Pincode.value;
-    this.geocoder.geocode({ address: fullAddress }, (results, status) => {
+    this.geocoder.geocode({ address: fullAddress }, async (results, status) => {
       if (status == google.maps.GeocoderStatus.OK) {
         this.latitude = results[0].geometry.location.lat();
         this.longitude = results[0].geometry.location.lng();
@@ -183,23 +185,23 @@ export class SignupPage implements OnInit {
         City: this.City.value,
         State: this.State.value,
         Pincode: this.Pincode.value,
-        pushToken: sessionStorage.getItem('PushToken'),
         Latitude: this.latitude?.toString(),
         Longitude: this.longitude?.toString(),
       };
       let apiName = 'UserSignupSave';
       if (this.editProfile) {
         apiName = 'UpdateUserProfile';
-        this.isignUp['UserId'] = Number(sessionStorage.getItem('UserId'));
+        this.isignUp['UserId'] = Number(
+          await this.storageService.get('UserId')
+        );
         delete this.isignUp['Password'];
-        delete this.isignUp['pushToken'];
       }
 
       this.signUpService.providerSignUp(apiName, this.isignUp).subscribe(
         (data: any) => {
           loadingController.dismiss();
           if (!this.editProfile && !this.readProfile) {
-            if (data?.operationStatusDTO?.transactionStatus == -1) {
+            if (data?.operationStatusDTO?.transactionStatus == 10) {
               this.presentToast('This user already exists', 'danger');
             } else {
               this.signUpFormGroup.reset();
@@ -318,7 +320,6 @@ interface IsignUp {
   MobileNumber: string;
   Email: string;
   Password: string;
-  pushToken: string;
   Address: string;
   City: string;
   State: string;

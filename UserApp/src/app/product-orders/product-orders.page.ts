@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { HelperService } from '../common/helper.service';
+import { StorageService } from '../common/storage.service';
 import { ProductOrderService } from './product-order.service';
 
 @Component({
@@ -23,7 +24,8 @@ export class ProductOrdersPage implements OnInit {
   constructor(
     private router: Router,
     private helperService: HelperService,
-    private productOrderService: ProductOrderService
+    private productOrderService: ProductOrderService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -34,7 +36,9 @@ export class ProductOrdersPage implements OnInit {
       'loading'
     );
     await loadingController.present();
-    const dataObject = { UserId: Number(sessionStorage.getItem('UserId')) };
+    const dataObject = {
+      UserId: Number(await this.storageService.get('UserId')),
+    };
     await this.productOrderService
       .getProductOrders('UserProductOrders', dataObject)
       .subscribe(

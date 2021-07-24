@@ -1,30 +1,33 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <h2 class="page-title">Select Any Category</h2>
-  <ion-row>
-    <ion-col size="6">
-      <ion-card  class="ion-no-margin category" (click)="navigateTo('product')">
+  <ion-row style="align-content: center;">
+    <ion-col size="auto">
+      <ion-card class="ion-no-margin category" (click)="navigateTo('product')">
         <img class="img" src="../assets/images/merchants.jpeg">
         <ion-card-header>
           <ion-card-title>Merchants</ion-card-title>
         </ion-card-header>
       </ion-card>
-</ion-col>
-<ion-col size="6">
-  <ion-card  class="ion-no-margin category" (click)="navigateTo('service')">
-    <img class="img" src="../assets/images/services.jpeg">
-    <ion-card-header>
-      <ion-card-title>Services</ion-card-title>
-    </ion-card-header>
-  </ion-card>
-</ion-col>
-</ion-row>
-<ion-row class="search-bar"> 
-  <ion-searchbar debounce="500" (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location"></ion-searchbar>
-  <p style="margin-top: auto;font-size: small;text-align: center;"><b>Note:</b>Use this search bar to view products/services of your favourite provider. </p>
-</ion-row>
-
-<ion-list *ngIf="isItemAvailable">
-  <ion-item  button (click)="itemClick(item)" *ngFor="let item of masterData">{{ item.address }}</ion-item>
-</ion-list>
+    </ion-col>
+    <!--need to revert -- TODO remove style -->
+    <ion-col size="6" style="display:none">
+      <ion-card class="ion-no-margin category" (click)="navigateTo('service')">
+        <img class="img" src="../assets/images/services.jpeg">
+        <ion-card-header>
+          <ion-card-title>Services</ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <ion-row class="search-bar">
+    <ion-searchbar debounce="500" (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location"></ion-searchbar>
+    <p style="margin-top: auto;font-size: small;text-align: center;"><b>Note:</b>Use this search bar to view products/services of your favourite provider. </p>
+  </ion-row>
+  <ion-row>
+    <blockquote><q>My3Karrt!! Shop from your favorite Neighborhood stores!!</q></blockquote>
+  </ion-row>
+  <ion-list *ngIf="isItemAvailable">
+    <ion-item button (click)="itemClick(item)" *ngFor="let item of masterData">{{ item.address }}</ion-item>
+  </ion-list>
 
 </ion-content>
