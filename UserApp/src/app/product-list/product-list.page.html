@@ -7,8 +7,11 @@
       <ion-col size="2" style="margin: auto">
         <ion-avatar>
           <img class="product-img" src="{{product.url}}" *ngIf="product.url">
-          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">
+          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">          
         </ion-avatar>
+        <p>
+        <a href="javascript:void(0);" (click)="presentViewModal(product)" class="view">
+          view</a></p>
       </ion-col>
       <ion-col size="10">
         <ion-grid>

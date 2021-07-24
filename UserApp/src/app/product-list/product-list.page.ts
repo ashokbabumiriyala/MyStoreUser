@@ -223,7 +223,7 @@ export class ProductListPage implements OnInit {
     }
   }
 
-  async presentViewModal() {
+  async presentViewModal(product) {
     const enterAnimation = (baseEl: any) => {
       const backdropAnimation = this.animationCtrl
         .create()
@@ -257,7 +257,7 @@ export class ProductListPage implements OnInit {
 
     const modal = await this.modalController.create({
       component: ViewModalComponent,
-      componentProps: { model_title: 'check' },
+      componentProps: { productData: product },
       enterAnimation,
       leaveAnimation,
     });

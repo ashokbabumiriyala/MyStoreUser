@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ModalController} from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
 
@@ -8,14 +8,15 @@ import { IonSlides } from '@ionic/angular';
   styleUrls: ['./view-modal.component.scss'],
 })
 export class ViewModalComponent implements OnInit {
+  @Input() productData: any;
 
   constructor(public modalCtrl: ModalController,) { }
-  @ViewChild('slideWithNav', { static: false }) slideWithNav: IonSlides;
-  
+  @ViewChild('slideWithNav', { static: false }) slideWithNav: IonSlides;  
   sliderOne: any;
   slideOptsOne = {initialSlide: 0,slidesPerView: 1,autoplay: true };
  
   ngOnInit() {
+    console.log("productData--"+ JSON.stringify(this.productData))
   this.sliderOne = {
       isBeginningSlide: true,
       isEndSlide: false,
@@ -61,5 +62,9 @@ export class ViewModalComponent implements OnInit {
     slideView.isEnd().then((istrue) => {
       object.isEndSlide = istrue;
     });
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("changed:--"+ changes.productData.currentValue);
+    this.productData = changes.productData.currentValue;
   }
 }

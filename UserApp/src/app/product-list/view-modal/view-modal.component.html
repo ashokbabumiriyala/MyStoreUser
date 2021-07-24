@@ -1,6 +1,6 @@
 <ion-content class="login-form  after-login-bg">
   <ion-toolbar class="after-login-bg">
-    <ion-title class="ion-text-center"><strong>{{model_title}}</strong></ion-title>
+    <h2 class="page-title">Product Information</h2>
     <ion-buttons slot="end">
       <ion-icon name="close-circle-outline" (click)="dismiss()"  size="large"></ion-icon>
     </ion-buttons>
@@ -27,6 +27,41 @@
     </ion-col>
   </ion-row>
 </ion-grid>
-
+<table class="table1">
+  <tbody>
+    <tr>
+      <td><b>Name: </b></td>
+      <td> {{productData?.productName}}</td>
+      </tr>
+      <tr>
+      <td><b>Category: </b></td>
+      <td> {{productData?.category}}</td>
+    </tr>
+    <tr>
+      <td><b>Units: </b></td>
+      <td> {{productData?.units}}</td>
+    </tr>    
+    <tr>
+      <td><b>Discount: </b></td>
+      <td> {{productData.discount}}</td>
+    </tr>
+    <tr>
+      <td><b>Price Bef. Disc.: </b></td>
+      <td> {{productData?.priceBeforeDiscount}}</td>
+    </tr>
+    <tr>
+      <td><b>Price Aft. Disc.: </b></td>
+      <td> {{productData?.priceAfterDiscount}}</td>
+    </tr>
+    <tr>
+      <td><b>Stock Avilable: </b></td>
+      <td> {{productData?.isAvailable}}</td>
+    </tr>
+    <tr>
+      <td><b>Description: </b></td>
+      <td> {{productData?.priceAfterDiscount}}</td>
+    </tr>    
+</tbody>
+</table>
 
 </ion-content>
