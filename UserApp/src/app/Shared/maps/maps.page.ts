@@ -257,7 +257,6 @@ export class MapsPage implements OnInit {
           this.storageService.set('lng', event.latLng.lng().toString());
           marker.position = latLng;
         });
-        this.dismiss();
       })
       .catch((error) => {});
 
