@@ -3,6 +3,10 @@
     <table class="table1" style=" margin-left: 10px;">
       <tbody>
         <tr>
+          <td><b>Order Date: </b></td>
+          <td class="label"> {{orderDetails.createdOn | date:"dd/MM/yyyy HH:mm"}}</td>
+        </tr>
+        <tr>
           <td><b>Delivery Status: </b></td>
           <td class="label"> {{orderDetails.deliveryStatus}}</td>
         </tr>
@@ -40,7 +44,7 @@
         </tr>
         <tr *ngIf="orderDetails.deliveryType == 1">
           <td><b>Processing Fee: </b></td>
-          <td class="label" style="width: 140px;"> {{ orderDetails.processingFee |currency:'INR'}}</td>
+          <td class="label" style="width: 140px;"> {{ (orderDetails.processingFee == null ? 0: orderDetails.processingFee) |currency:'INR'}}</td>
         </tr>
         <tr>
           <td><b>Total Order Value: </b></td>

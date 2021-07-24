@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { $ } from 'protractor';
 
 import { HelperService } from '../common/helper.service';
+import { StorageService } from '../common/storage.service';
 import { ServiceOrderService } from './service-order.service';
 @Component({
   selector: 'app-service-orders',
@@ -20,7 +21,8 @@ export class ServiceOrdersPage implements OnInit {
   constructor(
     private router: Router,
     private helperService: HelperService,
-    private serviceOrderService: ServiceOrderService
+    private serviceOrderService: ServiceOrderService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -31,7 +33,9 @@ export class ServiceOrdersPage implements OnInit {
       'loading'
     );
     await loadingController.present();
-    const dataObject = { UserId: Number(sessionStorage.getItem('UserId')) };
+    const dataObject = {
+      UserId: Number(await this.storageService.get('UserId')),
+    };
     await this.serviceOrderService
       .getServiceOrders('UserServiceOrders', dataObject)
       .subscribe(

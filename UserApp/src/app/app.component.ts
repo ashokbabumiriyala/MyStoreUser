@@ -12,6 +12,7 @@ import { environment } from './../environments/environment';
 import { Router, NavigationStart } from '@angular/router';
 import { PushTokenService } from './common/pushTokenService';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { StorageService } from './common/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit {
   public appPages = [
     { title: 'Profile', icon: 'person-outline', id: 1 },
     { title: 'Product Orders', icon: 'aperture-outline', id: 2 },
-    { title: 'Service Orders', icon: 'color-filter-outline', id: 3 },
+    //need to revert -- TODO
+    // { title: 'Service Orders', icon: 'color-filter-outline', id: 3 },
     { title: 'Raise A Complaint', icon: 'chatbox-ellipses-outline', id: 4 },
     { title: 'About My3Karrt', icon: 'extension-puzzle-outline', id: 5 },
     { title: 'Terms and Conditions', icon: 'cog-outline', id: 6 },
@@ -47,13 +49,14 @@ export class AppComponent implements OnInit {
     private appVersion: AppVersion,
     private commonApiServiceCallsService: CommonApiServiceCallsService,
     private pushTokenService: PushTokenService,
-    private localNotifications: LocalNotifications
+    private localNotifications: LocalNotifications,
+    private storageService: StorageService
   ) {
     this.initializeApp();
   }
   cartItems = [];
   version: any;
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.helperService.getProfileObs().subscribe((profile) => {
       this.index = 0;
       if (profile != null) {
@@ -69,10 +72,11 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  public navigatePage(menuId: number): void {
+  public async navigatePage(menuId: number): Promise<void>{
     switch (menuId) {
       case 11:
         this.showMenu = false;
+        await this.storageService.clear();
         this.router.navigate(['/login']);
         break;
 
@@ -117,9 +121,9 @@ export class AppComponent implements OnInit {
     }
   }
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       if (this.platform.is('android') || this.platform.is('ios')) {
-        sessionStorage.setItem('mobile', 'true');
+        await this.storageService.set('mobile', 'true');
         this.appVersion.getVersionNumber().then((res) => {
           this.version = res;
           if (this.version) {
@@ -145,12 +149,12 @@ export class AppComponent implements OnInit {
           }
         });
         // subscribe to a topic
-        this.fcm.subscribeToTopic('Users');
+        //this.fcm.subscribeToTopic('Users');
 
         // get FCM token
-        this.fcm.getToken().then((token) => {
+        this.fcm.getToken().then(async (token) => {
           console.log('push token' + token);
-          var userId = Number(sessionStorage.getItem('UserId'));
+          var userId = Number(await this.storageService.get('UserId'));
           if (userId != 0 && token != null) {
             this.pushTokenService
               .registerUserPushToken(userId, token)
@@ -160,7 +164,7 @@ export class AppComponent implements OnInit {
                 );
               });
           }
-          sessionStorage.setItem('PushToken', token);
+          await this.storageService.set('PushToken', token);
         });
 
         // ionic push notification example
@@ -178,9 +182,9 @@ export class AppComponent implements OnInit {
         });
 
         // refresh the FCM token
-        this.fcm.onTokenRefresh().subscribe((token) => {
+        this.fcm.onTokenRefresh().subscribe(async (token) => {
           console.log('push token' + token);
-          var userId = Number(sessionStorage.getItem('UserId'));
+          var userId = Number(await this.storageService.get('UserId'));
           if (userId != 0 && token != null) {
             this.pushTokenService
               .registerUserPushToken(+userId, token)
@@ -190,10 +194,10 @@ export class AppComponent implements OnInit {
                 );
               });
           }
-          sessionStorage.setItem('PushToken', token);
+          await this.storageService.set('PushToken', token);
         });
       } else {
-        sessionStorage.setItem('mobile', 'false');
+        await this.storageService.set('mobile', 'false');
       }
     });
   }

@@ -18,6 +18,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     FormsModule,
     CategorySearchPageModule,
     HttpClientModule,
+    IonicStorageModule.forRoot()
   ],
 
   providers: [

@@ -9,6 +9,7 @@ import {
 import { Router, NavigationExtras } from '@angular/router';
 import { Market } from '@ionic-native/market/ngx';
 import { AvailableStoreTypes } from './Enums';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,8 @@ export class HelperService {
     private router: Router,
     private alertCtrl: AlertController,
     private market: Market,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private storageService: StorageService
   ) {}
 
   private profileObs$: BehaviorSubject<IUserDetails> = new BehaviorSubject(
@@ -61,8 +63,9 @@ export class HelperService {
   getCartItems(): Observable<any> {
     return this.cartItems$.asObservable();
   }
-  setCartItems(cartItems: any[]) {
-    sessionStorage.setItem('cartUpdated', 'true');
+
+  async setCartItems(cartItems: any[]) {
+    await this.storageService.set('cartUpdated', 'true');
     this.cartItems$.next(cartItems);
   }
   getDeliveryAddress(): Observable<any> {
@@ -172,6 +175,10 @@ export class HelperService {
   }
   setServices(services: any[]) {
     this.services$.next(services);
+  }
+
+  isNullOrUndefined(value: any) {
+    return value === null || value === undefined;
   }
 }
 export interface iDropdown {

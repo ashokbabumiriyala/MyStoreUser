@@ -8,6 +8,8 @@ import { Router, NavigationStart } from '@angular/router';
 import { IUserDetails } from '../../common/provider-details';
 import { AuthenticationService } from '../../common/authentication.service';
 import { PushTokenService } from 'src/app/common/pushTokenService';
+import { StorageService } from 'src/app/common/storage.service';
+import { PositionError } from '@ionic-native/geolocation/ngx';
 
 declare var google: any;
 @Component({
@@ -23,15 +25,24 @@ export class LoginPage implements OnInit {
     private authenticationService: AuthenticationService,
     private loadingController: LoadingController,
     private router: Router,
-    private pushTokenService: PushTokenService
+    private pushTokenService: PushTokenService,
+    private storageService: StorageService
   ) {}
   loginFormGroup: FormGroup;
   isFormSubmitted: boolean;
   menus: any[];
   lat: any;
   lng: any;
-  ngOnInit() {
+  async ngOnInit() {
     this.createloginForm();
+    var currentUserName = await this.storageService.get('UserName');
+    var currentAuthToken = await this.storageService.get('AuthToken');
+    if (
+      !this.helperService.isNullOrUndefined(currentUserName) &&
+      !this.helperService.isNullOrUndefined(currentAuthToken)
+    ) {
+      this.router.navigate(['/category-search']);
+    }
     this.helperService.setProfileObs(null);
   }
   get userName() {
@@ -73,15 +84,15 @@ export class LoginPage implements OnInit {
     await this.registrationServiceService
       .validateUser('UserLogin', dataObject)
       .subscribe(
-        (data: any) => {
+        async (data: any) => {
           this.authenticationService.isAuthenticated = true;
-          sessionStorage.setItem('AuthToken', data.token);
-          sessionStorage.setItem('UserId', data.userId);
-          sessionStorage.setItem('UserName', data.userName);
-          sessionStorage.setItem('UserAddress', data.userAddress);
-          sessionStorage.setItem('MobileNumber', data.mobileNumber);
-          sessionStorage.setItem('Email', data.email);
-          var pushToken = sessionStorage.getItem('PushToken');
+          await this.storageService.set('AuthToken', data.token);
+          await this.storageService.set('UserId', data.userId);
+          await this.storageService.set('UserName', data.userName);
+          await this.storageService.set('UserAddress', data.userAddress);
+          await this.storageService.set('MobileNumber', data.mobileNumber);
+          await this.storageService.set('Email', data.email);
+          var pushToken = await this.storageService.get('PushToken');
           var userId = Number(data.userId);
           if (userId != 0 && pushToken != null) {
             this.pushTokenService
@@ -112,12 +123,12 @@ export class LoginPage implements OnInit {
   getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position: Position) => {
+        async (position: Position) => {
           if (position) {
             this.lat = position.coords.latitude;
             this.lng = position.coords.longitude;
-            sessionStorage.setItem('lat', this.lat);
-            sessionStorage.setItem('lng', this.lng);
+            await this.storageService.set('lat', this.lat.toString());
+            await this.storageService.set('lng', this.lng.toString());
             this.getUserStores();
           }
         },
@@ -129,8 +140,8 @@ export class LoginPage implements OnInit {
   }
   async getUserStores() {
     const dataObj = {
-      Latitude: sessionStorage.getItem('lat'),
-      Longitude: sessionStorage.getItem('lng'),
+      Latitude: await this.storageService.get('lat'),
+      Longitude: await this.storageService.get('lng'),
     };
     await this.registrationServiceService
       .userStores('userStores', dataObj)

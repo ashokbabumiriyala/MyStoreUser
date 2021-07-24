@@ -7,6 +7,7 @@ import { AlertController } from '@ionic/angular';
 import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages';
 import { CategorySearchService } from '../category-search/category-search.service';
 import { AvailableStoreTypes } from '../common/Enums';
+import { StorageService } from '../common/storage.service';
 
 @Component({
   selector: 'app-service-list',
@@ -26,7 +27,8 @@ export class ServiceListPage implements OnInit {
     private serviceListService: ServiceListService,
     private route: ActivatedRoute,
     private alertCtrl: AlertController,
-    private categorySearchService: CategorySearchService
+    private categorySearchService: CategorySearchService,
+    private storageService: StorageService
   ) {}
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -134,15 +136,15 @@ export class ServiceListPage implements OnInit {
       });
   }
   async ionViewDidLeave() {
-    if (sessionStorage.getItem('cartUpdated') == 'true') {
-      await this.categorySearchService
-        .insertCartItems('UserCartItemsInsert')
-        .subscribe(
-          (data: any) => {
-            sessionStorage.setItem('cartUpdated', 'false');
-          },
-          (error: any) => {}
-        );
+    if ((await this.storageService.get('cartUpdated')) == 'true') {
+      (
+        await this.categorySearchService.insertCartItems('UserCartItemsInsert')
+      ).subscribe(
+        async (data: any) => {
+          await this.storageService.set('cartUpdated', 'false');
+        },
+        (error: any) => {}
+      );
     }
   }
 }

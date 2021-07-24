@@ -53,10 +53,11 @@ export class CommonApiServiceCallsService {
       .pipe(catchError(error => this.handleError(error)));
   }
   select(apiUrl: string, resource: any) {
-   // this.createHttpHeader();
+    // this.createHttpHeader();
     return this.httpClient
       .post(apiUrl, resource)
-      .pipe(catchError(error => this.handleError(error)));
+      .pipe(catchError((error) => this.handleError(error)
+    ));
   }
   create(apiUrl: string, resource: any): Observable<any> {
    // this.createHttpHeader();
@@ -101,6 +102,7 @@ export class CommonApiServiceCallsService {
   }
 
   private handleError(error: Response) {
+    console.log(error);
     if (error.status === 404) {
       return throwError(console.log(error));
     }

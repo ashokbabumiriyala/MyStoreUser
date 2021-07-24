@@ -44,7 +44,7 @@
           <ion-col size="7">
             <h3 text-left>{{item.productName? item.productName: item.businessName}} - <span class="price">{{item.priceAfterDiscount | currency:'INR'}}</span></h3>
             <h3>Count - {{item.itemCount}} &nbsp;&nbsp; {{item.units? 'Units - ' + item.units: ''}}</h3>
-            <h3>Total Price: {{item.priceAfterDiscount * item.itemCount | currency:'INR'}}</h3>
+            <h3>Total Item Price: {{item.priceAfterDiscount * item.itemCount | currency:'INR'}}</h3>
           </ion-col>
           <ion-col size="2" class="ion-padding-top">
             <ion-icon class="delete" name="trash-outline" (click)="removeItem(item)"></ion-icon>
@@ -54,17 +54,17 @@
     </ion-card>
 
     <ion-list class="deliverytype-group" *ngIf="!isServiceType">
-      <ion-radio-group name="deliverytype" [(ngModel)]="deliveryType">
+      <ion-radio-group name="deliverytype" [(ngModel)]="deliveryType" (ionChange)="onDeliveryTypeChange($event)">
         <ion-list-header>
           <ion-label class="labelHeader">Choose Delivery Type</ion-label>
         </ion-list-header>
 
-        <ion-item class="ion-add">
+        <ion-item class="ion-add" [attr.disabled]="!isValidAmount">
           <ion-radio slot="start" value="0"></ion-radio>
           <ion-label class="selectionLabel">Home Delivery</ion-label>
         </ion-item>
 
-        <ion-item class="ion-add">
+        <ion-item class="ion-add" [attr.disabled]="!isValidAmount">
           <ion-radio slot="start" value="1"></ion-radio>
           <ion-label class="selectionLabel">Self pickup</ion-label>
         </ion-item>
@@ -77,12 +77,12 @@
           <ion-label class="labelHeader">Choose Payment Type</ion-label>
         </ion-list-header>
 
-        <ion-item class="ion-add">
+        <ion-item class="ion-add" [attr.disabled]="!isValidAmount">
           <ion-radio slot="start" value="0"></ion-radio>
           <ion-label class="selectionLabel">Online Payment</ion-label>
         </ion-item>
 
-        <ion-item class="ion-add">
+        <ion-item class="ion-add" [attr.disabled]="!isValidAmount">
           <ion-radio slot="start" value="1"></ion-radio>
           <ion-label class="selectionLabel">Cash on delivery</ion-label>
         </ion-item>
@@ -91,12 +91,12 @@
     <h4>Sub Total: {{subTotal | currency:'INR'}}</h4>
     <div [ngSwitch]="deliveryType">
       <div *ngSwitchCase="0">
-        <h6>Delivery and Processing Fee: {{deliveryCharges+processingFee | currency:'INR'}}</h6>
-        <h3>Total cost: {{subTotal + deliveryCharges+ processingFee | currency:'INR'}}</h3>
+        <h6>Delivery and Processing Fee: {{deliveryCharges + processingFee | currency:'INR'}}</h6>
+        <h3>Total cost: {{subTotal + deliveryCharges + processingFee | currency:'INR'}}</h3>
       </div>
       <div *ngSwitchCase="1">
         <h6>Processing Fee: {{processingFee | currency:'INR'}}</h6>
-        <h3>Total cost: {{subTotal + processingFee-deliveryCharges | currency:'INR'}}</h3>
+        <h3>Total cost: {{subTotal + processingFee | currency:'INR'}}</h3>
       </div>
     </div>
 
@@ -105,14 +105,14 @@
       <div *ngSwitchCase="0">
         <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
-            <ion-button type="submit" shape="round" expand="block" [attr.enabled]="isValidAmount" (click)="payWithRazorMobileApp();" class="ion-margin-bottom">Make payment</ion-button>
+            <ion-button type="submit" shape="round" expand="block" [attr.disabled]="!isValidAmount" (click)="payWithRazorMobileApp();" class="ion-margin-bottom">Make payment</ion-button>
           </ion-col>
         </ion-row>
       </div>
       <div *ngSwitchCase="1">
         <ion-row>
           <ion-col class="ion-text-center ion-margin-top">
-            <ion-button type="submit" shape="round" expand="block" [attr.enabled]="isValidAmount" (click)="makeAnOrder();" class="ion-margin-bottom">Place an order</ion-button>
+            <ion-button type="submit" shape="round" expand="block" [attr.disabled]="!isValidAmount" (click)="makeAnOrder();" class="ion-margin-bottom">Place an order</ion-button>
           </ion-col>
         </ion-row>
       </div>
