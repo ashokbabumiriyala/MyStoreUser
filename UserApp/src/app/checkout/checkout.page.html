@@ -54,7 +54,7 @@
     </ion-card>
 
     <ion-list class="deliverytype-group" *ngIf="!isServiceType">
-      <ion-radio-group name="deliverytype" [(ngModel)]="deliveryType" (ionChange)="onDeliveryTypeChange($event)">
+      <ion-radio-group name="deliverytype" [(ngModel)]="deliveryType" (ionChange)="onDeliveryTypeChange()">
         <ion-list-header>
           <ion-label class="labelHeader">Choose Delivery Type</ion-label>
         </ion-list-header>
