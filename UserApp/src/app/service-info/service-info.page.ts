@@ -4,6 +4,8 @@ import { HelperService } from '../common/helper.service';
 import { ServiceInfoService } from '../service-info/service-info.service';
 import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages';
 import { StorageService } from '../common/storage.service';
+import { AnimationController, ModalController } from '@ionic/angular';
+import { MapsPage } from '../Shared/maps/maps.page';
 declare var google;
 @Component({
   selector: 'app-service-info',
@@ -29,7 +31,9 @@ export class ServiceInfoPage implements OnInit {
     private router: Router,
     private serviceInfoService: ServiceInfoService,
     private helperService: HelperService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    public animationCtrl: AnimationController,
+    public modalController: ModalController
   ) {
     if (google) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -84,8 +88,8 @@ export class ServiceInfoPage implements OnInit {
     );
     await loadingController.present();
     const dataObj = {
-      Latitude: await this.storageService.get('lat'),
-      Longitude: await this.storageService.get('lng'),
+      Latitude: (await this.storageService.get('lat')).toString(),
+      Longitude: (await this.storageService.get('lng')).toString(),
     };
     await this.serviceInfoService
       .getServiceInfoList('UserServiceSelect', dataObj)
@@ -138,6 +142,46 @@ export class ServiceInfoPage implements OnInit {
     mapEle.classList.remove('map-view');
     this.displayListView = true;
   }
+
+  async presentModal(title) {
+    const enterAnimation = (baseEl: any) => {
+      const backdropAnimation = this.animationCtrl
+        .create()
+        .addElement(baseEl.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+      const wrapperAnimation = this.animationCtrl
+        .create()
+        .beforeStyles({
+          opacity: 1,
+          height: '83%',
+          width: 'auto',
+          'min-width': '96vw',
+          'margin-top': '6%',
+        })
+        .addElement(baseEl.querySelector('.modal-wrapper')!)
+        .fromTo('transform', 'scale(0)', 'scale(1)');
+
+      return this.animationCtrl
+        .create()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(400)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    };
+
+    const leaveAnimation = (baseEl: any) => {
+      return enterAnimation(baseEl).direction('reverse');
+    };
+
+    const modal = await this.modalController.create({
+      component: MapsPage,
+      componentProps: { model_title: title },
+      enterAnimation,
+      leaveAnimation,
+    });
+    return await modal.present();
+  }
+
   loadMap() {
     // create a new map by passing HTMLElement
     const mapEle: HTMLElement = document.getElementById('serviceMap');

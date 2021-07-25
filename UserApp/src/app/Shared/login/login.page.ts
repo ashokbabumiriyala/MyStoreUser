@@ -140,8 +140,8 @@ export class LoginPage implements OnInit {
   }
   async getUserStores() {
     const dataObj = {
-      Latitude: await this.storageService.get('lat'),
-      Longitude: await this.storageService.get('lng'),
+      Latitude: (await this.storageService.get('lat')).toString(),
+      Longitude: (await this.storageService.get('lng')).toString(),
     };
     await this.registrationServiceService
       .userStores('userStores', dataObj)

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { ModalController, AnimationController } from '@ionic/angular';
 import { CartPage } from './Shared/cart/cart.page';
 import { MapsPage } from './Shared/maps/maps.page';
@@ -13,7 +13,7 @@ import { Router, NavigationStart } from '@angular/router';
 import { PushTokenService } from './common/pushTokenService';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { StorageService } from './common/storage.service';
-
+import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
   ];
   constructor(
     public modalController: ModalController,
+    private geolocation: Geolocation,
     private router: Router,
     public animationCtrl: AnimationController,
     private fcm: FCM,
@@ -72,7 +73,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  public async navigatePage(menuId: number): Promise<void>{
+  public async navigatePage(menuId: number): Promise<void> {
     switch (menuId) {
       case 11:
         this.showMenu = false;
@@ -122,8 +123,29 @@ export class AppComponent implements OnInit {
   }
   initializeApp() {
     this.platform.ready().then(async () => {
+      this.geolocation
+        .getCurrentPosition(options)
+        .then(async (resp: Geoposition) => {
+          await this.storageService.set('lat', resp.coords.latitude);
+          await this.storageService.set('lng', resp.coords.longitude);
+        })
+        .catch((error) => {});
       if (this.platform.is('android') || this.platform.is('ios')) {
         await this.storageService.set('mobile', 'true');
+        var options = {
+          enableHighAccuracy: true,
+          maximumAge: 30000, // milliseconds e.g., 30000 === 30 seconds
+          timeout: 27000,
+        };
+
+        this.geolocation
+          .getCurrentPosition(options)
+          .then(async (resp: Geoposition) => {
+            await this.storageService.set('lat', resp.coords.latitude);
+            await this.storageService.set('lng', resp.coords.longitude);
+          })
+          .catch((error) => {});
+
         this.appVersion.getVersionNumber().then((res) => {
           this.version = res;
           if (this.version) {
@@ -201,6 +223,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
   async presentModal(title) {
     const enterAnimation = (baseEl: any) => {
       const backdropAnimation = this.animationCtrl
@@ -239,6 +262,7 @@ export class AppComponent implements OnInit {
     });
     return await modal.present();
   }
+
   async cartModal() {
     const enterAnimation = (baseEl: any) => {
       const backdropAnimation = this.animationCtrl
