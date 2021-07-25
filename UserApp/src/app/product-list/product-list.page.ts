@@ -93,6 +93,7 @@ export class ProductListPage implements OnInit {
             this.productList = data.provideMerchantProdList;
             Object.assign(this.masterData, this.productList);
             this.productList.forEach((product) => {
+              console.log(product);
               product['isAvailable'] = Number(product.availableQty) > 0;
               product['itemCount'] = 0;
               product['addedToCart'] = false;

@@ -145,12 +145,12 @@ export class MapsPage implements OnInit {
       .then(async (resp: Geoposition) => {
         console.log(resp);
         // let latLng = new google.maps.LatLng(
-        //   await this.storageService.get('lat'),
-        //   await this.storageService.get('lng')
+        //   resp.coords.latitude,
+        //   resp.coords.longitude
         // );
         let latLng = new google.maps.LatLng(
-          resp.coords.latitude,
-          resp.coords.longitude
+          await this.storageService.get('lat'),
+          await this.storageService.get('lng')
         );
         let mapOptions = {
           center: latLng,
@@ -248,9 +248,14 @@ export class MapsPage implements OnInit {
       .then(async (resp: Geoposition) => {
         console.log(resp);
         let pos = {
-          lat: resp.coords.latitude,
-          lng: resp.coords.longitude,
+          lat: await this.storageService.get('lat'),
+          lng: await this.storageService.get('lng'),
         };
+
+        // let pos = {
+        //   lat: resp.coords.latitude,
+        //   lng: resp.coords.longitude,
+        // };
         let marker = new google.maps.Marker({
           position: pos,
           map: this.map,
@@ -312,14 +317,14 @@ export class MapsPage implements OnInit {
     } else {
       this.getUserStores();
     }
-    this.dismiss();
+    //this.dismiss();
     if (this.model_title === 'Delivery Address') {
       this.helperService.presentToast(
-        'new delivery address selected',
+        'New delivery address selected!',
         'success'
       );
     } else {
-      this.helperService.presentToast('new neighborhood selected', 'success');
+      this.helperService.presentToast('New neighborhood selected!', 'success');
     }
   }
   async getUserStores() {

@@ -9,7 +9,7 @@
   <ion-row *ngIf="merchantList.length > 0">
     <ion-button (click)="mapView()">Map View</ion-button>
     <ion-button (click)="listView()">List View</ion-button>
-    <ion-button (click)="presentModal('Change Location of Search')">Change Neighborhood</ion-button>
+    <ion-button (click)="presentModal('Change Neighbourhood')">Change Neighborhood</ion-button>
   </ion-row>
 
   <div *ngIf="displayListView">
@@ -28,7 +28,7 @@
               <b>category:</b> {{merchant.catergory}}
             </ion-col>
             <ion-col>
-              <b>Distance:</b> {{merchant.distance}} KM
+              <b>Dist. From Loc. Of Search:</b> {{merchant.distance}} KM
             </ion-col>
           </ion-row>
           <p class="ion-no-margin">

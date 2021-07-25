@@ -10,6 +10,8 @@ export const environment = {
   // userOperationServiceUrl: 'https://localhost:44337/api/UserAppOperation/',
   // serviceMasterServiceUrl: 'https://localhost:44337/api/Service/',
   // adminServiceUrl: 'https://localhost:44337/api/Admin/',
+  //pushTokenServiceUrl: 'https://localhost:44337/api/PushToken/',
+  //virutalFootFallUrl: 'https://localhost:44337/api/VirtualFootfall/',
 
   // test
   // authenticationServiceUrl:
@@ -20,6 +22,7 @@ export const environment = {
   // userOperationServiceUrl:
   //   'https://my3apitest.itprototypes.com/api/UserAppOperation/',
   // pushTokenServiceUrl: 'https://my3apitest.itprototypes.com/api/PushToken/',
+  // virutalFootFallUrl: 'https://my3apitest.itprototypes.com/api/VirtualFootfall/',
 
   authenticationServiceUrl:
     'https://my3api.itprototypes.com/api/UserAuthentication/',
@@ -29,6 +32,7 @@ export const environment = {
   userOperationServiceUrl:
     'https://my3api.itprototypes.com/api/UserAppOperation/',
   pushTokenServiceUrl: 'https://my3api.itprototypes.com/api/PushToken/',
+  virutalFootFallUrl: 'https://my3api.itprototypes.com/api/VirtualFootfall/',
 
   // authenticationServiceUrl: 'https://localhost:5001/api/UserAuthentication/',
   // storeMasterServiceUrl: 'https://localhost:5001/api/Store/',
@@ -36,6 +40,7 @@ export const environment = {
   // serviceMasterServiceUrl: 'https://localhost:5001/api/Service/',
   // adminServiceUrl: 'https://localhost:5001/api/Admin/',
   // pushTokenServiceUrl: 'https://localhost:5001/api/PushToken/',
+  // virutalFootFallUrl: 'https://localhost:5001/api/VirtualFootfall/',
   razorPaymentkey: 'rzp_live_BCrYXIrnh8hw2v',
 };
 

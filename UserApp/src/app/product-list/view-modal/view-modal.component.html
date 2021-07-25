@@ -8,7 +8,8 @@
 
   <ion-slides [options]="slideOptsOne" #slideWithNav (ionSlideDidChange)="SlideDidChange(sliderOne,slideWithNav)">
     <ion-slide *ngFor="let s of sliderOne?.slidesItems">
-      <img src="../assets/images/{{s.id}}">
+      <img class="product-img" src="{{productData.url}}" *ngIf="productData.url">
+      <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!productData.url">
     </ion-slide>
   </ion-slides>
 
@@ -37,15 +38,15 @@
         <td><b>Category: </b></td>
         <td> {{productData?.category}}</td>
       </tr>
-      <tr *ngIf="productData?.Quantity != undefined">
+      <tr *ngIf="productData?.quantity != undefined">
         <td><b>Units: </b></td>
-        <td> {{productData?.Quantity + productData?.units}}</td>
+        <td> {{productData?.quantity + productData?.units}}</td>
       </tr>
-      <tr *ngIf="productData?.DiscountType=='rupees'">
+      <tr *ngIf="productData?.discountType=='rupees'">
         <td><b>Discount: </b></td>
         <td> {{productData.discount | currency:'INR'}}</td>
       </tr>
-      <tr *ngIf="productData?.DiscountType=='percentage'">
+      <tr *ngIf="productData?.discountType=='percentage'">
         <td><b>Discount: </b></td>
         <td> {{productData.discount | percent}}</td>
       </tr>
@@ -58,12 +59,12 @@
         <td> {{productData?.priceAfterDiscount}}</td>
       </tr>
       <tr>
-        <td><b>Stock Avilable: </b></td>
-        <td> {{productData?.isAvailable}}</td>
+        <td><b>Stock Available: </b></td>
+        <td> {{productData?.availableQty > 0 ? 'yes' : 'no'}}</td>
       </tr>
       <tr>
         <td><b>Description: </b></td>
-        <td> {{productData?.priceAfterDiscount}}</td>
+        <td> {{productData?.description}}</td>
       </tr>
     </tbody>
   </table>

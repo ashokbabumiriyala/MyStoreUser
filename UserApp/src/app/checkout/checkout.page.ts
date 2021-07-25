@@ -324,7 +324,7 @@ export class CheckoutPage implements OnInit {
       UserId: Number(await this.storageService.get('UserId')),
       TransactionId: payment_id,
       TotalAmount: amount.toString(),
-      DeliveryCharge: DeliveryType.SelfPickup.toString()
+      DeliveryCharge: this.deliveryType == DeliveryType.SelfPickup.toString()
         ? 0
         : this.deliveryCharges,
       SubTotal: this.subTotal,

@@ -1,61 +1,59 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay"  *ngIf="showMenu" (ionWillClose)="index = 0" (ionWillOpen)="index = -1">
+    <ion-menu contentId="main-content" type="overlay" *ngIf="showMenu" (ionWillClose)="index = 0" (ionWillOpen)="index = -1">
       <ion-content>
         <ion-list id="inbox-list">
           <ion-list-header>{{userName}}</ion-list-header>
           <ion-note>Explore My3KaRRt</ion-note>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages;">
-            <ion-item routerDirection="root" (click)="navigatePage(p.id);" lines="none" detail="false"
-                routerLinkActive="selected">
-                <ion-icon slot="start" [name]="p.icon"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
+            <ion-item routerDirection="root" (click)="navigatePage(p.id);" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
             </ion-item>
-        </ion-menu-toggle>
+          </ion-menu-toggle>
 
         </ion-list>
       </ion-content>
     </ion-menu>
-  <ion-header class="header" *ngIf="showHead">
-            <ion-toolbar>
-                <ion-buttons style="color: orangered;" slot="start" *ngIf="showMenu">
-                    <ion-menu-button></ion-menu-button>
-                  </ion-buttons>
-                <ion-title class="ion-text-center">
-                    <ion-img class="app-img" src="../assets/images/logo.png"></ion-img>
-                </ion-title>
-                <ion-buttons  *ngIf="showMenu" (click)="cartModal()" slot="end">
-                  <ion-badge *ngIf="cartItems.length !== 0">{{cartItems.length}}</ion-badge>
-                  <ion-icon class="cart" name="cart-outline"></ion-icon>
-              </ion-buttons>
-            </ion-toolbar>
-        </ion-header>
-        <ion-router-outlet id="main-content" [ngClass]="showHead ? 'main-content' : ''"></ion-router-outlet>
-        <ion-footer class="footer" *ngIf="showMenu">
-          <ion-row>
-            <ion-col size="5" class="ion-text-center">
-              <ion-icon [routerLink]="['/category-search']" name="home-outline"></ion-icon>
-              <ion-label>Home</ion-label>
-            </ion-col>            
-            <ion-col size="2" class="ion-text-center"></ion-col>
-            <ion-col size="2" class="ion-text-center">
-              <ion-icon name="location-outline"  (click)="presentModal('Delivery Address')"></ion-icon>
-              <ion-label>Delivery</ion-label>
-            </ion-col>
-            <ion-col size="3" class="ion-text-center">
-              <ion-icon name="locate-outline"  (click)="presentModal('Change Location of Search')"></ion-icon>
-              <ion-label>Change Neighborhood</ion-label>
-            </ion-col>
-            <!-- <ion-col size="2" class="ion-text-center">
+    <ion-header class="header" *ngIf="showHead">
+      <ion-toolbar>
+        <ion-buttons style="color: orangered;" slot="start" *ngIf="showMenu">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+          <ion-img class="app-img" src="../assets/images/logo.png"></ion-img>
+        </ion-title>
+        <ion-buttons *ngIf="showMenu" (click)="cartModal()" slot="end">
+          <ion-badge *ngIf="cartItems.length !== 0">{{cartItems.length}}</ion-badge>
+          <ion-icon class="cart" name="cart-outline"></ion-icon>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-router-outlet id="main-content" [ngClass]="showHead ? 'main-content' : ''"></ion-router-outlet>
+    <ion-footer class="footer" *ngIf="showMenu">
+      <ion-row>
+        <ion-col size="5" class="ion-text-center">
+          <ion-icon [routerLink]="['/category-search']" name="home-outline"></ion-icon>
+          <ion-label>Home</ion-label>
+        </ion-col>
+        <ion-col size="2" class="ion-text-center"></ion-col>
+        <ion-col size="2" class="ion-text-center">
+          <ion-icon name="location-outline" (click)="presentModal('Delivery Address')"></ion-icon>
+          <ion-label>Delivery</ion-label>
+        </ion-col>
+        <ion-col size="3" class="ion-text-center">
+          <ion-icon name="locate-outline" (click)="presentModal('Change Neighbourhood')"></ion-icon>
+          <ion-label>Change Neighborhood</ion-label>
+        </ion-col>
+        <!-- <ion-col size="2" class="ion-text-center">
               <ion-icon name="search-outline" (click)="searchModal()"></ion-icon>
               <ion-label>Search</ion-label></ion-col> -->
-          </ion-row>
-        </ion-footer>
+      </ion-row>
+    </ion-footer>
   </ion-split-pane>
   <ion-fab vertical="bottom" horizontal="center" slot="fixed" edge="false" *ngIf="showMenu" [ngStyle]="{'z-index': index}">
     <ion-fab-button type="button">
-        <img src="assets/images/icon-footer.png">
+      <img src="assets/images/icon-footer.png">
     </ion-fab-button>
   </ion-fab>
 </ion-app>
-

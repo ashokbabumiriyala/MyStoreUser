@@ -16,7 +16,7 @@ export class CartPage implements OnInit {
   totalAmount: number = 0;
   isCartItemLoaded: boolean = false;
   isEmptyCart: boolean = true;
-  disableCheckout: boolean = false;
+  disableCheckout: boolean = true;
 
   constructor(
     private modalCtrl: ModalController,
@@ -61,6 +61,9 @@ export class CartPage implements OnInit {
     this.helperService.getCartItems().subscribe((cartItems) => {
       if (cartItems != null) {
         this.cartItems = cartItems;
+        if (this.cartItems.length > 0) {
+          this.disableCheckout = false;
+        }
 
         this.isEmptyCart = false;
       } else {

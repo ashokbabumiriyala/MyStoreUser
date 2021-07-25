@@ -7,7 +7,7 @@
   <ion-row *ngIf="serviceInfoList.length > 0">
     <ion-button (click)="mapView()">Map View</ion-button>
     <ion-button (click)="listView()">List View</ion-button>
-    <ion-button (click)="presentModal('Change Location of Search')">Change Neighborhood</ion-button>
+    <ion-button (click)="presentModal('Change Neighbourhood')">Change Neighborhood</ion-button>
   </ion-row>
   <ion-card class="ion-no-margin service" *ngFor="let service of masterData;let i = index;">
     <ion-row (click)="getServices(service)">
