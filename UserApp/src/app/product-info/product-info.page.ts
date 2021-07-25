@@ -16,7 +16,15 @@ import { HelperService } from '../common/helper.service';
 import { ProductInfoService } from '../product-info/product-info.service';
 import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages';
 import { StorageService } from '../common/storage.service';
+import { AnimationController, ModalController } from '@ionic/angular';
+import { MapsPage } from '../Shared/maps/maps.page';
 declare var google;
+
+enum PageType {
+  MapPage = 0,
+  ListPage = 1,
+}
+
 @Component({
   selector: 'app-product-info',
   templateUrl: './product-info.page.html',
@@ -46,7 +54,9 @@ export class ProductInfoPage implements OnInit {
     private router: Router,
     private helperService: HelperService,
     private productInfoService: ProductInfoService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    public animationCtrl: AnimationController,
+    public modalController: ModalController
   ) {
     if (google) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -55,9 +65,12 @@ export class ProductInfoPage implements OnInit {
     this.autocompleteItems = [];
   }
   displayListView: boolean;
+  currentPage: PageType;
+
   ngOnInit() {
     this.pageLoad();
   }
+
   public pageLoad() {
     this.displayListView = true;
 
@@ -92,8 +105,8 @@ export class ProductInfoPage implements OnInit {
     );
     await loadingController.present();
     const dataObj = {
-      Latitude: await this.storageService.get('lat'),
-      Longitude: await this.storageService.get('lng'),
+      Latitude: (await this.storageService.get('lat')).toString(),
+      Longitude: (await this.storageService.get('lng')).toString(),
     };
     await this.productInfoService
       .getMerchantList('UserMerchantSelect', dataObj)
@@ -144,14 +157,68 @@ export class ProductInfoPage implements OnInit {
     );
   }
   mapView(): void {
+    this.currentPage = PageType.MapPage;
     this.displayListView = false;
     this.loadMap();
   }
   listView(): void {
+    this.currentPage = PageType.ListPage;
     const mapEle: HTMLElement = document.getElementById('map');
     mapEle.classList.remove('map-view');
     this.displayListView = true;
   }
+
+  async presentModal(title) {
+    const enterAnimation = (baseEl: any) => {
+      const backdropAnimation = this.animationCtrl
+        .create()
+        .addElement(baseEl.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+      const wrapperAnimation = this.animationCtrl
+        .create()
+        .beforeStyles({
+          opacity: 1,
+          height: '83%',
+          width: 'auto',
+          'min-width': '96vw',
+          'margin-top': '6%',
+        })
+        .addElement(baseEl.querySelector('.modal-wrapper')!)
+        .fromTo('transform', 'scale(0)', 'scale(1)');
+
+      return this.animationCtrl
+        .create()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(400)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    };
+
+    const leaveAnimation = (baseEl: any) => {
+      return enterAnimation(baseEl).direction('reverse');
+    };
+
+    const modal = await this.modalController.create({
+      component: MapsPage,
+      componentProps: { model_title: title },
+      enterAnimation,
+      leaveAnimation,
+    });
+    modal.onDidDismiss().then(async (data) => {
+      console.log(data);
+      this.latitude = (await this.storageService.get('lat')).toString();
+      this.longitude =(await this.storageService.get('lng')).toString();
+      if (this.currentPage == PageType.ListPage) {
+       this.listView(); 
+      }
+      else {
+        this.loadMap();
+      }
+    });
+
+    return await modal.present();
+  }
+
   loadMap() {
     // create a new map by passing HTMLElement
     const mapEle: HTMLElement = document.getElementById('map');
