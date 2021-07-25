@@ -6,6 +6,7 @@ import { CategorySearchService } from '../category-search/category-search.servic
 import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages';
 import { StorageService } from '../common/storage.service';
 import { IUserDetails } from '../common/provider-details';
+import { VirtualFootFallService } from '../common/virtualfootfall.service';
 @Component({
   selector: 'app-category-search',
   templateUrl: './category-search.page.html',
@@ -17,7 +18,8 @@ export class CategorySearchPage implements OnInit {
     private modalCtrl: ModalController,
     private helperService: HelperService,
     private categorySearchService: CategorySearchService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private virutalFootFallService: VirtualFootFallService
   ) {}
   cartItems = [];
   homeResult: any[];
@@ -82,6 +84,14 @@ export class CategorySearchPage implements OnInit {
 
   async itemClick(data: any) {
     if (data.type === 'Product') {
+      try {
+        this.virutalFootFallService
+          .updateStoreDataClicks(
+            Number(await this.storageService.get('UserId')),
+            data.id
+          )
+          .subscribe(() => {});
+      } catch (err) {}
       this.iDataTransferBetweenPages = {
         storeId: Number(data.id),
         MerchantName: data.name,

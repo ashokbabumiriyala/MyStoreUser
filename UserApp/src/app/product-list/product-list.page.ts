@@ -9,7 +9,7 @@ import { ModalController, AnimationController } from '@ionic/angular';
 import { ViewModalComponent } from './view-modal/view-modal.component';
 import { AvailableStoreTypes } from '../common/Enums';
 import { StorageService } from '../common/storage.service';
-
+import { VirtualFootFallService } from '../common/virtualfootfall.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
@@ -32,7 +32,8 @@ export class ProductListPage implements OnInit {
     public modalController: ModalController,
     private alertCtrl: AlertController,
     private categorySearchService: CategorySearchService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private virutalFootFallService: VirtualFootFallService
   ) {}
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -142,7 +143,16 @@ export class ProductListPage implements OnInit {
     }
   }
 
-  addToCart(index) {
+  async addToCart(index) {
+    try {
+      this.virutalFootFallService
+        .updateProductDataClicks(
+          Number(await this.storageService.get('UserId')),
+          Number(this.productList[index].productID)
+        )
+        .subscribe(() => {});
+    } catch (err) {}
+
     if (
       this.cartItems.length == 0 ||
       (this.cartItems.length > 0 &&
@@ -224,6 +234,14 @@ export class ProductListPage implements OnInit {
   }
 
   async presentViewModal(product) {
+    try {
+      this.virutalFootFallService
+        .updateProductDataClicks(
+          Number(await this.storageService.get('UserId')),
+          Number(product.productID)
+        )
+        .subscribe(() => {});
+    } catch (err) {}
     const enterAnimation = (baseEl: any) => {
       const backdropAnimation = this.animationCtrl
         .create()

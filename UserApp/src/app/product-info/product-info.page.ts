@@ -18,6 +18,7 @@ import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages
 import { StorageService } from '../common/storage.service';
 import { AnimationController, ModalController } from '@ionic/angular';
 import { MapsPage } from '../Shared/maps/maps.page';
+import { VirtualFootFallService } from '../common/virtualfootfall.service';
 declare var google;
 
 enum PageType {
@@ -56,7 +57,8 @@ export class ProductInfoPage implements OnInit {
     private productInfoService: ProductInfoService,
     private storageService: StorageService,
     public animationCtrl: AnimationController,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private virutalFootFallService: VirtualFootFallService
   ) {
     if (google) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
@@ -143,6 +145,15 @@ export class ProductInfoPage implements OnInit {
   }
 
   async getProducts(merchant) {
+    try {
+      this.virutalFootFallService
+        .updateStoreDataClicks(
+          Number(await this.storageService.get('UserId')),
+          Number(merchant.merchantID)
+        )
+        .subscribe(() => {});
+    } catch (err) {}
+
     this.iDataTransferBetweenPages = {
       storeId: Number(merchant.merchantID),
       MerchantName: merchant.name,
@@ -207,11 +218,10 @@ export class ProductInfoPage implements OnInit {
     modal.onDidDismiss().then(async (data) => {
       console.log(data);
       this.latitude = (await this.storageService.get('lat')).toString();
-      this.longitude =(await this.storageService.get('lng')).toString();
+      this.longitude = (await this.storageService.get('lng')).toString();
       if (this.currentPage == PageType.ListPage) {
-       this.listView(); 
-      }
-      else {
+        this.listView();
+      } else {
         this.loadMap();
       }
     });
