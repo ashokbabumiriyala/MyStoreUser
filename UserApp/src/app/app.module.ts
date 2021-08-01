@@ -21,7 +21,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,

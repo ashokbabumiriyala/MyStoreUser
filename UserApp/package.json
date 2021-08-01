@@ -33,8 +33,10 @@
     "@ionic-native/native-page-transitions": "^5.31.1",
     "@ionic/angular": "^5.5.2",
     "@ionic/storage-angular": "^3.0.6",
+    "@types/moment": "^2.13.0",
     "com.razorpay.cordova": "1.4.13",
     "cordova-browser": "6.0.0",
+    "moment": "^2.29.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

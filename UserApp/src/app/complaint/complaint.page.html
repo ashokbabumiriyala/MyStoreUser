@@ -1,56 +1,54 @@
 <ion-content class="login-form ion-padding after-login-bg">
   <ion-row>
     <ion-col size-md="3" size-xs="1" size-sm="1" size-lg="3">
-        <ion-icon name="arrow-back-outline" size="large" class="ion-text-left" *ngIf="!issuesGrid"
-            (click)="ionViewDidLeave()"></ion-icon>
+      <ion-icon name="arrow-back-outline" size="large" class="ion-text-left" *ngIf="!issuesGrid" (click)="ionViewDidLeave()"></ion-icon>
     </ion-col>
     <ion-col size-md="6" size-xs="11" size-sm="11" size-lg="6">
-        <h2 class="page-title">
-            <ion-icon name="today-outline"></ion-icon>Complaints
-        </h2>
+      <h2 class="page-title">
+        <ion-icon name="today-outline"></ion-icon>Complaints
+      </h2>
     </ion-col>
     <ion-col class="ion-text-end" size-md="3" size-xs="12" size-sm="12" size-lg="3" *ngIf="issuesGrid">
-        <ion-button class="ion-text-right list-button" (click)="createIssue()"
-            style="color:#FFF !important;text-decoration: none;">
-            <ion-icon name="add-circle-outline" slot="start" color="#FFF"></ion-icon>Add Issue
-        </ion-button>
+      <ion-button class="ion-text-right list-button" (click)="createIssue()" style="color:#FFF !important;text-decoration: none;">
+        <ion-icon name="add-circle-outline" slot="start" color="#FFF"></ion-icon>Add Issue
+      </ion-button>
     </ion-col>
-</ion-row>
+  </ion-row>
   <div class="content-section">
-  <div direction="x" class="wide-as-needed" *ngIf="issuesGrid">
-  <ion-grid>
-    <div style="display: flex;">
-      <ion-col>Issue</ion-col>
-      <ion-col>Order Number</ion-col>
-      <ion-col>Description</ion-col>
-      <ion-col>Date</ion-col>
+    <div direction="x" class="wide-as-needed" *ngIf="issuesGrid">
+      <ion-grid>
+        <div style="display: flex;">
+          <ion-col>Issue</ion-col>
+          <ion-col>Order Number</ion-col>
+          <ion-col>Description</ion-col>
+          <ion-col>Date</ion-col>
+        </div>
+        <div style="display: flex;" *ngFor="let complaint of complaintList">
+          <ion-col>{{complaint.issue}}</ion-col>
+          <ion-col>{{complaint.orderId}}</ion-col>
+          <ion-col>{{complaint.issueDescription}}</ion-col>
+          <ion-col>{{complaint.createdOn|customdatetime}}</ion-col>
+        </div>
+      </ion-grid>
     </div>
-    <div style="display: flex;" *ngFor="let complaint of complaintList">
-      <ion-col>{{complaint.issue}}</ion-col>
-      <ion-col>{{complaint.orderId}}</ion-col>
-      <ion-col>{{complaint.issueDescription}}</ion-col>
-      <ion-col>{{complaint.createdOn|date :'dd/MM/yyyy' }}</ion-col>
-    </div>
-  </ion-grid>
-</div>
-  <form [formGroup]="complaintFormGroup" *ngIf="!issuesGrid">
+    <form [formGroup]="complaintFormGroup" *ngIf="!issuesGrid">
       <ion-item class="ion-ele" lines="full">
         <ion-label position="floating">Issue Type</ion-label>
         <ion-select formControlName="IssueRelatedTo">
           <ion-select-option value="{{opt.id}}" *ngFor="let opt of issues">{{opt.description}}</ion-select-option>
-        </ion-select>     
+        </ion-select>
       </ion-item>
       <small *ngIf="isFormSubmitted &&  IssueRelatedTo.errors"><span style="color: red;">*Select Issue Type
-      </span>
+        </span>
       </small>
       <ion-item class="ion-ele" lines="full">
-          <ion-label position="floating">Order Number</ion-label>
-          <ion-input type="text" formControlName="OrderId"></ion-input>
-          <ion-icon name="cog-outline" slot="start"></ion-icon>
+        <ion-label position="floating">Order Number</ion-label>
+        <ion-input type="text" formControlName="OrderId"></ion-input>
+        <ion-icon name="cog-outline" slot="start"></ion-icon>
       </ion-item>
 
       <small *ngIf="isFormSubmitted &&  OrderId.errors"><span style="color: red;">*Order Number Required
-      </span>
+        </span>
       </small>
 
       <ion-item class="ion-ele" lines="full">
@@ -58,29 +56,29 @@
         <ion-input type="text" formControlName="IssueDescription"></ion-input>
         <ion-icon name="clipboard-outline" slot="start"></ion-icon>
       </ion-item>
-    <small *ngIf="isFormSubmitted &&  IssueDescription.errors"><span style="color: red;">*Issue Description Required
-    </span>
-    </small>
+      <small *ngIf="isFormSubmitted &&  IssueDescription.errors"><span style="color: red;">*Issue Description Required
+        </span>
+      </small>
 
-    <ion-item class="ion-ele" *ngIf="mobileApp">
-      <ion-icon name="images-outline" slot="start"></ion-icon>
-      <ion-button shape="round" expand="full" size="default" (click)="selectImage();" class="ion-button">
+      <ion-item class="ion-ele" *ngIf="mobileApp">
+        <ion-icon name="images-outline" slot="start"></ion-icon>
+        <ion-button shape="round" expand="full" size="default" (click)="selectImage();" class="ion-button">
           Select Image</ion-button>
-      <ion-label class="ion-text-right" *ngIf="selectedDocs.length != 0">
+        <ion-label class="ion-text-right" *ngIf="selectedDocs.length != 0">
           <ion-icon name="eye-outline"></ion-icon> {{selectedDocs.length}}
-      </ion-label>
-  </ion-item>
-  <ion-item class="ion-ele" lines="full" *ngIf="!mobileApp">
-      <ion-label>Image</ion-label>
-      <input type="file" #selectedWebDocs multiple (change)="selectedImgWeb($event)" />
-      <ion-icon name="images-outline" slot="start"></ion-icon>
-  </ion-item>
+        </ion-label>
+      </ion-item>
+      <ion-item class="ion-ele" lines="full" *ngIf="!mobileApp">
+        <ion-label>Image</ion-label>
+        <input type="file" #selectedWebDocs multiple (change)="selectedImgWeb($event)" />
+        <ion-icon name="images-outline" slot="start"></ion-icon>
+      </ion-item>
 
-     <ion-row>
-          <ion-col class="ion-text-center ion-margin-top">
-              <ion-button type="submit" shape="round" expand="block"  class="ion-margin-bottom" (click)="raiseComplaint()">Submit</ion-button>
-          </ion-col>
+      <ion-row>
+        <ion-col class="ion-text-center ion-margin-top">
+          <ion-button type="submit" shape="round" expand="block" class="ion-margin-bottom" (click)="raiseComplaint()">Submit</ion-button>
+        </ion-col>
       </ion-row>
-  </form>
+    </form>
   </div>
 </ion-content>

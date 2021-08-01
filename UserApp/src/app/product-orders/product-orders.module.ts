@@ -8,6 +8,7 @@ import { ProductOrdersPageRoutingModule } from './product-orders-routing.module'
 
 import { ProductOrdersPage } from './product-orders.page';
 import { ProductOrderRowExpandComponent } from './product-order-row-expand/product-order-row-expand.component';
+import { CustomDatetime } from '../Shared/customdatetime.pipe';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { ProductOrderRowExpandComponent } from './product-order-row-expand/produ
     IonicModule,
     ProductOrdersPageRoutingModule
   ],
-  declarations: [ProductOrdersPage,ProductOrderRowExpandComponent]
+  declarations: [ProductOrdersPage,ProductOrderRowExpandComponent,CustomDatetime]
 })
 export class ProductOrdersPageModule {}

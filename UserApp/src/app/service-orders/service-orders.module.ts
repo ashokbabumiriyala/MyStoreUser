@@ -8,6 +8,7 @@ import { ServiceOrdersPageRoutingModule } from './service-orders-routing.module'
 
 import { ServiceOrdersPage } from './service-orders.page';
 import { ServiceOrderRowExpandComponent } from './service-order-row-expand/service-order-row-expand.component';
+import { CustomDatetime } from '../Shared/customdatetime.pipe';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { ServiceOrderRowExpandComponent } from './service-order-row-expand/servi
     IonicModule,
     ServiceOrdersPageRoutingModule
   ],
-  declarations: [ServiceOrdersPage,ServiceOrderRowExpandComponent]
+  declarations: [ServiceOrdersPage,ServiceOrderRowExpandComponent, CustomDatetime]
 })
 export class ServiceOrdersPageModule {}

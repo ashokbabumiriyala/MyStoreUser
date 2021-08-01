@@ -5,10 +5,10 @@
         <tr>
           <td><b>Service Name: </b></td>
           <td> {{orderDetails.serviceName}}</td>
-          </tr>
-          <tr>
+        </tr>
+        <tr>
           <td><b>Ordered Date: </b></td>
-          <td> {{orderDetails.createdOn|date:"dd/MM/yy"}}</td>
+          <td> {{orderDetails.createdOn| customdatetime}}</td>
         </tr>
         <tr>
           <td><b>Delivery Status: </b></td>
@@ -34,7 +34,7 @@
           <td><b>Total Order Value: </b></td>
           <td class="label" style="width: 140px;"> {{ orderDetails.totalAmount | currency:'INR'}}</td>
         </tr>
-    </tbody>
+      </tbody>
     </table>
 
     <table style="width: -webkit-fill-available;text-align:left;">
@@ -49,10 +49,10 @@
             <ion-avatar>
               <img class="product-img" src="{{itm.url}}" *ngIf="itm.url">
               <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!itm.url">
-            </ion-avatar>        
+            </ion-avatar>
           </td>
-            <td>{{itm.businessName}}</td>
-            <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
+          <td>{{itm.businessName}}</td>
+          <td class="label">{{ itm.priceAfterDiscount | currency:'INR'}}</td>
         </tr>
       </tbody>
     </table>
