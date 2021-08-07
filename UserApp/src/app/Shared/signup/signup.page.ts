@@ -75,6 +75,7 @@ export class SignupPage implements OnInit {
           let profileData = data.userProfile;
           this.userProfile = {
             UserName: profileData.userName,
+            FullName: profileData.fullName,
             MobileNumber: profileData.mobileNumber,
             Email: profileData.email,
             Address: profileData.address,
@@ -105,6 +106,9 @@ export class SignupPage implements OnInit {
   get UserName() {
     return this.signUpFormGroup.get('UserName');
   }
+  get FullName() {
+    return this.signUpFormGroup.get('FullName');
+  }
   get Address() {
     return this.signUpFormGroup.get('Address');
   }
@@ -124,6 +128,7 @@ export class SignupPage implements OnInit {
     this.signUpFormGroup = new FormGroup(
       {
         UserName: new FormControl('', Validators.required),
+        FullName: new FormControl('', Validators.required),
         MobileNumber: new FormControl('', Validators.required),
         Email: new FormControl('', Validators.required),
         Password: new FormControl('', Validators.required),
@@ -178,6 +183,7 @@ export class SignupPage implements OnInit {
       }
       this.isignUp = {
         UserName: this.UserName.value,
+        FullName: this.FullName.value,
         MobileNumber: this.MobileNumber.value.toString(),
         Email: this.Email.value,
         Password: this.Password.value,
@@ -267,8 +273,8 @@ export class SignupPage implements OnInit {
     };
     this.geolocation
       .getCurrentPosition(options)
-      .then((resp) => {})
-      .catch((error) => {});
+      .then((resp) => { })
+      .catch((error) => { });
   }
   async presentToast(data: string, tostarColor: string) {
     const toast = await this.toastController.create({
@@ -286,7 +292,7 @@ export class SignupPage implements OnInit {
         // resp.coords.latitude
         // resp.coords.longitude
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
   async UpdateProfile() {
     this.editProfile = true;
@@ -300,6 +306,7 @@ export class SignupPage implements OnInit {
     this.showTermsAndConditions = false;
     this.signUpFormGroup.patchValue({
       UserName: data.UserName,
+      FullName: data.FullName,
       MobileNumber: data.MobileNumber,
       Email: data.Email,
       Address: data.Address,
@@ -317,6 +324,7 @@ export class SignupPage implements OnInit {
 }
 interface IsignUp {
   UserName: string;
+  FullName: string;
   MobileNumber: string;
   Email: string;
   Password: string;
