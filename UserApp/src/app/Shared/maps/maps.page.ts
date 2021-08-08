@@ -94,7 +94,7 @@ export class MapsPage implements OnInit {
           this.selectedAddress = defaultAddress.id.toString();
           this.helperService.setDeliveryAddress(defaultAddress);
         },
-        (error: any) => {}
+        (error: any) => { }
       );
   }
   async addressChange(data: any) {
@@ -112,7 +112,7 @@ export class MapsPage implements OnInit {
           );
           this.getUserAddress();
         },
-        (error: any) => {}
+        (error: any) => { }
       );
   }
   dismiss() {
@@ -144,14 +144,15 @@ export class MapsPage implements OnInit {
       .getCurrentPosition(options)
       .then(async (resp: Geoposition) => {
         console.log(resp);
-        // let latLng = new google.maps.LatLng(
-        //   resp.coords.latitude,
-        //   resp.coords.longitude
-        // );
         let latLng = new google.maps.LatLng(
-          await this.storageService.get('lat'),
-          await this.storageService.get('lng')
+          resp.coords.latitude,
+          resp.coords.longitude
         );
+        // let latLng = new google.maps.LatLng(
+        //   await this.storageService.get('lat'),
+        //   await this.storageService.get('lng')
+        // );
+
         let mapOptions = {
           center: latLng,
           zoom: 12,
@@ -163,7 +164,7 @@ export class MapsPage implements OnInit {
           this.mapElement.nativeElement,
           mapOptions
         );
-        let marker = new google.maps.Marker({
+        /*let marker = new google.maps.Marker({
           position: latLng,
           map: this.map,
           title: 'You are here!',
@@ -174,14 +175,18 @@ export class MapsPage implements OnInit {
             event.latLng.lat(),
             event.latLng.lng()
           );
+          this.addrlat = event.latLng.lat().toString();
+          this.addrlng = event.latLng.lng().toString();
+          console.log(`new selected address:${latLng}`);
           await this.storageService.set('lat', event.latLng.lat());
           await this.storageService.set('lng', event.latLng.lng());
           marker.position = latLng;
-        });
+        });*/
         this.map.setCenter(latLng);
       })
-      .catch((error) => {});
+      .catch((error) => { });
   }
+
   //Check if application having GPS access permission
   checkGPSPermission() {
     this.androidPermissions
@@ -220,26 +225,36 @@ export class MapsPage implements OnInit {
               //Show alert if user click on 'No Thanks'
               alert(
                 'requestPermission Error requesting location permissions ' +
-                  error
+                error
               );
             }
           );
       }
     });
   }
+
   askToTurnOnGPS() {
-    this.locationAccuracy
-      .request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
-      .then(
-        () => {
-          // When GPS Turned ON call method to get Accurate location coordinates
-          this.tryGeolocation();
-        },
-        (error) =>
-          alert(
-            'Error requesting location permissions ' + JSON.stringify(error)
-          )
-      );
+    this.locationAccuracy.canRequest().then((result) => {
+      if (result) {
+        console.log("requesting to get acurate location");
+        this.locationAccuracy
+          .request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY)
+          .then(
+            () => {
+              if (this.locationAccuracy) {
+                // When GPS Turned ON call method to get Accurate location coordinates
+                this.tryGeolocation();
+              }
+            },
+            (error) =>
+              alert(
+                'Error requesting location permissions ' + JSON.stringify(error)
+              )
+          );
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   async tryGeolocation() {
@@ -279,6 +294,8 @@ export class MapsPage implements OnInit {
               event.latLng.lat(),
               event.latLng.lng()
             );
+            this.addrlat = event.latLng.lat();
+            this.addrlng = event.latLng.lng();
             this.storageService.set('addlat', event.latLng.lat().toString());
             this.storageService.set('addlng', event.latLng.lng().toString());
             marker.position = latLng;
@@ -288,45 +305,45 @@ export class MapsPage implements OnInit {
       .catch((error) => {
         console.log(error);
       });
+  }
 
+  async saveAddress() {
     if (this.model_title === 'Delivery Address') {
-      if (this.userSelectedAddress != '') {
-        const loadingController =
-          await this.helperService.createLoadingController('loading');
-        await loadingController.present();
-        const dataObj = {
-          UserId: Number(await this.storageService.get('UserId')),
-          Address: this.userSelectedAddress,
-          Latitude: this.addrlat.toString(),
-          Longitude: this.addrlng.toString(),
-        };
-        await this.mapsService
-          .getUserDeliveryAddress('UserDeliveryAddressInsert', dataObj)
-          .subscribe(
-            (data: any) => {
-              this.getUserAddress();
-              loadingController.dismiss();
-              this.userSelectedAddress = '';
-              this.autocomplete.input = '';
-            },
-            (error: any) => {
-              loadingController.dismiss();
-            }
-          );
-      }
-    } else {
-      this.getUserStores();
-    }
-    //this.dismiss();
-    if (this.model_title === 'Delivery Address') {
+      const loadingController = await this.helperService.createLoadingController('loading');
+      await loadingController.present();
+      this.getAddressFromCoords(this.addrlat.toString(), this.addrlng.toString());
+      const dataObj = {
+        UserId: Number(await this.storageService.get('UserId')),
+        Address: this.userSelectedAddress,
+        Latitude: this.addrlat.toString(),
+        Longitude: this.addrlng.toString(),
+      };
+
+      console.log(dataObj);
+      await this.mapsService
+        .getUserDeliveryAddress('UserDeliveryAddressInsert', dataObj)
+        .subscribe(
+          (data: any) => {
+            this.getUserAddress();
+            loadingController.dismiss();
+            this.userSelectedAddress = '';
+            this.autocomplete.input = '';
+          },
+          (error: any) => {
+            loadingController.dismiss();
+          }
+        );
       this.helperService.presentToast(
         'New delivery address selected!',
         'success'
       );
-    } else {
+    }
+    else {
       this.helperService.presentToast('New neighborhood selected!', 'success');
+      this.getUserStores();
     }
   }
+
   async getUserStores() {
     const dataObj = {
       Latitude: (await this.storageService.get('lat')).toString(),
@@ -337,7 +354,7 @@ export class MapsPage implements OnInit {
         this.helperService.setProducts(data.userMerchant);
         this.helperService.setServices(data.userService);
       },
-      (error: any) => {}
+      (error: any) => { }
     );
   }
 
@@ -412,6 +429,7 @@ export class MapsPage implements OnInit {
             );
             this.addrlat = event.latLng.lat().toString();
             this.addrlng = event.latLng.lng().toString();
+            this.getAddressFromCoords(this.addrlat, this.addrlng);
             this.storageService.set('addrlat', event.latLng.lat().toString());
             this.storageService.set('addrlng', event.latLng.lng().toString());
             marker.position = latLng;
@@ -440,6 +458,7 @@ export class MapsPage implements OnInit {
               if (this.model_title == 'Delivery Address') {
                 this.addrlat = results[0].geometry.location.lat();
                 this.addrlng = results[0].geometry.location.lng();
+                this.getAddressFromCoords(this.addrlat, this.addrlng);
                 await this.storageService.set(
                   'addrlat',
                   this.addrlat.toString()

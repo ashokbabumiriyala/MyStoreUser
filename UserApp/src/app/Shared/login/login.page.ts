@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
     private router: Router,
     private pushTokenService: PushTokenService,
     private storageService: StorageService
-  ) {}
+  ) { }
   loginFormGroup: FormGroup;
   isFormSubmitted: boolean;
   menus: any[];
@@ -89,6 +89,7 @@ export class LoginPage implements OnInit {
           await this.storageService.set('AuthToken', data.token);
           await this.storageService.set('UserId', data.userId);
           await this.storageService.set('UserName', data.userName);
+          await this.storageService.set('FullName', data.fullName);
           await this.storageService.set('UserAddress', data.userAddress);
           await this.storageService.set('MobileNumber', data.mobileNumber);
           await this.storageService.set('Email', data.email);
@@ -150,7 +151,7 @@ export class LoginPage implements OnInit {
           this.helperService.setProducts(data.userMerchant);
           this.helperService.setServices(data.userService);
         },
-        (error: any) => {}
+        (error: any) => { }
       );
   }
 }

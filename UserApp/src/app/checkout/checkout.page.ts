@@ -50,7 +50,7 @@ export class CheckoutPage implements OnInit {
     private productInfoService: ProductInfoService,
     private commonApiServiceCallsService: CommonApiServiceCallsService,
     private storageService: StorageService
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     this.deliveryType = DeliveryType.HomeDelivery.toString();
@@ -161,7 +161,7 @@ export class CheckoutPage implements OnInit {
                   : '');
             }
           },
-          (error: any) => {}
+          (error: any) => { }
         );
     } else {
       this.checkoutService
@@ -197,7 +197,7 @@ export class CheckoutPage implements OnInit {
                   : '');
             }
           },
-          (error: any) => {}
+          (error: any) => { }
         );
     }
   }
@@ -254,7 +254,7 @@ export class CheckoutPage implements OnInit {
               }
             );
         },
-        (error: any) => {}
+        (error: any) => { }
       );
   }
 
@@ -297,13 +297,13 @@ export class CheckoutPage implements OnInit {
         color: '#F37254',
       },
       modal: {
-        ondismiss: function () {},
+        ondismiss: function () { },
       },
     };
     var successCallback = (payment_id) => {
       this.insertOrderList(payment_id);
     };
-    var cancelCallback = (error) => {};
+    var cancelCallback = (error) => { };
     await RazorpayCheckout.open(options, successCallback, cancelCallback);
   }
   async makeAnOrder() {
@@ -330,6 +330,7 @@ export class CheckoutPage implements OnInit {
       SubTotal: this.subTotal,
       SellerKey: await this.storageService.get('Key'),
       ProcessingFee: Number(this.processingFee),
+      UserDeliveryAddressId: Number(this.defaultAddress.id),
       PaymentType:
         this.paymentType == PaymentType.CashOnDelivery.toString() ? 1 : 0,
       DeliveryType:
@@ -405,7 +406,7 @@ export class CheckoutPage implements OnInit {
         async (data: any) => {
           await this.storageService.set('cartUpdated', 'false');
         },
-        (error: any) => {}
+        (error: any) => { }
       );
     }
   }
