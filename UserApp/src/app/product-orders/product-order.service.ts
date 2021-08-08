@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment} from '../../environments/environment';
-import { CommonApiServiceCallsService} from '../Shared/common-api-service-calls.service';
+import { environment } from '../../environments/environment';
+import { CommonApiServiceCallsService } from '../Shared/common-api-service-calls.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +9,16 @@ import { CommonApiServiceCallsService} from '../Shared/common-api-service-calls.
 export class ProductOrderService {
   private apiUrl = environment.userOperationServiceUrl;
 
-  constructor(private commonApiServiceCallsService:CommonApiServiceCallsService) { }
+  constructor(private commonApiServiceCallsService: CommonApiServiceCallsService) { }
   getProductOrders(methodName: string, resouce: any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, resouce);
   }
 
   getOrderItems(methodName: string, resouce: any): Observable<any> {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, resouce);
+  }
+
+  getDeliveryTypes(methodName: string): Observable<any> {
+    return this.commonApiServiceCallsService.getAll(this.apiUrl + methodName);
   }
 }

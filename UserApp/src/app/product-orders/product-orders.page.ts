@@ -20,12 +20,16 @@ export class ProductOrdersPage implements OnInit {
   deliveryStatus: any = 'On the way';
   orderedItems: any = [];
   orders: any = [];
+  totalOrders: any = [];
+  deliveryStatusTypes: any = [];
+  searchOrderString: any;
+  selectedDeliveryStatusType: any;
   expand: boolean = false;
   showStoreOrders: boolean;
   stores: [];
   selectedIndex: number;
   dataIsAvilable: boolean = false;
- 
+
 
   constructor(
     private router: Router,
@@ -34,11 +38,55 @@ export class ProductOrdersPage implements OnInit {
     private storageService: StorageService,
     public animationCtrl: AnimationController,
     public modalController: ModalController
-  ) {}
+  ) {
+    this.deliveryStatusTypes.unshift({
+      id: -1,
+      name: `Select All`
+    });
+  }
 
   ngOnInit() {
     this.loadProductOrders();
+    this.loadDeliveryTypes();
   }
+
+  async loadDeliveryTypes() {
+    const loadingController = await this.helperService.createLoadingController(
+      'loading'
+    );
+    await loadingController.present();
+    await this.productOrderService.getDeliveryTypes('DeliveryTypeSelect').subscribe((data: any) => {
+      console.log(data);
+      this.deliveryStatusTypes = [];
+      this.deliveryStatusTypes.unshift({
+        id: -1,
+        name: `Select All`
+      });
+      this.selectedDeliveryStatusType = -1;
+      this.deliveryStatusTypes.push(...data);
+      loadingController.dismiss();
+    },
+      (error: any) => {
+        loadingController.dismiss();
+      }
+    );
+  }
+
+  onDeliveryStatusChange() {
+    if (this.selectedDeliveryStatusType == -1) {
+      this.orders = this.totalOrders;
+    } else {
+      this.orders = this.totalOrders.filter(order => order.deliveryStatusId == this.selectedDeliveryStatusType);
+    }
+  }
+
+  onSearchStringChange = () => {
+    console.log(this.searchOrderString);
+    console.log(this.totalOrders);
+    this.orders = this.totalOrders.filter(order => order.orderID.toLowerCase().includes(this.searchOrderString.toLowerCase()));
+    console.log(this.orders);
+  }
+
   async loadProductOrders() {
     const loadingController = await this.helperService.createLoadingController(
       'loading'
@@ -51,6 +99,7 @@ export class ProductOrdersPage implements OnInit {
       .getProductOrders('UserProductOrders', dataObject)
       .subscribe(
         (data: any) => {
+          this.totalOrders = data.productorders;
           this.orders = data.productorders;
           loadingController.dismiss();
         },
@@ -59,8 +108,9 @@ export class ProductOrdersPage implements OnInit {
         }
       );
   }
-  async viewReceipt(order:any) {
-     const enterAnimation = (baseEl: any) => {
+
+  async viewReceipt(order: any) {
+    const enterAnimation = (baseEl: any) => {
       const backdropAnimation = this.animationCtrl
         .create()
         .addElement(baseEl.querySelector('ion-backdrop')!)
@@ -114,7 +164,7 @@ export class ProductOrdersPage implements OnInit {
   trackStatus() {
     this.router.navigate(['/service-orders']);
   }
-  async getOrderItems(order: any, invoice:any) {
+  async getOrderItems(order: any, invoice: any) {
     const loadingController = await this.helperService.createLoadingController(
       'loading'
     );
@@ -134,8 +184,8 @@ export class ProductOrdersPage implements OnInit {
           this.dataIsAvilable = true;
         },
         () => {
-          if(invoice == 'yes')
-             this.viewReceipt(order);   
+          if (invoice == 'yes')
+            this.viewReceipt(order);
         }
       );
   }
