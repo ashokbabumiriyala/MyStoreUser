@@ -6,9 +6,10 @@
     <ion-item class="ion-no-padding  category-1" lines="none" style="padding: 0px !important;">
       <ion-select value="all" [interfaceOptions]="customActionSheetOptions" interface="popover" placeholder="Select One">
         <ion-select-option value="all">All</ion-select-option>
-        <ion-select-option value="delivered">Delivered</ion-select-option>
-        <ion-select-option value="pending">Pending</ion-select-option>
         <ion-select-option value="ordered">Ordered</ion-select-option>
+        <ion-select-option value="executive">Assigned to Executive</ion-select-option>
+        <ion-select-option value="delivered">Delivered</ion-select-option>
+        <ion-select-option value="deliveryFailed">Delivery Failed</ion-select-option>
       </ion-select>
       <ion-searchbar class="ion-no-border" debounce="500" (ionChange)="gethomeSearchResult($event)"
         placeholder="Search by order id" style="height: 40px;"></ion-searchbar>
@@ -24,7 +25,7 @@
               <td style="width: 25%;"><b>Order Id: </b></td>
               <td class="label">{{item.orderID}}</td>
             </div>
-            <td class="view-invoice"><span  (click)="viewReceipt(item)">View</span></td>
+            <td class="view-invoice"><span  (click)="getOrderItems(item, 'yes')">View Receipt</span></td>
           </tr>         
           <app-product-order-row-expand *ngIf="showStoreOrders && item.expand" [orderDetails]="item" [items]="orderedItems" [expanded]="item.expand"></app-product-order-row-expand>
         </div>

@@ -32,7 +32,7 @@ export class ProductOrderRowExpandComponent implements OnInit {
   ngOnInit() {}
 
   ngOnChanges(SimpleValues: any) {
-    this.expanded = SimpleValues.expanded.currentValue;
-    this.orderedItems = SimpleValues.items.currentValue;
+    this.expanded = SimpleValues?.expanded?.currentValue ? SimpleValues.expanded.currentValue : true;
+    this.orderedItems = SimpleValues?.items?.currentValue;
   }
 }

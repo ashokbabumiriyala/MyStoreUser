@@ -6,6 +6,7 @@ import { HelperService } from '../common/helper.service';
 import { StorageService } from '../common/storage.service';
 import { ProductOrderService } from './product-order.service';
 import { OrderInvoiceComponent } from './order-invoice/order-invoice.component';
+import { AnyAaaaRecord } from 'dns';
 
 @Component({
   selector: 'app-product-orders',
@@ -59,7 +60,6 @@ export class ProductOrdersPage implements OnInit {
       );
   }
   async viewReceipt(order:any) {
-    await this.getOrderItems(order.orderID);
      const enterAnimation = (baseEl: any) => {
       const backdropAnimation = this.animationCtrl
         .create()
@@ -108,18 +108,18 @@ export class ProductOrdersPage implements OnInit {
       });
       ele.expand = true;
       this.selectedIndex = index;
-      this.getOrderItems(ele.orderID);
+      this.getOrderItems(ele, 'no');
     }
   }
   trackStatus() {
     this.router.navigate(['/service-orders']);
   }
-  async getOrderItems(orderId: string) {
+  async getOrderItems(order: any, invoice:any) {
     const loadingController = await this.helperService.createLoadingController(
       'loading'
     );
     await loadingController.present();
-    const dataObject = { OrderId: orderId };
+    const dataObject = { OrderId: order.orderID };
     await this.productOrderService
       .getOrderItems('UserProductOrderItems', dataObject)
       .subscribe(
@@ -132,6 +132,10 @@ export class ProductOrdersPage implements OnInit {
         (error: any) => {
           loadingController.dismiss();
           this.dataIsAvilable = true;
+        },
+        () => {
+          if(invoice == 'yes')
+             this.viewReceipt(order);   
         }
       );
   }
