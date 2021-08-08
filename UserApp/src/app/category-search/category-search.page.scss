@@ -48,3 +48,9 @@ blockquote {
     font-weight: bold;
     text-align: center;
 }
+.search-bar {
+  ion-item {
+    border:1px solid #000;
+    border-radius: 15px;
+  }
+}

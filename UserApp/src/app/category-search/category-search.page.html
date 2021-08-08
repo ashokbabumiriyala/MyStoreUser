@@ -19,9 +19,19 @@
       </ion-card>
     </ion-col>
   </ion-row>
-  <ion-row class="search-bar">
-    <ion-searchbar debounce="500" (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location"></ion-searchbar>
-    <p style="margin-top: auto;font-size: small;text-align: center;"><b>Note:</b>Use this search bar to view products/services of your favourite provider. </p>
+  <ion-row class="search-bar align-items-center">
+    <ion-item class="ion-no-padding  category-1" lines="none" style="padding: 0px !important;">
+      <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One"
+        style="padding-left: 15px;min-width: 155px;max-width: 155px;text-overflow: ellipsis;">
+        <ion-select-option value="red">All</ion-select-option>
+        <ion-select-option value="purple">Shell Computers</ion-select-option>
+        <ion-select-option value="yellow">Products</ion-select-option>
+      </ion-select>
+      <ion-searchbar class="ion-no-border" debounce="500" (ionChange)="gethomeSearchResult($event)"
+        placeholder="Search for favorite Store/Location" style="height: 40px;"></ion-searchbar>
+    </ion-item>
+    <p style="margin-top: 5px;font-size: small;text-align: center;"><b>Note:</b>Use this search bar to view
+      products/services of your favourite provider. </p>
   </ion-row>
   <ion-list *ngIf="isItemAvailable">
     <ion-item button (click)="itemClick(item)" *ngFor="let item of masterData">{{ item.address }}</ion-item>

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ProductOrdersPageRoutingModule } from './product-orders-routing.module';
-
+import { OrderInvoiceComponent } from './order-invoice/order-invoice.component';
 import { ProductOrdersPage } from './product-orders.page';
 import { ProductOrderRowExpandComponent } from './product-order-row-expand/product-order-row-expand.component';
 import { CustomDatetime } from '../Shared/customdatetime.pipe';
@@ -17,6 +17,6 @@ import { CustomDatetime } from '../Shared/customdatetime.pipe';
     IonicModule,
     ProductOrdersPageRoutingModule
   ],
-  declarations: [ProductOrdersPage,ProductOrderRowExpandComponent,CustomDatetime]
+  declarations: [OrderInvoiceComponent, ProductOrdersPage, ProductOrderRowExpandComponent,CustomDatetime]
 })
 export class ProductOrdersPageModule {}

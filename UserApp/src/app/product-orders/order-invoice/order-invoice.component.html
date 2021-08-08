@@ -1,0 +1,88 @@
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td class="title">#{{orderItem.orderID}} </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="information">
+      <td colspan="5">
+        <table>
+          <tr>
+            <td>
+              Ravi Shankar,<br />
+              <p style="max-width: 190px;margin: 0px;">{{orderItem.deliveryAddress}}</p>
+             {{orderItem.userMobileNumber}}
+            </td>
+            <td>{{orderItem.createdOn | date:'short'}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- <tr class="heading">
+      <td colspan="4">Payment Method</td>
+      <td>Check #</td>
+    </tr>
+
+    <tr class="details">
+      <td colspan="4">Check</td>
+      <td>1000</td>
+    </tr> -->
+
+    <tr class="heading">
+      <td>SI.No</td>
+      <td class="ion-text-start">Name</td>
+      <td>unit Price</td>
+      <td>Qty</td>
+      <td>Amount</td>
+    </tr>
+
+    <tr class="item" *ngFor="let item of orderedItemsList;let i = index;">
+      <td>{{i+1}}</td>
+      <td class="ion-text-start">{{item.productName}}</td>
+      <td class="ion-text-center">{{item.priceAfterDiscount}}</td>
+      <td>{{item.quantity}}</td>
+      <td>{{item.totalAmount}}</td>
+    </tr>
+   
+    <tr class="total">
+      <td colspan="5">
+        <table>
+          <tr>
+            <td>Sub Total</td>
+            <td>{{orderItem.subTotal | currency:'INR'}}</td>
+          </tr>
+          <tr *ngIf="orderItem.deliveryType == 0">
+            <td>Delivery Charges</td>
+            <td>{{(orderItem.deliveryCharge == null ? 0: orderItem.deliveryCharge) | currency:'INR'}}</td>
+          </tr>
+          <tr>
+            <td>Processing Fee</td>
+            <td>{{(orderItem.processingFee == null ? 0: orderItem.processingFee) | currency:'INR'}}</td>
+          </tr>
+         
+          <tr>
+            <td>Order Total</td>
+            <td>{{orderItem.totalAmount | currency:'INR'}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr class="store-address">
+      <td colspan="5">
+        <table>
+          <tr>
+            <td>Store Address :</td>
+            <td style="max-width: 190px;">{{orderItem.storeAddress}}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>

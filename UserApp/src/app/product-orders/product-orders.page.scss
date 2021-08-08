@@ -27,7 +27,7 @@
     border-radius: 15px;
     font-size: 14px;
     margin-bottom: 5px;
-    overflow-y: auto;
+    // overflow-y: auto;
     max-width: 100%;
     white-space: break-spaces;
     padding: 10px;
@@ -51,3 +51,20 @@
 table {
     width: -webkit-fill-available;
 }
+.view-invoice {
+    text-decoration:underline;
+    text-align: right;
+    width: 3%;
+    color: darkorange;
+}
+.search-bar {
+    margin-bottom: 10px;
+    ion-item {
+      border:1px solid darkorange;
+      border-radius: 15px;
+    }
+    ion-select {
+        padding-left: 15px;
+        min-width: 120px;
+    }
+  }

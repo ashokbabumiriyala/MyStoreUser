@@ -2,47 +2,30 @@
   <h2 class="page-title">
     <ion-icon name="aperture-outline" slot="start"></ion-icon>Product Orders
   </h2>
-  <!-- <ion-grid>
-    <div  (click)="expandItem($event, item, i)" *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}">
-      <div class="body" style="display: flex;">
-        <ion-col>
-          <ion-label>Store Name: <b>{{item.storeName}}</b></ion-label>
-        </ion-col>
-        <ion-col>
-          <ion-label>Ordered Date: <b>{{item.createdOn|date:"dd/MM/yy"}}</b></ion-label>
-        </ion-col>
-        </div>
-        <div class="body" style="display: flex;">
-        <ion-col>
-          <ion-label>Order Id: <b>{{item.orderID}}</b></ion-label>
-        </ion-col>
-        <ion-col>
-          <ion-label>Delivery Status: <b>{{item.deliveryStatus}}</b></ion-label>
-        </ion-col>
-      </div> 
-      <div class="w-100">   
-      <app-product-order-row-expand *ngIf="showStoreOrders && item.expand"
-       [TotalAmount]="TotalAmount" [items]="orderedItems" 
-   [expanded]="item.expand"></app-product-order-row-expand>
-   </div>   
-    </div>
-</ion-grid> -->
+  <ion-row class="search-bar align-items-center">
+    <ion-item class="ion-no-padding  category-1" lines="none" style="padding: 0px !important;">
+      <ion-select value="all" [interfaceOptions]="customActionSheetOptions" interface="popover" placeholder="Select One">
+        <ion-select-option value="all">All</ion-select-option>
+        <ion-select-option value="delivered">Delivered</ion-select-option>
+        <ion-select-option value="pending">Pending</ion-select-option>
+        <ion-select-option value="ordered">Ordered</ion-select-option>
+      </ion-select>
+      <ion-searchbar class="ion-no-border" debounce="500" (ionChange)="gethomeSearchResult($event)"
+        placeholder="Search by order id" style="height: 40px;"></ion-searchbar>
+    </ion-item>
+  </ion-row>
+
   <div direction="x" class="wide-as-needed">
     <table class="table">
       <tbody>
-        <div (click)="expandItem($event, item, i)" *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}">
+        <div *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}">
           <tr>
-            <td><b>Order Id: </b></td>
-            <td class="label"> {{item.orderID}}</td>
-          </tr>
-          <!-- <tr>
-            <td><b>Delivery Status:</b></td>
-            <td class="label">{{item.deliveryStatus}}</td>
-          </tr>
-          <tr>
-            <td><b>Store Name:</b></td>
-            <td class="label" style="width: 140px;">{{item.storeName}}</td>
-          </tr> -->
+            <div (click)="expandItem($event, item, i)">
+              <td style="width: 25%;"><b>Order Id: </b></td>
+              <td class="label">{{item.orderID}}</td>
+            </div>
+            <td class="view-invoice"><span  (click)="viewReceipt(item)">View</span></td>
+          </tr>         
           <app-product-order-row-expand *ngIf="showStoreOrders && item.expand" [orderDetails]="item" [items]="orderedItems" [expanded]="item.expand"></app-product-order-row-expand>
         </div>
       </tbody>

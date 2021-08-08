@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController, AnimationController } from '@ionic/angular';
 
 import { HelperService } from '../common/helper.service';
 import { StorageService } from '../common/storage.service';
 import { ProductOrderService } from './product-order.service';
+import { OrderInvoiceComponent } from './order-invoice/order-invoice.component';
 
 @Component({
   selector: 'app-product-orders',
@@ -21,11 +23,16 @@ export class ProductOrdersPage implements OnInit {
   showStoreOrders: boolean;
   stores: [];
   selectedIndex: number;
+  dataIsAvilable: boolean = false;
+ 
+
   constructor(
     private router: Router,
     private helperService: HelperService,
     private productOrderService: ProductOrderService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    public animationCtrl: AnimationController,
+    public modalController: ModalController
   ) {}
 
   ngOnInit() {
@@ -50,6 +57,43 @@ export class ProductOrdersPage implements OnInit {
           loadingController.dismiss();
         }
       );
+  }
+  async viewReceipt(order:any) {
+    await this.getOrderItems(order.orderID);
+     const enterAnimation = (baseEl: any) => {
+      const backdropAnimation = this.animationCtrl
+        .create()
+        .addElement(baseEl.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+      const wrapperAnimation = this.animationCtrl
+        .create()
+        .beforeStyles({
+          opacity: 1,
+          height: '83%',
+          width: 'auto',
+          'min-width': '96vw',
+          'margin-top': '6%',
+        })
+        .addElement(baseEl.querySelector('.modal-wrapper')!)
+        .fromTo('transform', 'scale(0)', 'scale(1)');
+
+      return this.animationCtrl
+        .create()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(400)
+        .addAnimation([backdropAnimation, wrapperAnimation]);
+    };
+    const leaveAnimation = (baseEl: any) => {
+      return enterAnimation(baseEl).direction('reverse');
+    };
+    const modal = await this.modalController.create({
+      component: OrderInvoiceComponent,
+      componentProps: { orderedItemsList: this.orderedItems, orderItem: order },
+      enterAnimation,
+      leaveAnimation,
+    });
+    return await modal.present();
   }
   expandItem(event, ele: any, index: number): void {
     this.orderedItems = [];
@@ -83,9 +127,11 @@ export class ProductOrdersPage implements OnInit {
           this.orderedItems = data.productorders;
           this.showStoreOrders = true;
           loadingController.dismiss();
+          this.dataIsAvilable = true;
         },
         (error: any) => {
           loadingController.dismiss();
+          this.dataIsAvilable = true;
         }
       );
   }

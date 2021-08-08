@@ -26,7 +26,12 @@ export class CategorySearchPage implements OnInit {
   isItemAvailable: boolean;
   public masterData: any = [];
   iDataTransferBetweenPages: iDataTransferBetweenPages;
+  customActionSheetOptions: any = {
+    header: 'Search By..',
+    // subHeader: 'Select your favorite color'
+  };
   async ngOnInit() {
+    
     await this.storageService.init();
     var currentUserName = await this.storageService.get('UserName');
     var currentAuthToken = await this.storageService.get('AuthToken');

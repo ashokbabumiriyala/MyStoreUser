@@ -63,7 +63,7 @@ ion-button {
     }
 }
 ion-searchbar ion-icon {
-    right: 16px !important;
+    right: 0px !important;
     left: auto !important;
   }
 ion-searchbar input {
@@ -94,4 +94,17 @@ body {
 .searchbar-clear-icon { display: none !important; }
 .menu-content-open {
     pointer-events: auto !important;
+}
+.category-1 {
+    ion-search {
+    box-shadow: none !important;
+    }
+    .searchbar-input {
+        box-shadow: none !important;
+        border: none !important;
+    }
+    .item-inner {
+        padding-inline-start: 5px !important;
+        padding-inline-end: 0px !important;
+      }
 }
