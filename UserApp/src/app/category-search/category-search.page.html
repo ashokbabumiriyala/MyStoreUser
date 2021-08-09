@@ -21,15 +21,19 @@
   </ion-row>
   <ion-row class="search-bar align-items-center">
     <ion-item class="ion-no-padding  category-1" lines="none" style="padding: 0px !important;">
-      <ion-select value="select" [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One"
+      <!-- <ion-select value="select" [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One"
         style="padding-left: 15px;min-width: 155px;max-width: 155px;text-overflow: ellipsis;">
         <ion-select-option value="select">Select</ion-select-option>
         <ion-select-option value="storeCategory">Store Category</ion-select-option>
         <ion-select-option value="productName">Product Name</ion-select-option>
         <ion-select-option value="storeName">Store Name</ion-select-option>
+      </ion-select> -->
+      <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select store category" [(ngModel)]="selectedStoreCategory" (ionChange)="onStoreCategoryChange()">
+        <ion-select-option [value]="d" *ngFor="let d of storeCategories;">
+          {{d}}
+        </ion-select-option>
       </ion-select>
-      <ion-searchbar class="ion-no-border" debounce="500" (ionChange)="gethomeSearchResult($event)"
-        placeholder="Search for favorite Store/Location" style="height: 40px;"></ion-searchbar>
+      <ion-searchbar class="ion-no-border" debounce="500" (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location" style="height: 40px;"></ion-searchbar>
     </ion-item>
     <p style="margin-top: 5px;font-size: small;text-align: center;"><b>Note:</b>Use this search bar to view
       products/services of your favourite provider. </p>

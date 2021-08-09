@@ -29,6 +29,14 @@ export class CategorySearchService {
     );
   }
 
+  getCategories(): Observable<any> {
+    return this.commonApiServiceCallsService.getAll(this.apiUrl + "StoreCategoriesSelect");
+  }
+
+  getStoreDetailsByProduct(methodName: string, data: any): Observable<any> {
+    return this.commonApiServiceCallsService.select(this.apiUrl + methodName, data);
+  }
+
   searchFromHome(methodName: string): Observable<any> {
     return this.commonApiServiceCallsService.getAll(this.apiUrl + methodName);
   }

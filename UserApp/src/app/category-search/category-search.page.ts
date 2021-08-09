@@ -20,7 +20,10 @@ export class CategorySearchPage implements OnInit {
     private categorySearchService: CategorySearchService,
     private storageService: StorageService,
     private virutalFootFallService: VirtualFootFallService
-  ) {}
+  ) {
+    this.storeCategories.unshift(`Select All`);
+  }
+
   cartItems = [];
   homeResult: any[];
   isItemAvailable: boolean;
@@ -30,8 +33,11 @@ export class CategorySearchPage implements OnInit {
     header: 'Search By..',
     // subHeader: 'Select your favorite color'
   };
+  selectedStoreCategory: string;
+  storeCategories: Array<string> = [];
+
   async ngOnInit() {
-    
+
     await this.storageService.init();
     var currentUserName = await this.storageService.get('UserName');
     var currentAuthToken = await this.storageService.get('AuthToken');
@@ -52,6 +58,22 @@ export class CategorySearchPage implements OnInit {
     this.helperService.getCartItems().subscribe((cartItems) => {
       this.cartItems = cartItems;
     });
+    const loadingController = await this.helperService.createLoadingController(
+      'loading'
+    );
+    await loadingController.present();
+    this.categorySearchService.getCategories().subscribe((data: any) => {
+      this.storeCategories = [];
+      this.storeCategories.unshift(
+        `Select All`);
+      this.selectedStoreCategory = 'Select All';
+      this.storeCategories.push(...data);
+      loadingController.dismiss();
+    },
+      (error: any) => {
+        loadingController.dismiss();
+      });
+
     this.SearchFromHome();
   }
 
@@ -72,9 +94,9 @@ export class CategorySearchPage implements OnInit {
     );
   }
 
-  gethomeSearchResult(ev: any) {
+  async gethomeSearchResult(ev: any) {
     const val = ev.target.value;
-
+    this.masterData = [];
     if (val && val.trim() !== '' && val.length >= 4) {
       this.isItemAvailable = true;
       this.masterData = this.homeResult.filter((item) => {
@@ -82,6 +104,22 @@ export class CategorySearchPage implements OnInit {
           return item.address.toLowerCase().indexOf(val.toLowerCase()) > -1;
         }
       });
+      const loadingController = await this.helperService.createLoadingController(
+        'loading'
+      );
+      await loadingController.present();
+      var tempCategory = this.selectedStoreCategory.toLowerCase() == "select all" ? undefined : this.selectedStoreCategory;
+      var data = {
+        category: tempCategory,
+        productName: val.trim()
+      };
+      this.categorySearchService.getStoreDetailsByProduct("GetStoresDetailsByProduct", data).subscribe((data: any) => {
+        console.log(data);
+        this.masterData.push(...data);
+        console.log(this.masterData);
+        loadingController.dismiss();
+      },
+        (error: any) => { loadingController.dismiss(); });
     } else {
       this.isItemAvailable = false;
     }
@@ -95,8 +133,8 @@ export class CategorySearchPage implements OnInit {
             Number(await this.storageService.get('UserId')),
             data.id
           )
-          .subscribe(() => {});
-      } catch (err) {}
+          .subscribe(() => { });
+      } catch (err) { }
       this.iDataTransferBetweenPages = {
         storeId: Number(data.id),
         MerchantName: data.name,
@@ -181,5 +219,9 @@ export class CategorySearchPage implements OnInit {
     } else {
       this.router.navigate(['/service-info']);
     }
+  }
+
+  onStoreCategoryChange() {
+
   }
 }
