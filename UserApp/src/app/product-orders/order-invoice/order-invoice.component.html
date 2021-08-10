@@ -1,4 +1,10 @@
-<div class="invoice-box">
+<ion-content class="invoice-box">
+  <ion-toolbar class="after-login-bg">
+    <ion-title class="ion-text-center"><strong>Invoice</strong></ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="close-circle-outline" (click)="dismiss()" size="large"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
   <table cellpadding="0" cellspacing="0">
     <tr class="top">
       <td colspan="4">
@@ -15,9 +21,9 @@
         <table>
           <tr>
             <td>
-              Ravi Shankar,<br />
+              {{userFullName}},<br />
               <p style="max-width: 190px;margin: 0px;">{{orderItem.deliveryAddress}}</p>
-             {{orderItem.userMobileNumber}}
+              {{orderItem.userMobileNumber}}
             </td>
             <td>{{orderItem.createdOn | date:'short'}}</td>
           </tr>
@@ -50,7 +56,7 @@
       <td>{{item.quantity}}</td>
       <td>{{item.totalAmount | currency:'INR'}}</td>
     </tr>
-   
+
     <tr class="total">
       <td colspan="5">
         <table>
@@ -66,7 +72,7 @@
             <td>Processing Fee</td>
             <td>{{(orderItem.processingFee == null ? 0: orderItem.processingFee) | currency:'INR'}}</td>
           </tr>
-         
+
           <tr>
             <td>Order Total</td>
             <td>{{orderItem.totalAmount | currency:'INR'}}</td>
@@ -79,10 +85,10 @@
         <table>
           <tr>
             <td>Store Address :</td>
-            <td style="max-width: 190px;">{{orderItem.storeAddress}}</td>
+            <td style="max-width: 190px;text-align: left;">{{orderItem.storeAddress}}</td>
           </tr>
         </table>
       </td>
     </tr>
   </table>
-</div>
+</ion-content>

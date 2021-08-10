@@ -28,6 +28,7 @@ enum PaymentType {
 })
 export class CheckoutPage implements OnInit {
   defaultAddress: any;
+  defaultAddressId: number;
   default: boolean = true;
   cartItems: any[] = [];
   subTotal: number = 0;
@@ -75,6 +76,7 @@ export class CheckoutPage implements OnInit {
       .subscribe(async (currentAddress) => {
         if (currentAddress != null) {
           this.defaultAddress = currentAddress.address;
+          this.defaultAddressId = currentAddress.id;
           var calAddressObj = {
             storeId: this.storeOrServiceLocationId,
             latitude: currentAddress.latitude,
@@ -222,6 +224,8 @@ export class CheckoutPage implements OnInit {
       .subscribe(
         async (data: any) => {
           this.defaultAddress = data.checkoutAddress[0].address;
+          this.defaultAddressId = data.checkoutAddress[0].id;
+          console.log(this.defaultAddress, this.defaultAddressId);
           var calAddressObj = {
             storeId: this.storeOrServiceLocationId,
             latitude: data.checkoutAddress[0].latitude,
@@ -330,7 +334,7 @@ export class CheckoutPage implements OnInit {
       SubTotal: this.subTotal,
       SellerKey: await this.storageService.get('Key'),
       ProcessingFee: Number(this.processingFee),
-      UserDeliveryAddressId: Number(this.defaultAddress.id),
+      DeliveryAddressId: Number(this.defaultAddressId),
       PaymentType:
         this.paymentType == PaymentType.CashOnDelivery.toString() ? 1 : 0,
       DeliveryType:

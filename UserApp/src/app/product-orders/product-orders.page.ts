@@ -56,7 +56,6 @@ export class ProductOrdersPage implements OnInit {
     );
     await loadingController.present();
     await this.productOrderService.getDeliveryTypes('DeliveryTypeSelect').subscribe((data: any) => {
-      console.log(data);
       this.deliveryStatusTypes = [];
       this.deliveryStatusTypes.unshift({
         id: -1,
@@ -100,6 +99,7 @@ export class ProductOrdersPage implements OnInit {
       .subscribe(
         (data: any) => {
           this.totalOrders = data.productorders;
+          console.log(data.productorders);
           this.orders = data.productorders;
           loadingController.dismiss();
         },
@@ -139,13 +139,14 @@ export class ProductOrdersPage implements OnInit {
     };
     const modal = await this.modalController.create({
       component: OrderInvoiceComponent,
-      componentProps: { orderedItemsList: this.orderedItems, orderItem: order },
+      componentProps: { orderItem: order },
       enterAnimation,
       leaveAnimation,
     });
     return await modal.present();
   }
-  expandItem(event, ele: any, index: number): void {
+
+  async expandItem(event, ele: any, index: number) {
     this.orderedItems = [];
     this.showStoreOrders = false;
     if (ele.expand) {
@@ -158,13 +159,16 @@ export class ProductOrdersPage implements OnInit {
       });
       ele.expand = true;
       this.selectedIndex = index;
-      this.getOrderItems(ele, 'no');
+      await this.getOrderItems(ele, 'no');
     }
   }
+
   trackStatus() {
     this.router.navigate(['/service-orders']);
   }
+
   async getOrderItems(order: any, invoice: any) {
+    console.log(order, invoice);
     const loadingController = await this.helperService.createLoadingController(
       'loading'
     );
@@ -174,6 +178,7 @@ export class ProductOrdersPage implements OnInit {
       .getOrderItems('UserProductOrderItems', dataObject)
       .subscribe(
         (data: any) => {
+          console.log(data.productorders);
           this.orderedItems = data.productorders;
           this.showStoreOrders = true;
           loadingController.dismiss();
@@ -182,10 +187,6 @@ export class ProductOrdersPage implements OnInit {
         (error: any) => {
           loadingController.dismiss();
           this.dataIsAvilable = true;
-        },
-        () => {
-          if (invoice == 'yes')
-            this.viewReceipt(order);
         }
       );
   }

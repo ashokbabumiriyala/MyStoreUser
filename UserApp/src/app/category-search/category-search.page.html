@@ -19,28 +19,41 @@
       </ion-card>
     </ion-col>
   </ion-row>
+
+  <ion-list *ngIf="isItemsAvailable && selectedSearchType == 'storeCategory'">
+    <ion-item button (click)="itemClick(item)" *ngFor="let item of autoCompleteResults">{{ item }}</ion-item>
+  </ion-list>
+  <ion-list *ngIf="isItemsAvailable && selectedSearchType == 'productName'">
+    <ion-item button (click)="itemClick(item)" *ngFor="let item of autoCompleteResults">
+      <ion-col size="3" style="margin: auto">
+        <ion-avatar>
+          <img class="product-img" src="{{item.url}}" *ngIf="item.url">
+          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!item.url">
+        </ion-avatar>
+      </ion-col>
+      <ion-col size="9" style="margin-left: 20px;">
+        <h5 class="product-name">{{item.productName}}</h5>
+      </ion-col>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="isItemsAvailable && selectedSearchType == 'storeName'">
+    <ion-item button (click)="itemClick(item)" *ngFor="let item of autoCompleteResults">{{ item.address }}</ion-item>
+  </ion-list>
   <ion-row class="search-bar align-items-center">
     <ion-item class="ion-no-padding  category-1" lines="none" style="padding: 0px !important;">
-      <!-- <ion-select value="select" [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select One"
-        style="padding-left: 15px;min-width: 155px;max-width: 155px;text-overflow: ellipsis;">
-        <ion-select-option value="select">Select</ion-select-option>
+      <ion-select [(ngModel)]="selectedSearchType" [interfaceOptions]="customActionSheetOptions" (ionChange)="onSearchTypeChange()" interface=" action-sheet" placeholder="Select One" style="padding-left: 15px;min-width: 155px;max-width: 155px;text-overflow: ellipsis;">
         <ion-select-option value="storeCategory">Store Category</ion-select-option>
         <ion-select-option value="productName">Product Name</ion-select-option>
         <ion-select-option value="storeName">Store Name</ion-select-option>
-      </ion-select> -->
-      <ion-select [interfaceOptions]="customActionSheetOptions" interface="action-sheet" placeholder="Select store category" [(ngModel)]="selectedStoreCategory" (ionChange)="onStoreCategoryChange()">
-        <ion-select-option [value]="d" *ngFor="let d of storeCategories;">
-          {{d}}
-        </ion-select-option>
       </ion-select>
-      <ion-searchbar class="ion-no-border" debounce="500" (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location" style="height: 40px;"></ion-searchbar>
+      <ion-searchbar class="ion-no-border" debounce="500" [(ngModel)]='autoCompleteSearchString' (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location" style="height: 40px;"></ion-searchbar>
     </ion-item>
     <p style="margin-top: 5px;font-size: small;text-align: center;"><b>Note:</b>Use this search bar to view
       products/services of your favourite provider. </p>
   </ion-row>
-  <ion-list *ngIf="isItemAvailable">
+  <!-- <ion-list *ngIf="isItemsAvailable">
     <ion-item button (click)="itemClick(item)" *ngFor="let item of masterData">{{ item.address }}</ion-item>
-  </ion-list>
+  </ion-list> -->
   <ion-row>
     <blockquote><q>My3Karrt!! Shop from your favorite Neighborhood stores!!</q></blockquote>
   </ion-row>

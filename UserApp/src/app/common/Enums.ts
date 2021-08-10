@@ -3,3 +3,10 @@ export enum AvailableStoreTypes {
   ProductType,
   ServiceType,
 }
+
+
+export enum StorePageType {
+  storesByCategory = 0,
+  storesByProduct = 1,
+  storeByName = 2
+}

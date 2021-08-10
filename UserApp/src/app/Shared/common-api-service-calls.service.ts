@@ -11,7 +11,7 @@ class ID {
 })
 export class CommonApiServiceCallsService {
   private httpHeaders: HttpHeaders;
-  constructor(private httpClient: HttpClient,private toastController:ToastController) { }
+  constructor(private httpClient: HttpClient, private toastController: ToastController) { }
 
 
   createHttpHeader() {
@@ -24,16 +24,16 @@ export class CommonApiServiceCallsService {
     //   this.httpHeaders = this.httpHeaders.set('Authorization', 'Bearer ' + authToken);
     // }
 
-    this.httpHeaders = new HttpHeaders();   
-    this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Origin' ,'*');
+    this.httpHeaders = new HttpHeaders();
+    this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Origin', '*');
     this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
     this.httpHeaders = this.httpHeaders.set('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
     this.httpHeaders = this.httpHeaders.set('Content-Type', 'application/json');
-    this.httpHeaders.append("Authorization", "Basic " + btoa("rzp_test_jksL0BIxIGtc18:DzkTmavVAMxnxRukpL2AbK5t"));  
-   
+    this.httpHeaders.append("Authorization", "Basic " + btoa("rzp_test_jksL0BIxIGtc18:DzkTmavVAMxnxRukpL2AbK5t"));
+
   }
   getAll(apiUrl: string): Observable<any> {
-   // this.createHttpHeader();
+    // this.createHttpHeader();
     return this.httpClient
       .get(apiUrl)
       .pipe(catchError(error => this.handleError(error)));
@@ -46,8 +46,15 @@ export class CommonApiServiceCallsService {
       .post(apiUrl, resource)
       .pipe(catchError(error => this.handleError(error)));
   }
+
+  getCustom(apiUrl: string, custom: any): Observable<any> {
+    return this.httpClient
+      .post(apiUrl, custom)
+      .pipe(catchError(error => this.handleError(error)));
+  }
+
   getWithResource(apiUrl: string, resource: any): Observable<any> {
-   // this.createHttpHeader();
+    // this.createHttpHeader();
     return this.httpClient
       .post(apiUrl, resource)
       .pipe(catchError(error => this.handleError(error)));
@@ -57,10 +64,10 @@ export class CommonApiServiceCallsService {
     return this.httpClient
       .post(apiUrl, resource)
       .pipe(catchError((error) => this.handleError(error)
-    ));
+      ));
   }
   create(apiUrl: string, resource: any): Observable<any> {
-   // this.createHttpHeader();
+    // this.createHttpHeader();
     return this.httpClient
       .post(apiUrl, resource)
       .pipe(catchError(error => this.handleError(error)));
@@ -78,7 +85,7 @@ export class CommonApiServiceCallsService {
       .pipe(catchError(error => this.handleError(error)));
   }
   getFileData(apiUrl: string, id: number): Observable<any> {
-   // this.createHttpHeader();
+    // this.createHttpHeader();
     const resource = new ID();
     resource.Id = id;
 
@@ -97,7 +104,7 @@ export class CommonApiServiceCallsService {
   createRazorOrder(apiUrl: string, resource: any) {
     this.createHttpHeader();
     return this.httpClient
-      .post(apiUrl, resource,{headers :this.httpHeaders})
+      .post(apiUrl, resource, { headers: this.httpHeaders })
       .pipe(catchError(error => this.handleError(error)));
   }
 
@@ -115,7 +122,7 @@ export class CommonApiServiceCallsService {
     return throwError(console.log(error));
   }
 
-   async presentToast(data: string,tostarColor:string) {
+  async presentToast(data: string, tostarColor: string) {
     const toast = await this.toastController.create({
       message: data,
       duration: 2000,

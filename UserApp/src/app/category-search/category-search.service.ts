@@ -37,6 +37,10 @@ export class CategorySearchService {
     return this.commonApiServiceCallsService.select(this.apiUrl + methodName, data);
   }
 
+  getProducts(searchString: string): Observable<any> {
+    return this.commonApiServiceCallsService.getCustom(this.apiUrl + "GetProducts", { searchKey: searchString });
+  }
+
   searchFromHome(methodName: string): Observable<any> {
     return this.commonApiServiceCallsService.getAll(this.apiUrl + methodName);
   }

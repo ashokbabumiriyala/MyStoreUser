@@ -85,14 +85,15 @@ export class LoginPage implements OnInit {
       .validateUser('UserLogin', dataObject)
       .subscribe(
         async (data: any) => {
+          console.log(data);
           this.authenticationService.isAuthenticated = true;
-          await this.storageService.set('AuthToken', data.token);
-          await this.storageService.set('UserId', data.userId);
-          await this.storageService.set('UserName', data.userName);
-          await this.storageService.set('FullName', data.fullName);
-          await this.storageService.set('UserAddress', data.userAddress);
-          await this.storageService.set('MobileNumber', data.mobileNumber);
-          await this.storageService.set('Email', data.email);
+          this.storageService.set('AuthToken', data.token);
+          this.storageService.set('UserId', data.userId);
+          this.storageService.set('UserName', data.userName);
+          this.storageService.set('FullName', data.fullName);
+          this.storageService.set('UserAddress', data.userAddress);
+          this.storageService.set('MobileNumber', data.mobileNumber);
+          this.storageService.set('Email', data.email);
           var pushToken = await this.storageService.get('PushToken');
           var userId = Number(data.userId);
           if (userId != 0 && pushToken != null) {
@@ -121,6 +122,7 @@ export class LoginPage implements OnInit {
         }
       );
   }
+
   getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -139,6 +141,7 @@ export class LoginPage implements OnInit {
       alert('Geolocation is not supported by this browser.');
     }
   }
+
   async getUserStores() {
     const dataObj = {
       Latitude: (await this.storageService.get('lat')).toString(),

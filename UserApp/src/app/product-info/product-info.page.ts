@@ -5,7 +5,7 @@ import {
   ViewChild,
   NgZone,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {
   NativeGeocoder,
@@ -19,6 +19,7 @@ import { StorageService } from '../common/storage.service';
 import { AnimationController, ModalController } from '@ionic/angular';
 import { MapsPage } from '../Shared/maps/maps.page';
 import { VirtualFootFallService } from '../common/virtualfootfall.service';
+import { StorePageType } from '../common/Enums';
 declare var google;
 
 enum PageType {
@@ -53,6 +54,7 @@ export class ProductInfoPage implements OnInit {
   constructor(
     public zone: NgZone,
     private router: Router,
+    private route: ActivatedRoute,
     private helperService: HelperService,
     private productInfoService: ProductInfoService,
     private storageService: StorageService,
@@ -68,16 +70,38 @@ export class ProductInfoPage implements OnInit {
   }
   displayListView: boolean;
   currentPage: PageType;
+  pageType: StorePageType = StorePageType.storeByName;
+  categoryName: string;
+  productSearchString: string;
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.iDataTransferBetweenPages = this.helperService.getPageData();
+      this.pageType = this.iDataTransferBetweenPages.pageType;
+      console.log('pageType:' + this.pageType);
+      if (this.iDataTransferBetweenPages.pageType == StorePageType.storesByCategory) {
+        this.categoryName = this.iDataTransferBetweenPages.categoryName;
+      }
+      else if (this.iDataTransferBetweenPages.pageType == StorePageType.storesByProduct) {
+        this.productSearchString = this.iDataTransferBetweenPages.productSearchString;
+      }
+    });
     this.pageLoad();
   }
 
-  public pageLoad() {
+  async pageLoad() {
     this.displayListView = true;
 
     this.googleMapStyle();
+    if (this.pageType == StorePageType.storesByCategory) {
+      await this.getMerchantList(this.categoryName, undefined);
+    } else if (this.pageType == StorePageType.storesByProduct) {
+      await this.getMerchantList(undefined, this.productSearchString);
+    } else if (this.pageType == StorePageType.storeByName) {
+      await this.getMerchantList(undefined, undefined);
+    }
 
+    /*
     this.helperService.getProducts().subscribe((merchants) => {
       if (merchants != null) {
         this.masterData = [];
@@ -99,9 +123,14 @@ export class ProductInfoPage implements OnInit {
       } else {
         this.getMerchantList();
       }
-    });
+    });*/
   }
-  async getMerchantList() {
+
+  async getMerchantListByCategory(category: string) {
+
+  }
+
+  async getMerchantList(storeCategory?: string, productSearchString?: string) {
     const loadingController = await this.helperService.createLoadingController(
       'loading'
     );
@@ -109,6 +138,8 @@ export class ProductInfoPage implements OnInit {
     const dataObj = {
       Latitude: (await this.storageService.get('lat')).toString(),
       Longitude: (await this.storageService.get('lng')).toString(),
+      StoreCategory: storeCategory,
+      searchKey: productSearchString,
     };
     await this.productInfoService
       .getMerchantList('UserMerchantSelect', dataObj)
@@ -151,8 +182,8 @@ export class ProductInfoPage implements OnInit {
           Number(await this.storageService.get('UserId')),
           Number(merchant.merchantID)
         )
-        .subscribe(() => {});
-    } catch (err) {}
+        .subscribe(() => { });
+    } catch (err) { }
 
     this.iDataTransferBetweenPages = {
       storeId: Number(merchant.merchantID),
