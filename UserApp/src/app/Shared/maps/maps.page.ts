@@ -202,6 +202,7 @@ export class MapsPage implements OnInit {
           }
         },
         (err) => {
+          console.log(err);
           // alert(err);
         }
       );

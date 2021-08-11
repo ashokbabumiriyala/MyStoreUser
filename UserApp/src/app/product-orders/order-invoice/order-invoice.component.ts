@@ -25,6 +25,9 @@ export class OrderInvoiceComponent implements OnInit {
       'loading'
     );
     this.userFullName = await this.storageService.get('FullName');
+    if (this.userFullName == null || this.userFullName == undefined) {
+      this.userFullName = await this.storageService.get('UserName');
+    }
     await loadingController.present();
     const dataObject = { OrderId: this.orderItem.orderID };
     this.orderInvoiceService

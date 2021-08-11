@@ -215,6 +215,7 @@ export class SignupPage implements OnInit {
               this.presentToast('Registration successfully.', 'success');
             }
           } else {
+            this.storageService.set('FullName', this.FullName.value);
             this.presentToast('Profile Update successfully.', 'success');
             this.userProfile = this.signUpFormGroup.getRawValue();
             this.editProfile = false;
