@@ -6,7 +6,6 @@ import { HelperService } from '../common/helper.service';
 import { StorageService } from '../common/storage.service';
 import { ProductOrderService } from './product-order.service';
 import { OrderInvoiceComponent } from './order-invoice/order-invoice.component';
-import { AnyAaaaRecord } from 'dns';
 
 @Component({
   selector: 'app-product-orders',
@@ -14,10 +13,10 @@ import { AnyAaaaRecord } from 'dns';
   styleUrls: ['./product-orders.page.scss'],
 })
 export class ProductOrdersPage implements OnInit {
-  storeName: any = 'Big Basket';
+  storeName: any = '';
   orderedDate: any = new Date();
-  orderId: any = 12345;
-  deliveryStatus: any = 'On the way';
+  orderId: any = '';
+  deliveryStatus: any = '';
   orderedItems: any = [];
   orders: any = [];
   totalOrders: any = [];
@@ -29,7 +28,6 @@ export class ProductOrdersPage implements OnInit {
   stores: [];
   selectedIndex: number;
   dataIsAvilable: boolean = false;
-
 
   constructor(
     private router: Router,
@@ -55,7 +53,7 @@ export class ProductOrdersPage implements OnInit {
       'loading'
     );
     await loadingController.present();
-    await this.productOrderService.getDeliveryTypes('DeliveryTypeSelect').subscribe((data: any) => {
+    this.productOrderService.getDeliveryTypes('DeliveryTypeSelect').subscribe((data: any) => {
       this.deliveryStatusTypes = [];
       this.deliveryStatusTypes.unshift({
         id: -1,

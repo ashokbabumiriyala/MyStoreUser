@@ -74,6 +74,7 @@ export class MapsPage implements OnInit {
       this.mapImage = true;
       const ele = document.getElementById('mapWrapper') as HTMLElement;
       ele.classList.remove('map-size');
+      this.checkGPSPermission();
     } else {
       this.getUserAddress();
     }
@@ -152,6 +153,18 @@ export class MapsPage implements OnInit {
         //   await this.storageService.get('lat'),
         //   await this.storageService.get('lng')
         // );
+        const latlngTemp = {
+          lat: resp.coords.latitude,
+          lng: resp.coords.longitude
+        };
+        this.geocoder
+          .geocode({ location: latlngTemp })
+          .then((response: any) => {
+            if (response != undefined && response.results.length > 0) {
+              this.autocomplete.input = response.results[0].formatted_address;
+              this.userSelectedAddress = response.results[0].formatted_address;
+            }
+          });
 
         let mapOptions = {
           center: latLng,
@@ -164,7 +177,7 @@ export class MapsPage implements OnInit {
           this.mapElement.nativeElement,
           mapOptions
         );
-        /*let marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
           position: latLng,
           map: this.map,
           title: 'You are here!',
@@ -178,10 +191,23 @@ export class MapsPage implements OnInit {
           this.addrlat = event.latLng.lat().toString();
           this.addrlng = event.latLng.lng().toString();
           console.log(`new selected address:${latLng}`);
-          await this.storageService.set('lat', event.latLng.lat());
-          await this.storageService.set('lng', event.latLng.lng());
+          const latlngTemp = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          };
+          this.geocoder
+            .geocode({ location: latlngTemp })
+            .then((response: any) => {
+              if (response != undefined && response.results.length > 0) {
+                this.autocomplete.input = response.results[0].formatted_address;
+                this.userSelectedAddress = response.results[0].formatted_address;
+              }
+            });
+
+          this.storageService.set('lat', event.latLng.lat());
+          this.storageService.set('lng', event.latLng.lng());
           marker.position = latLng;
-        });*/
+        });
         this.map.setCenter(latLng);
       })
       .catch((error) => { });
@@ -267,41 +293,43 @@ export class MapsPage implements OnInit {
           lat: await this.storageService.get('lat'),
           lng: await this.storageService.get('lng'),
         };
-
-        // let pos = {
-        //   lat: resp.coords.latitude,
-        //   lng: resp.coords.longitude,
-        // };
-        let marker = new google.maps.Marker({
-          position: pos,
-          map: this.map,
-          title: 'You are here!',
-          draggable: true,
-        });
-        this.map.setCenter(pos);
-        if (this.model_title !== 'Delivery Address') {
-          google.maps.event.addListener(marker, 'dragend', function (event) {
-            let latLng = new google.maps.LatLng(
-              event.latLng.lat(),
-              event.latLng.lng()
-            );
-            this.storageService.set('lat', event.latLng.lat().toString());
-            this.storageService.set('lng', event.latLng.lng().toString());
-            marker.position = latLng;
-          });
-        } else {
-          google.maps.event.addListener(marker, 'dragend', function (event) {
-            let latLng = new google.maps.LatLng(
-              event.latLng.lat(),
-              event.latLng.lng()
-            );
-            this.addrlat = event.latLng.lat();
-            this.addrlng = event.latLng.lng();
-            this.storageService.set('addlat', event.latLng.lat().toString());
-            this.storageService.set('addlng', event.latLng.lng().toString());
-            marker.position = latLng;
-          });
-        }
+        this.loadMap();
+        /*
+                // let pos = {
+                //   lat: resp.coords.latitude,
+                //   lng: resp.coords.longitude,
+                // };
+                let marker = new google.maps.Marker({
+                  position: pos,
+                  map: this.map,
+                  title: 'You are here!',
+                  draggable: true,
+                });
+                this.map.setCenter(pos);
+                if (this.model_title !== 'Delivery Address') {
+                  google.maps.event.addListener(marker, 'dragend', function (event) {
+                    let latLng = new google.maps.LatLng(
+                      event.latLng.lat(),
+                      event.latLng.lng()
+                    );
+                    this.storageService.set('lat', event.latLng.lat().toString());
+                    this.storageService.set('lng', event.latLng.lng().toString());
+                    marker.position = latLng;
+                  });
+                } else {
+                  google.maps.event.addListener(marker, 'dragend', function (event) {
+                    let latLng = new google.maps.LatLng(
+                      event.latLng.lat(),
+                      event.latLng.lng()
+                    );
+                    this.addrlat = event.latLng.lat();
+                    this.addrlng = event.latLng.lng();
+                    this.storageService.set('addlat', event.latLng.lat().toString());
+                    this.storageService.set('addlng', event.latLng.lng().toString());
+                    marker.position = latLng;
+                  });
+                }
+                */
       })
       .catch((error) => {
         console.log(error);
@@ -321,7 +349,7 @@ export class MapsPage implements OnInit {
       };
 
       console.log(dataObj);
-      await this.mapsService
+      this.mapsService
         .getUserDeliveryAddress('UserDeliveryAddressInsert', dataObj)
         .subscribe(
           (data: any) => {
@@ -338,10 +366,12 @@ export class MapsPage implements OnInit {
         'New delivery address selected!',
         'success'
       );
+      this.dismiss();
     }
     else {
       this.helperService.presentToast('New neighborhood selected!', 'success');
       this.getUserStores();
+      this.dismiss();
     }
   }
 
@@ -414,8 +444,8 @@ export class MapsPage implements OnInit {
     this.geocoder.geocode({ placeId: item.place_id }, (results, status) => {
       if (status === 'OK' && results[0]) {
         let position = {
-          lat: results[0].geometry.location.lat,
-          lng: results[0].geometry.location.lng,
+          lat: results[0].geometry.location.lat(),
+          lng: results[0].geometry.location.lng(),
         };
         let marker = new google.maps.Marker({
           position: results[0].geometry.location,
