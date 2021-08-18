@@ -155,6 +155,7 @@ export class CategorySearchPage implements OnInit {
         this.iDataTransferBetweenPages
       );
     }
+    this.autoCompleteSearchString = "";
 
     /*
         if (data.type === 'Product') {
