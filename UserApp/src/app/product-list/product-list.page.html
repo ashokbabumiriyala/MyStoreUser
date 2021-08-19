@@ -7,11 +7,12 @@
       <ion-col size="2" style="margin: auto">
         <ion-avatar>
           <img class="product-img" src="{{product.url}}" *ngIf="product.url">
-          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">          
+          <img class="product-img" src="../../assets/images/default-image.jpg" *ngIf="!product.url">
         </ion-avatar>
         <p>
-        <a href="javascript:void(0);" (click)="presentViewModal(product)" class="view">
-          view</a></p>
+          <a href="javascript:void(0);" (click)="presentViewModal(product)" class="view">
+            view</a>
+        </p>
       </ion-col>
       <ion-col size="10">
         <ion-grid>
@@ -43,6 +44,6 @@
       </ion-col>
     </ion-row>
   </ion-card>
-  <ion-button *ngIf="cartItems.length > 0" type="submit" shape="round"  class="ion-margin-bottom to-checkout" >
-      Proceed To Checkout</ion-button>
+  <ion-button *ngIf="cartItems.length > 0" type="submit" shape="round" class="ion-margin-bottom to-checkout" (click)="navigateTo('checkout')">
+    Proceed To Checkout</ion-button>
 </ion-content>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HelperService } from '../common/helper.service';
 import { ProductListService } from '../product-list/product-list.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { iDataTransferBetweenPages } from '../common/data-transfer-between-pages';
 import { AlertController } from '@ionic/angular';
 import { CategorySearchService } from '../category-search/category-search.service';
@@ -28,6 +28,7 @@ export class ProductListPage implements OnInit {
     private helperService: HelperService,
     private productListService: ProductListService,
     private route: ActivatedRoute,
+    private router: Router,
     public animationCtrl: AnimationController,
     public modalController: ModalController,
     private alertCtrl: AlertController,
@@ -78,6 +79,11 @@ export class ProductListPage implements OnInit {
           .indexOf(this.searchProduct.toLowerCase()) > -1
       );
     });
+  }
+
+  navigateTo(ele) {
+    var route = '/' + ele;
+    this.router.navigate([route]);
   }
 
   async getProductList() {
