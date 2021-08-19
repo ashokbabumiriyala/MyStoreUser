@@ -123,6 +123,7 @@ export class MapsPage implements OnInit {
   }
   updateRadio(eve) {
     const ele = document.getElementById('mapWrapper') as HTMLElement;
+    console.log(eve.target.value);
     if (eve.target.value == 'secondary') {
       this.mapImage = true;
       ele.classList.remove('map-size');
@@ -210,7 +211,7 @@ export class MapsPage implements OnInit {
         });
         this.map.setCenter(latLng);
       })
-      .catch((error) => { });
+      .catch((error) => { console.log(error) });
   }
 
   //Check if application having GPS access permission
@@ -294,6 +295,8 @@ export class MapsPage implements OnInit {
           lng: await this.storageService.get('lng'),
         };
         this.loadMap();
+        const ele = document.getElementById('mapWrapper') as HTMLElement;
+        ele.classList.remove('map-size');
         /*
                 // let pos = {
                 //   lat: resp.coords.latitude,

@@ -34,7 +34,7 @@ export class ProductListPage implements OnInit {
     private categorySearchService: CategorySearchService,
     private storageService: StorageService,
     private virutalFootFallService: VirtualFootFallService
-  ) {}
+  ) { }
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.iDataTransferBetweenPages = this.helperService.getPageData();
@@ -45,7 +45,7 @@ export class ProductListPage implements OnInit {
     this.helperService.getCartItems().subscribe((cartItems) => {
       if (cartItems != null) {
         {
-          this.productList.forEach((product) => {
+          this.masterData.forEach((product) => {
             var foundProduct = cartItems.find(
               (cartItem) => cartItem.productID == product.productID
             );
@@ -92,7 +92,7 @@ export class ProductListPage implements OnInit {
           (data: any) => {
             this.productList = data.provideMerchantProdList;
             Object.assign(this.masterData, this.productList);
-            this.productList.forEach((product) => {
+            this.masterData.forEach((product) => {
               console.log(product);
               product['isAvailable'] = Number(product.availableQty) > 0;
               product['itemCount'] = 0;
@@ -114,32 +114,32 @@ export class ProductListPage implements OnInit {
   }
 
   increment(index) {
-    if (Number(this.productList[index].availableQty) > 0) {
+    if (Number(this.masterData[index].availableQty) > 0) {
       // this.currentNumber++;
-      this.productList[index].itemCount++;
-      if (this.productList[index].addedToCart) {
+      this.masterData[index].itemCount++;
+      if (this.masterData[index].addedToCart) {
         let idIndex = this.cartItems.findIndex(
-          (x) => x.productID === this.productList[index].productID
+          (x) => x.productID === this.masterData[index].productID
         );
-        this.cartItems[idIndex].itemCount = this.productList[index].itemCount;
+        this.cartItems[idIndex].itemCount = this.masterData[index].itemCount;
         this.helperService.setCartItems(this.cartItems);
       }
     }
   }
 
   decrement(index) {
-    if (Number(this.productList[index].availableQty) > 0) {
-      if (this.productList[index].itemCount > 0) {
-        this.productList[index].itemCount--;
+    if (Number(this.masterData[index].availableQty) > 0) {
+      if (this.masterData[index].itemCount > 0) {
+        this.masterData[index].itemCount--;
       }
-      if (this.productList[index].itemCount == 0) {
+      if (this.masterData[index].itemCount == 0) {
         let idIndex = this.cartItems.findIndex(
-          (x) => x.productID === this.productList[index].productID
+          (x) => x.productID === this.masterData[index].productID
         );
-        this.productList[index].addedToCart = false;
+        this.masterData[index].addedToCart = false;
         this.cartItems.splice(idIndex, 1);
         this.helperService.setCartItems(this.cartItems);
-        this.productList[index].cartStatus = '';
+        this.masterData[index].cartStatus = '';
       }
     }
   }
@@ -149,45 +149,48 @@ export class ProductListPage implements OnInit {
       this.virutalFootFallService
         .updateProductDataClicks(
           Number(await this.storageService.get('UserId')),
-          Number(this.productList[index].productID)
+          Number(this.masterData[index].productID)
         )
-        .subscribe(() => {});
-    } catch (err) {}
+        .subscribe(() => { });
+    } catch (err) { }
 
     if (
       this.cartItems.length == 0 ||
       (this.cartItems.length > 0 &&
-        this.cartItems[0].storeID == this.productList[index].storeID)
+        this.cartItems[0].storeID == this.masterData[index].storeID)
     ) {
       if (
-        Number(this.productList[index].availableQty) <
-        this.productList[index].itemCount
+        Number(this.masterData[index].availableQty) <
+        this.masterData[index].itemCount
       ) {
         this.helperService.presentToast(
-          `Only ${this.productList[index].availableQty} items are available in the stock`,
+          `Only ${this.masterData[index].availableQty} items are available in the stock`,
           'warning'
         );
       } else {
-        if (this.productList[index].itemCount > 0) {
+        if (this.masterData[index].itemCount > 0) {
           var addedProduct = this.cartItems.find(
-            (o) => o.productID === this.productList[index].productID
+            (o) => o.productID === this.masterData[index].productID
           );
           if (addedProduct != null) {
-            addedProduct.itemCount = this.productList[index].itemCount;
+            addedProduct.itemCount = this.masterData[index].itemCount;
           } else {
-            this.cartItems.push(this.productList[index]);
-            this.productList[index].cartStatus = 'Added to cart';
+            this.cartItems.push(this.masterData[index]);
+            this.masterData[index].cartStatus = 'Added to cart';
           }
         } else {
-          this.productList[index].itemCount = 1;
-          this.cartItems.push(this.productList[index]);
-          this.productList[index].cartStatus = 'Added to cart';
+          this.masterData[index].itemCount = 1;
+          this.cartItems.push(this.masterData[index]);
+          this.masterData[index].cartStatus = 'Added to cart';
         }
         this.helperService.setCartItemsType(AvailableStoreTypes.ProductType);
         this.helperService.setStoreLocationDetails(this.cartItems[0].storeID);
         this.helperService.setCartItems(this.cartItems);
       }
     } else {
+      if (this.masterData[index].itemCount == 0) {
+        this.masterData[index].itemCount = 1;
+      }
       this.showCartClearAlert(index);
     }
   }
@@ -203,17 +206,18 @@ export class ProductListPage implements OnInit {
             text: 'Yes',
             handler: (data) => {
               this.cartItems = [];
-              this.productList[index].addedToCart = true;
-              this.cartItems.push(this.productList[index]);
+              this.masterData[index].addedToCart = true;
+              this.cartItems.push(this.masterData[index]);
               this.helperService.setCartItems(this.cartItems);
               this.helperService.setCartItemsType(
                 AvailableStoreTypes.ProductType
               );
+              this.helperService.setStoreLocationDetails(this.cartItems[0].storeID);
             },
           },
           {
             text: 'No',
-            handler: (data) => {},
+            handler: (data) => { },
           },
         ],
       })
@@ -229,7 +233,7 @@ export class ProductListPage implements OnInit {
         async (data: any) => {
           await this.storageService.set('cartUpdated', 'false');
         },
-        (error: any) => {}
+        (error: any) => { }
       );
     }
   }
@@ -241,8 +245,8 @@ export class ProductListPage implements OnInit {
           Number(await this.storageService.get('UserId')),
           Number(product.productID)
         )
-        .subscribe(() => {});
-    } catch (err) {}
+        .subscribe(() => { });
+    } catch (err) { }
     const enterAnimation = (baseEl: any) => {
       const backdropAnimation = this.animationCtrl
         .create()

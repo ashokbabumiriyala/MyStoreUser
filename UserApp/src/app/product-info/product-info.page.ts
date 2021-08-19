@@ -145,6 +145,7 @@ export class ProductInfoPage implements OnInit {
       .getMerchantList('UserMerchantSelect', dataObj)
       .subscribe(
         (data: any) => {
+          console.log(data);
           this.merchantList = data;
           Object.assign(this.masterData, this.merchantList);
           this.merchantList.forEach((marker) => {
