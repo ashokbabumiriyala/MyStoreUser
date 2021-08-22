@@ -4,16 +4,23 @@ import { CartPage } from './Shared/cart/cart.page';
 import { MapsPage } from './Shared/maps/maps.page';
 import { CategorySearchPage } from './category-search/category-search.page';
 import { Platform } from '@ionic/angular';
-import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 import { HelperService } from 'src/app/common/helper.service';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { CommonApiServiceCallsService } from './Shared/common-api-service-calls.service';
 import { environment } from './../environments/environment';
 import { Router, NavigationStart } from '@angular/router';
 import { PushTokenService } from './common/pushTokenService';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { StorageService } from './common/storage.service';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
+import {
+  ActionPerformed,
+  PushNotificationSchema,
+  PushNotifications,
+  Token,
+  Channel,
+} from '@capacitor/push-notifications';
+import { LocalNotifications } from '@capacitor/local-notifications';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -44,13 +51,11 @@ export class AppComponent implements OnInit {
     private geolocation: Geolocation,
     private router: Router,
     public animationCtrl: AnimationController,
-    private fcm: FCM,
     private platform: Platform,
     private helperService: HelperService,
     private appVersion: AppVersion,
     private commonApiServiceCallsService: CommonApiServiceCallsService,
     private pushTokenService: PushTokenService,
-    private localNotifications: LocalNotifications,
     private storageService: StorageService
   ) {
     this.initializeApp();
@@ -123,13 +128,75 @@ export class AppComponent implements OnInit {
   }
   initializeApp() {
     this.platform.ready().then(async () => {
+      const channel1: Channel = {
+        id: 'mychannel',
+        name: 'mychannel',
+        importance: 5,
+        sound: 'girlheyringtone.mp3',
+        visibility: 1,
+        vibration: true,
+      }
+
+      PushNotifications.requestPermissions().then(async (result) => {
+        if (result.receive === 'granted') {
+          // Register with Apple / Google to receive push via APNS/FCM
+          await LocalNotifications.createChannel(channel1);
+          await PushNotifications.createChannel(channel1);
+          console.log(await PushNotifications.listChannels());
+          await PushNotifications.register();
+        } else {
+          console.log("permissions are not granted");
+          // Show some error
+        }
+      });
+
+      // On success, we should be able to receive notifications
+      PushNotifications.addListener('registration',
+        (token: Token) => {
+          //alert('Push registration success, token: ' + token.value);
+          console.log(token);
+        }
+      );
+
+      // Some issue with our setup and push will not work
+      PushNotifications.addListener('registrationError',
+        (error: any) => {
+          //alert('Error on registration: ' + JSON.stringify(error));
+          console.log(error);
+        }
+      );
+
+      // Show us the notification payload if the app is open on our device
+      PushNotifications.addListener('pushNotificationReceived',
+        async (notification: PushNotificationSchema) => {
+          //alert('Push received: ' + JSON.stringify(notification));
+          console.log(notification);
+          await LocalNotifications.schedule({
+            notifications: [{
+              title: notification.title,
+              body: notification.body,
+              id: 2,
+              channelId: channel1.id
+            }]
+          });
+        }
+      );
+
+      // Method called when tapping on a notification
+      PushNotifications.addListener('pushNotificationActionPerformed',
+        (notification: ActionPerformed) => {
+          //alert('Push action performed: ' + JSON.stringify(notification));
+          console.log(notification);
+        }
+      );
+
       this.geolocation
         .getCurrentPosition(options)
         .then(async (resp: Geoposition) => {
           await this.storageService.set('lat', resp.coords.latitude);
           await this.storageService.set('lng', resp.coords.longitude);
         })
-        .catch((error) => {});
+        .catch((error) => { });
       if (this.platform.is('android') || this.platform.is('ios')) {
         await this.storageService.set('mobile', 'true');
         var options = {
@@ -144,7 +211,7 @@ export class AppComponent implements OnInit {
             await this.storageService.set('lat', resp.coords.latitude);
             await this.storageService.set('lng', resp.coords.longitude);
           })
-          .catch((error) => {});
+          .catch((error) => { });
 
         this.appVersion.getVersionNumber().then((res) => {
           this.version = res;
@@ -166,57 +233,9 @@ export class AppComponent implements OnInit {
                     );
                   }
                 },
-                (error) => {}
+                (error) => { }
               );
           }
-        });
-        // subscribe to a topic
-        //this.fcm.subscribeToTopic('Users');
-
-        // get FCM token
-        this.fcm.getToken().then(async (token) => {
-          console.log('push token' + token);
-          var userId = Number(await this.storageService.get('UserId'));
-          if (userId != 0 && token != null) {
-            this.pushTokenService
-              .registerUserPushToken(userId, token)
-              .subscribe((result) => {
-                console.log(
-                  'successfully registered push token, result:' + result
-                );
-              });
-          }
-          await this.storageService.set('PushToken', token);
-        });
-
-        // ionic push notification example
-        this.fcm.onNotification().subscribe((data) => {
-          console.log(JSON.stringify(data));
-          if (data.wasTapped) {
-            console.log('Received in background');
-          } else {
-            console.log('Received in foreground');
-            this.localNotifications.schedule({
-              title: data.title,
-              text: data.body,
-            });
-          }
-        });
-
-        // refresh the FCM token
-        this.fcm.onTokenRefresh().subscribe(async (token) => {
-          console.log('push token' + token);
-          var userId = Number(await this.storageService.get('UserId'));
-          if (userId != 0 && token != null) {
-            this.pushTokenService
-              .registerUserPushToken(+userId, token)
-              .subscribe((result) => {
-                console.log(
-                  'successfully registered push token, result:' + result
-                );
-              });
-          }
-          await this.storageService.set('PushToken', token);
         });
       } else {
         await this.storageService.set('mobile', 'false');

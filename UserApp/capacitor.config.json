@@ -1,12 +1,15 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "UserApp",
+  "appId": "com.velocious.my3karrt",
+  "appName": "My3Karrt",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 0
+    },
+    "PushNotifications": {
+      "sound": "girlheyringtone.mp3"
     }
   },
   "cordova": {}

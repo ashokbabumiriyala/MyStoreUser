@@ -11,13 +11,11 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CategorySearchPageModule } from 'src/app/category-search/category-search.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
-import { FCM } from 'cordova-plugin-fcm-with-dependecy-updated/ionic/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { Market } from '@ionic-native/market/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
@@ -37,8 +35,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
   providers: [
     Geolocation,
     NativeGeocoder,
-    FCM,
-    LocalNotifications,
     AppVersion,
     Market,
     Camera,
@@ -48,4 +44,4 @@ import { IonicStorageModule } from '@ionic/storage-angular';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
