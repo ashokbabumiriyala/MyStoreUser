@@ -155,6 +155,7 @@ export class AppComponent implements OnInit {
         (token: Token) => {
           //alert('Push registration success, token: ' + token.value);
           console.log(token);
+          this.storageService.set('PushToken', token.value);
         }
       );
 
@@ -193,8 +194,8 @@ export class AppComponent implements OnInit {
       this.geolocation
         .getCurrentPosition(options)
         .then(async (resp: Geoposition) => {
-          await this.storageService.set('lat', resp.coords.latitude);
-          await this.storageService.set('lng', resp.coords.longitude);
+          this.storageService.set('lat', resp.coords.latitude);
+          this.storageService.set('lng', resp.coords.longitude);
         })
         .catch((error) => { });
       if (this.platform.is('android') || this.platform.is('ios')) {

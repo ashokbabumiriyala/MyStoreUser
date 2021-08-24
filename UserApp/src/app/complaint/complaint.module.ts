@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ComplaintPageRoutingModule } from './complaint-routing.module';
 
 import { ComplaintPage } from './complaint.page';
-import { CustomDatetime } from '../Shared/customdatetime.pipe';
+import { CustomDateTimeModule } from '../Shared/custom-datetime/customdatetime.module';
 
 @NgModule({
   imports: [
@@ -15,8 +15,9 @@ import { CustomDatetime } from '../Shared/customdatetime.pipe';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    ComplaintPageRoutingModule
+    ComplaintPageRoutingModule,
+    CustomDateTimeModule
   ],
-  declarations: [ComplaintPage, CustomDatetime]
+  declarations: [ComplaintPage]
 })
-export class ComplaintPageModule {}
+export class ComplaintPageModule { }

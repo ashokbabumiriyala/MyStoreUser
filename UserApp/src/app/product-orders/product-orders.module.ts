@@ -8,15 +8,16 @@ import { ProductOrdersPageRoutingModule } from './product-orders-routing.module'
 import { OrderInvoiceComponent } from './order-invoice/order-invoice.component';
 import { ProductOrdersPage } from './product-orders.page';
 import { ProductOrderRowExpandComponent } from './product-order-row-expand/product-order-row-expand.component';
-import { CustomDatetime } from '../Shared/customdatetime.pipe';
+import { CustomDateTimeModule } from '../Shared/custom-datetime/customdatetime.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProductOrdersPageRoutingModule
+    ProductOrdersPageRoutingModule,
+    CustomDateTimeModule
   ],
-  declarations: [OrderInvoiceComponent, ProductOrdersPage, ProductOrderRowExpandComponent,CustomDatetime]
+  declarations: [OrderInvoiceComponent, ProductOrdersPage, ProductOrderRowExpandComponent]
 })
-export class ProductOrdersPageModule {}
+export class ProductOrdersPageModule { }

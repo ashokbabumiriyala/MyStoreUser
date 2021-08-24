@@ -8,15 +8,16 @@ import { ServiceOrdersPageRoutingModule } from './service-orders-routing.module'
 
 import { ServiceOrdersPage } from './service-orders.page';
 import { ServiceOrderRowExpandComponent } from './service-order-row-expand/service-order-row-expand.component';
-import { CustomDatetime } from '../Shared/customdatetime.pipe';
+import { CustomDateTimeModule } from '../Shared/custom-datetime/customdatetime.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ServiceOrdersPageRoutingModule
+    ServiceOrdersPageRoutingModule,
+    CustomDateTimeModule
   ],
-  declarations: [ServiceOrdersPage,ServiceOrderRowExpandComponent, CustomDatetime]
+  declarations: [ServiceOrdersPage, ServiceOrderRowExpandComponent]
 })
-export class ServiceOrdersPageModule {}
+export class ServiceOrdersPageModule { }

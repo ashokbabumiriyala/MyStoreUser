@@ -28,7 +28,10 @@ export class ProductOrdersPage implements OnInit {
   stores: [];
   selectedIndex: number;
   dataIsAvilable: boolean = false;
-
+  customActionSheetOptions: any = {
+    header: 'Search By..',
+    // subHeader: 'Select your favorite color'
+  };
   constructor(
     private router: Router,
     private helperService: HelperService,
