@@ -95,7 +95,9 @@ export class CategorySearchPage implements OnInit {
       else if (this.selectedSearchType == 'productName') {
         this.categorySearchService.getProducts(val).subscribe((results: any) => {
           results.filter(item => {
-            this.autoCompleteResults.push({ productName: item.productName, storeID: item.storeID });
+            if (this.autoCompleteResults.filter(a => a.productName.toLowerCase().trim() === item.productName.toLowerCase().trim()).length == 0) {
+              this.autoCompleteResults.push({ productName: item.productName, storeID: item.storeID });
+            }
           });
         });
       }
