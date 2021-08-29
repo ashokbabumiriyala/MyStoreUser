@@ -99,6 +99,10 @@ export class ProductOrdersPage implements OnInit {
       .getProductOrders('UserProductOrders', dataObject)
       .subscribe(
         (data: any) => {
+          data.productorders.sort(function (x, y) {
+            return (x.createdOn === y.createdOn) ? 0 : x.createdOn ? 1 : -1;
+          });
+
           this.totalOrders = data.productorders;
           console.log(data.productorders);
           this.orders = data.productorders;

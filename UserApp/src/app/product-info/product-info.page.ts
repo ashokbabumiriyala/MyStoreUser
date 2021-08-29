@@ -20,6 +20,7 @@ import { AnimationController, ModalController } from '@ionic/angular';
 import { MapsPage } from '../Shared/maps/maps.page';
 import { VirtualFootFallService } from '../common/virtualfootfall.service';
 import { StorePageType } from '../common/Enums';
+import * as moment from 'moment';
 declare var google;
 
 enum PageType {
@@ -145,7 +146,20 @@ export class ProductInfoPage implements OnInit {
       .getMerchantList('UserMerchantSelect', dataObj)
       .subscribe(
         (data: any) => {
-          console.log(data);
+          data.forEach(d => {
+            var storeFromTime = moment(d.fromTime).toDate();
+            var storeToTime = moment(d.toTime).toDate();
+            let currentTime = new Date();
+            storeFromTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeFromTime.getHours(), storeFromTime.getMinutes());
+            storeToTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeToTime.getHours(), storeToTime.getMinutes());
+            moment(storeFromTime).format("hh:mm")
+            d.isStoreClosed = !((currentTime >= storeFromTime) && (currentTime <= storeToTime));
+          });
+
+          data.sort(function (x, y) {
+            return (x.isStoreClosed === y.isStoreClosed) ? 0 : x.isStoreClosed ? 1 : -1;
+          });
+
           this.merchantList = data;
           Object.assign(this.masterData, this.merchantList);
           this.merchantList.forEach((marker) => {

@@ -13,7 +13,8 @@
   </ion-row>
 
   <div *ngIf="displayListView">
-    <ion-card class="ion-no-margin product" *ngFor="let merchant of masterData; let i = index;">
+    <ion-card class="ion-no-margin product" *ngFor="let merchant of masterData; let i = index;" [disabled]="merchant.isStoreClosed">
+      <h6 *ngIf="merchant.isStoreClosed" class="store-status">Store timings are over</h6>
       <ion-row (click)="getProducts(merchant)">
         <ion-col size="2" style="margin: auto">
           <ion-avatar>

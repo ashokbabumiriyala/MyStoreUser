@@ -8,6 +8,7 @@ import { StorageService } from '../common/storage.service';
 import { IUserDetails } from '../common/provider-details';
 import { VirtualFootFallService } from '../common/virtualfootfall.service';
 import { StorePageType } from '../common/Enums';
+import * as moment from 'moment';
 @Component({
   selector: 'app-category-search',
   templateUrl: './category-search.page.html',
@@ -144,18 +145,30 @@ export class CategorySearchPage implements OnInit {
           )
           .subscribe(() => { });
       } catch (err) { }
-      await this.storageService.remove('Key');
-      await this.storageService.remove('DelCharge');
-      await this.storageService.set('Key', data.razorPaymentKey);
+      var storeFromTime = moment(data.fromTime).toDate();
+      var storeToTime = moment(data.toTime).toDate();
+      let currentTime = new Date();
+      storeFromTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeFromTime.getHours(), storeFromTime.getMinutes());
+      storeToTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeToTime.getHours(), storeToTime.getMinutes());
+      if ((currentTime >= storeFromTime) && (currentTime <= storeToTime)) {
+        this.storageService.remove('Key');
+        this.storageService.remove('DelCharge');
+        this.storageService.set('Key', data.razorPaymentKey);
 
-      this.iDataTransferBetweenPages = {
-        storeId: Number(data.id),
-        MerchantName: data.name,
-      };
-      this.helperService.navigateWithData(
-        ['/product-list'],
-        this.iDataTransferBetweenPages
-      );
+        this.iDataTransferBetweenPages = {
+          storeId: Number(data.id),
+          MerchantName: data.name,
+        };
+        this.helperService.navigateWithData(
+          ['/product-list'],
+          this.iDataTransferBetweenPages
+        );
+      }
+      else {
+        console.log(moment(storeFromTime).format("hh:mm:ss a"));
+        console.log(moment(storeFromTime).format("hh:mm a"));
+        this.helperService.presentToast(`Store timings are over for ${data.name}, Store timings: ${moment(storeFromTime).format("hh:mm a")} To ${moment(storeToTime).format("hh:mm a")} Please visit tomorrow`, "warning");
+      }
     }
     this.autoCompleteSearchString = "";
 

@@ -128,6 +128,7 @@ export class AppComponent implements OnInit {
   }
   initializeApp() {
     this.platform.ready().then(async () => {
+      await this.storageService.init();
       const channel1: Channel = {
         id: 'mychannel',
         name: 'mychannel',
@@ -154,8 +155,9 @@ export class AppComponent implements OnInit {
       PushNotifications.addListener('registration',
         (token: Token) => {
           //alert('Push registration success, token: ' + token.value);
-          console.log(token);
+          console.log('pushToken' + token.value);
           this.storageService.set('PushToken', token.value);
+          console.log('successfully set pushToken');
         }
       );
 
