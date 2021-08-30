@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { $ } from 'protractor';
+// import { $ } from 'protractor';
 
 import { HelperService } from '../common/helper.service';
 import { StorageService } from '../common/storage.service';

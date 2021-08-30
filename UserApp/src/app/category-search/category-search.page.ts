@@ -23,7 +23,7 @@ export class CategorySearchPage implements OnInit {
     private storageService: StorageService,
     private virutalFootFallService: VirtualFootFallService
   ) { }
-
+  status:any = 'category';
   cartItems = [];
   homeResult: any[];
   isItemsAvailable: boolean;
@@ -213,7 +213,8 @@ export class CategorySearchPage implements OnInit {
         */
   }
 
-  async onSearchTypeChange() {
+  async onSearchTypeChange(event) {
+    this.selectedSearchType = event.target.value;
     this.autoCompleteSearchString = "";
     this.allCategories = [];
     this.autoCompleteResults = [];

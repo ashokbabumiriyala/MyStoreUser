@@ -2,6 +2,9 @@
     height: 100%;
     width: 100%;
 }
+.login-form {
+  --background: url('/assets/images/backgorundimage.jpg');
+}
 .search-bar {
     margin-top:25px;
 }
@@ -10,7 +13,32 @@
     box-shadow: 0 8px 6px -6px black;
     border-radius: 15px;
 }
-
+.img-shop {
+  min-width: 100vw;
+}
+.img-icon {
+  position: absolute;
+    left: 0;
+    top: 18vw;
+    bottom: auto;
+    right: 0;
+    margin: auto;
+    width: 17vw;
+}
+.img-arrow {
+  position: absolute;
+  left: 0;
+  height: 40px;
+  bottom: auto;
+  right: 0;
+  top: 36vw;
+  margin: auto;
+}
+.shop {
+  color:#FFF;
+  width: auto;
+  margin-top: 0%;
+}
 q::before,
 q::after {
   animation: dancing 1s linear infinite;
@@ -41,16 +69,81 @@ q::after {
 }
 q {
   quotes: "‘" "’" "“" "”" "‘" "’" "“" "”";
+  color: #FFF;
+  font-family: cursive !important;
 }
 
 blockquote {
     color: darkorange;
-    font-weight: bold;
+    // font-weight: bold;
     text-align: center;
+    width: auto;
+    font-family: cursive !important;
+    font-size: 3.4vw;
 }
 .search-bar {
   ion-item {
     border:1px solid #000;
     border-radius: 15px;
   }
+}
+#product, #category, #productName {
+  position: absolute;
+  right: -20px;
+  top: -3px;
+}
+.search-by {
+  // position: relative;
+  // --background: transparent;
+  margin-right: 5px;
+  border: 1px solid;
+  border-radius: 15px;
+  width: 31%;
+}
+.byCategory {
+  background-image:url('/assets/images/1.jpg');
+  cursor: pointer;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 70px;
+  position: relative;
+  top: 10px;
+  bottom: 2px;
+}
+.byProduct {
+  background-image:url('/assets/images/2.jpg');
+  cursor: pointer;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 70px;
+  position: relative;
+  top: 10px;
+  bottom: 2px;
+}
+.byproductName {
+  background-image:url('/assets/images/3.jpg');
+  cursor: pointer;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 70px;
+  position: relative;
+  top: 10px;
+  bottom: 2px;
+}
+.line {
+  border: 2px solid #000 !important;
+  height: 0px !important;
+  width: 75% !important;
+  background: #000 !important;
+  display: block !important;
+  font-size: 0em !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  border-radius: 100%;
+}
+.line-img {
+  width: 100%;
 }

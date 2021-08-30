@@ -1,13 +1,20 @@
-<ion-content class="login-form ion-padding after-login-bg">
-  <h2 class="page-title">Select Any Category</h2>
+<ion-content class="login-form ion-no-padding">
+  <!-- <h2 class="page-title">Select Any Category</h2> -->
+  <ion-row>
+    <blockquote style="width: 100%;margin-bottom: 0px;"><q>Welcome to My3Karrt !! <br/> Shop from your favourite neighborhood stores!!</q></blockquote>
+  </ion-row>
+  <!-- <hr class="line"/> -->
+  <img class="line-img" src="/assets/images/line1-1.png">
   <ion-row style="align-content: center;">
-    <ion-col size="auto">
-      <ion-card class="ion-no-margin category" (click)="navigateTo('product')">
-        <img class="img" src="../assets/images/merchants.jpeg">
-        <ion-card-header>
+    <ion-col size="auto" class="ion-no-padding">
+      <!-- <ion-card class="ion-no-margin category" (click)="navigateTo('product')"> -->
+        <img class="img-shop" src="../assets/images/store-img.png">
+        <img class="img-icon" src="../assets/images/my3icon-1.gif" (click)="navigateTo('product')">
+        <img class="img-arrow" src="../assets/images/arrow.gif">
+        <!-- <ion-card-header>
           <ion-card-title>Merchants</ion-card-title>
         </ion-card-header>
-      </ion-card>
+      </ion-card> -->
     </ion-col>
     <!--need to revert -- TODO remove style -->
     <ion-col size="6" style="display:none">
@@ -19,7 +26,9 @@
       </ion-card>
     </ion-col>
   </ion-row>
-
+  <blockquote class="ion-text-center shop" style="margin-top: 31px;margin-bottom: 0px;">Click here to continue shopping!</blockquote>
+  <!-- <hr class="line"/> -->
+  <img class="line-img" src="/assets/images/line1-1.png">
   <ion-list *ngIf="isItemsAvailable && selectedSearchType == 'storeCategory'">
     <ion-item button (click)="itemClick(item)" *ngFor="let item of autoCompleteResults">{{ item }}</ion-item>
   </ion-list>
@@ -36,10 +45,33 @@
       </ion-col>
     </ion-item>
   </ion-list>
+  <blockquote class="ion-text-center" style="color:#FFF;width: auto;margin-top: 0px;margin-bottom: 0px;">Search for Product | Store</blockquote>
+
+  <ion-row class="ion-padding">
+    <ion-radio-group style="display: contents;" [(ngModel)]="status" name="satus-option">  
+      <ion-item class="search-by">
+        <ion-label for="category" class="byCategory"></ion-label>
+        <ion-radio slot="start" value="category" id="category" checked="true" (click)="onSearchTypeChange($event)"></ion-radio>
+      </ion-item>
+  
+      <ion-item class="search-by">
+        <ion-label for="product" class="byProduct"></ion-label>
+        <ion-radio slot="start" value="product" id="product" (click)="onSearchTypeChange($event)"></ion-radio>
+      </ion-item>
+  
+      <ion-item class="search-by">
+        <ion-label for="productName" class="byproductName"></ion-label>
+        <ion-radio slot="start" value="name" id="productName" (click)="onSearchTypeChange($event)"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-row>
   <ion-list *ngIf="isItemsAvailable && selectedSearchType == 'storeName'">
     <ion-item button (click)="itemClick(item)" *ngFor="let item of autoCompleteResults">{{ item.address }}</ion-item>
   </ion-list>
-  <ion-row class="search-bar align-items-center">
+  <ion-searchbar class="home-search" debounce="500" [(ngModel)]='autoCompleteSearchString' (ionChange)="gethomeSearchResult($event)" placeholder="Select above option and type here.." style="height: 40px;margin-top: 15px;"></ion-searchbar>
+  <!-- <ion-searchbar class="ion-no-border" debounce="500" [(ngModel)]='autoCompleteSearchString' (ionChange)="gethomeSearchResult($event)" placeholder="Search for favorite Store/Location" style="height: 40px;"></ion-searchbar> -->
+  <p style="margin-top: 5px;font-size: small;text-align: center;padding-bottom: 30px;"><b>Note:</b> For any further assistance, please call: +91 - 8147354972. </p>
+  <!-- <ion-row class="search-bar align-items-center">
     <ion-item class="ion-no-padding  category-1" lines="none" style="padding: 0px !important;">
       <ion-select [(ngModel)]="selectedSearchType" [interfaceOptions]="customActionSheetOptions" (ionChange)="onSearchTypeChange()" interface=" action-sheet" placeholder="Select One" style="padding-left: 15px;min-width: 155px;max-width: 155px;text-overflow: ellipsis;">
         <ion-select-option value="storeCategory">Store Category</ion-select-option>
@@ -50,11 +82,9 @@
     </ion-item>
     <p style="margin-top: 5px;font-size: small;text-align: center;"><b>Note:</b>Use this search bar to view
       products/services of your favourite provider. </p>
-  </ion-row>
+  </ion-row> -->
   <!-- <ion-list *ngIf="isItemsAvailable">
     <ion-item button (click)="itemClick(item)" *ngFor="let item of masterData">{{ item.address }}</ion-item>
   </ion-list> -->
-  <ion-row>
-    <blockquote><q>My3Karrt!! Shop from your favorite Neighborhood stores!!</q></blockquote>
-  </ion-row>
+  
 </ion-content>

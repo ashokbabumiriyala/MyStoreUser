@@ -148,6 +148,9 @@ box-shadow:5px 5px 5px 8px #bbb;
     font-size: x-small;
     display: block;
     color: orangered;
+    font-family: cursive !important;
+    width: min-content;
+    margin: auto;
   }
   .menuIcon {
       z-index: 9999;
@@ -160,6 +163,12 @@ box-shadow:5px 5px 5px 8px #bbb;
       background: white;
       padding: 5px;
       box-shadow: 0 0 10px #eb445a;
+  }
+  ion-img {
+    filter: drop-shadow(0 0 0 orangered);
+    object-fit: contain;
+    height: 40px;
+    width: 100%;
   }
 }
 .cart {
