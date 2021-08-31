@@ -46,3 +46,14 @@
     right: 15px;
     color: red;
 }
+.btn-action {
+    ion-button {
+        width: 100%;
+    }
+    ion-col {
+        padding-bottom: 0px;
+    }
+    ion-col:nth-child(3) {
+        padding-top: 0px;
+    }
+}
