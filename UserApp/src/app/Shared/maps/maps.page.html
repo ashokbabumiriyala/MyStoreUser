@@ -6,7 +6,7 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-list class="paymenttype-group">
+  <ion-list class="paymenttype-group" *ngIf="this.model_title != 'Delivery Address'">
     <ion-radio-group name="paymenttype" [(ngModel)]="selectedAddress">
       <ion-item class="ion-add" button (click)="addressChange(ing)" *ngFor="let ing of userAddressData; let i = index">
         <ion-radio slot="start" value="{{ing.id}}" checked="ing.checked"></ion-radio>
@@ -15,7 +15,11 @@
     </ion-radio-group>
   </ion-list>
 
-  <ion-radio-group allow-empty-selection="true" name="radio-group" #radioMaps *ngIf="this.model_title == 'Delivery Address'">
+  <ion-radio-group allow-empty-selection="true" [(ngModel)]="selectedAddress" name="radio-group" #radioMaps *ngIf="this.model_title == 'Delivery Address'">
+    <ion-item class="ion-add" button (click)="addressChange(ing)" *ngFor="let ing of userAddressData; let i = index">
+      <ion-radio slot="start" value="{{ing.id}}" checked="ing.checked"></ion-radio>
+      <ion-label>{{ing.address}}</ion-label>
+    </ion-item>
     <ion-item>
       <ion-label style="font-size: small;">Use Maps</ion-label>
       <ion-radio slot="start" value="secondary" (click)="updateRadio($event)"></ion-radio>

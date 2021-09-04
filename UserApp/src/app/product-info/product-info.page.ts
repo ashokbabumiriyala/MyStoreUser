@@ -78,13 +78,15 @@ export class ProductInfoPage implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.iDataTransferBetweenPages = this.helperService.getPageData();
-      this.pageType = this.iDataTransferBetweenPages.pageType;
-      console.log('pageType:' + this.pageType);
-      if (this.iDataTransferBetweenPages.pageType == StorePageType.storesByCategory) {
-        this.categoryName = this.iDataTransferBetweenPages.categoryName;
-      }
-      else if (this.iDataTransferBetweenPages.pageType == StorePageType.storesByProduct) {
-        this.productSearchString = this.iDataTransferBetweenPages.productSearchString;
+      if (this.iDataTransferBetweenPages != undefined) {
+        this.pageType = this.iDataTransferBetweenPages.pageType;
+        console.log('pageType:' + this.pageType);
+        if (this.iDataTransferBetweenPages.pageType == StorePageType.storesByCategory) {
+          this.categoryName = this.iDataTransferBetweenPages.categoryName;
+        }
+        else if (this.iDataTransferBetweenPages.pageType == StorePageType.storesByProduct) {
+          this.productSearchString = this.iDataTransferBetweenPages.productSearchString;
+        }
       }
     });
     this.pageLoad();
@@ -102,7 +104,6 @@ export class ProductInfoPage implements OnInit {
       await this.getMerchantList(undefined, undefined);
     }
 
-    /*
     this.helperService.getProducts().subscribe((merchants) => {
       if (merchants != null) {
         this.masterData = [];
@@ -124,7 +125,7 @@ export class ProductInfoPage implements OnInit {
       } else {
         this.getMerchantList();
       }
-    });*/
+    });
   }
 
   async getMerchantListByCategory(category: string) {
@@ -163,8 +164,10 @@ export class ProductInfoPage implements OnInit {
           this.merchantList = data;
           Object.assign(this.masterData, this.merchantList);
           this.merchantList.forEach((marker) => {
-            this.latitude = parseFloat(marker.latitude);
-            this.longitude = parseFloat(marker.longitude);
+            if (this.latitude == undefined && this.longitude == undefined) {
+              this.latitude = parseFloat(marker.latitude);
+              this.longitude = parseFloat(marker.longitude);
+            }
             const markerObject = {
               position: {
                 lat: parseFloat(marker.latitude),

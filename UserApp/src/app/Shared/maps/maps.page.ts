@@ -46,9 +46,11 @@ export class MapsPage implements OnInit {
   searchLocation: boolean;
   userAddressData: any[];
   userSelectedAddress: string;
-  currentLocation: any;
+  currentLocationLat: number;
+  currentLocationLng: number;
   style = [];
   selectedAddress: string;
+  isAddressChange: boolean;
 
   constructor(
     public modalCtrl: ModalController,
@@ -66,6 +68,8 @@ export class MapsPage implements OnInit {
     this.autocomplete = { input: '' };
     this.autocompleteItems = [];
     this.geocoder = new google.maps.Geocoder();
+    this.isAddressChange = false;
+
   }
   ngOnInit() {
     this.loadMap();
@@ -103,6 +107,7 @@ export class MapsPage implements OnInit {
       UserId: Number(await this.storageService.get('UserId')),
       Id: data.id,
     };
+    this.isAddressChange = true;
     await this.mapsService
       .userDeliveryAddressUpdate('UserDefaultDeliveryAddressUpdate', dataObj)
       .subscribe(
@@ -116,11 +121,13 @@ export class MapsPage implements OnInit {
         (error: any) => { }
       );
   }
+
   dismiss() {
     this.modalCtrl.dismiss({
       dismissed: true,
     });
   }
+
   updateRadio(eve) {
     const ele = document.getElementById('mapWrapper') as HTMLElement;
     console.log(eve.target.value);
@@ -146,6 +153,8 @@ export class MapsPage implements OnInit {
       .getCurrentPosition(options)
       .then(async (resp: Geoposition) => {
         console.log(resp);
+        this.currentLocationLat = resp.coords.latitude;
+        this.currentLocationLng = resp.coords.longitude;
         let latLng = new google.maps.LatLng(
           resp.coords.latitude,
           resp.coords.longitude
@@ -189,6 +198,7 @@ export class MapsPage implements OnInit {
             event.latLng.lat(),
             event.latLng.lng()
           );
+          this.isAddressChange = true;
           this.addrlat = event.latLng.lat().toString();
           this.addrlng = event.latLng.lng().toString();
           console.log(`new selected address:${latLng}`);
@@ -294,6 +304,8 @@ export class MapsPage implements OnInit {
           lat: await this.storageService.get('lat'),
           lng: await this.storageService.get('lng'),
         };
+        this.currentLocationLat = resp.coords.latitude;
+        this.currentLocationLng = resp.coords.longitude;
         this.loadMap();
         const ele = document.getElementById('mapWrapper') as HTMLElement;
         ele.classList.remove('map-size');
@@ -343,14 +355,25 @@ export class MapsPage implements OnInit {
     if (this.model_title === 'Delivery Address') {
       const loadingController = await this.helperService.createLoadingController('loading');
       await loadingController.present();
-      this.getAddressFromCoords(this.addrlat.toString(), this.addrlng.toString());
-      const dataObj = {
-        UserId: Number(await this.storageService.get('UserId')),
-        Address: this.userSelectedAddress,
-        Latitude: this.addrlat.toString(),
-        Longitude: this.addrlng.toString(),
-      };
-
+      var dataObj;
+      if (this.isAddressChange) {
+        this.getAddressFromCoords(this.addrlat.toString(), this.addrlng.toString());
+        dataObj = {
+          UserId: Number(await this.storageService.get('UserId')),
+          Address: this.userSelectedAddress,
+          Latitude: this.isAddressChange,
+          Longitude: this.isAddressChange,
+        };
+      }
+      else {
+        this.getAddressFromCoords(this.currentLocationLat.toString(), this.currentLocationLng.toString());
+        dataObj = {
+          UserId: Number(await this.storageService.get('UserId')),
+          Address: this.userSelectedAddress,
+          Latitude: this.currentLocationLat.toString(),
+          Longitude: this.currentLocationLng.toString(),
+        };
+      }
       console.log(dataObj);
       this.mapsService
         .getUserDeliveryAddress('UserDeliveryAddressInsert', dataObj)
@@ -379,11 +402,21 @@ export class MapsPage implements OnInit {
   }
 
   async getUserStores() {
-    const dataObj = {
-      Latitude: (await this.storageService.get('lat')).toString(),
-      Longitude: (await this.storageService.get('lng')).toString(),
-    };
-    await this.mapsService.userStores('userStores', dataObj).subscribe(
+    var latLng;
+    if (this.isAddressChange == true) {
+      latLng = {
+        Latitude: (await this.storageService.get('lat')).toString(),
+        Longitude: (await this.storageService.get('lng')).toString(),
+      };
+    }
+    else {
+      latLng = {
+        Latitude: this.currentLocationLat.toString(),
+        Longitude: this.currentLocationLng.toString(),
+      }
+    }
+
+    await this.mapsService.userStores('userStores', latLng).subscribe(
       (data: any) => {
         this.helperService.setProducts(data.userMerchant);
         this.helperService.setServices(data.userService);
@@ -444,6 +477,7 @@ export class MapsPage implements OnInit {
   SelectSearchResult(item) {
     this.userSelectedAddress = '';
     this.autocompleteItems = [];
+    this.isAddressChange = true;
     this.geocoder.geocode({ placeId: item.place_id }, (results, status) => {
       if (status === 'OK' && results[0]) {
         let position = {

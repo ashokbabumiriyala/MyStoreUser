@@ -23,7 +23,7 @@ export class CategorySearchPage implements OnInit {
     private storageService: StorageService,
     private virutalFootFallService: VirtualFootFallService
   ) { }
-  status:any = 'category';
+  status: any = 'category';
   cartItems = [];
   homeResult: any[];
   isItemsAvailable: boolean;
@@ -145,11 +145,33 @@ export class CategorySearchPage implements OnInit {
           )
           .subscribe(() => { });
       } catch (err) { }
-      var storeFromTime = moment(data.fromTime).toDate();
-      var storeToTime = moment(data.toTime).toDate();
+
       let currentTime = new Date();
-      storeFromTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeFromTime.getHours(), storeFromTime.getMinutes());
-      storeToTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeToTime.getHours(), storeToTime.getMinutes());
+      var storeFromTime: Date;
+      var storeToTime: Date;
+      if (data.fromTime.length <= 6) {
+        var temp = data.fromTime.split(':');
+        storeFromTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), temp[0], temp[1]);
+
+      }
+      else {
+        storeFromTime = moment(data.fromTime).toDate();
+        storeFromTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeFromTime.getHours(), storeFromTime.getMinutes());
+      }
+
+      if (data.toTime.length <= 6) {
+        var temp = data.toTime.split(':');
+        storeToTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), temp[0], temp[1]);
+      }
+      else {
+        storeToTime = moment(data.toTime).toDate();
+        storeToTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeToTime.getHours(), storeToTime.getMinutes());
+      }
+
+      if (storeFromTime > storeToTime) {
+        storeToTime = moment(storeToTime).add(1, 'day').toDate();
+      }
+
       if ((currentTime >= storeFromTime) && (currentTime <= storeToTime)) {
         this.storageService.remove('Key');
         this.storageService.remove('DelCharge');
@@ -214,7 +236,17 @@ export class CategorySearchPage implements OnInit {
   }
 
   async onSearchTypeChange(event) {
-    this.selectedSearchType = event.target.value;
+    if (event.target.classList.value.search('storeCategory') > 0) {
+      this.selectedSearchType = 'storeCategory';
+    }
+    else if (event.target.classList.value.search('productName') > 0) {
+      this.selectedSearchType = 'productName';
+    }
+    else {
+      this.selectedSearchType = 'storeName';
+    }
+
+    //this.selectedSearchType = event.target.value;
     this.autoCompleteSearchString = "";
     this.allCategories = [];
     this.autoCompleteResults = [];
