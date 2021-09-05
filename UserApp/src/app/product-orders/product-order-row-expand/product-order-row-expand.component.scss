@@ -22,9 +22,9 @@
       max-width: inherit;
     }
   }
-  table {
-    font-size: small;
-  }
+  // table {
+  //   font-size: small;
+  // }
   .product-img {
     width: 50px;
     height: 50px;
@@ -33,9 +33,14 @@
   }
   .table1 {
     margin-bottom: 10px;
+    width: 98%;
   }
   .table1 tr td:first-child{
    text-align: right;
+   width: 40%;
+  }
+  .table1 tr td:last-child{ 
+    width: 60%;
   }
   .cc {
     border-top: 1px dashed;

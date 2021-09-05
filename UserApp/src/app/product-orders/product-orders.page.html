@@ -19,8 +19,8 @@
         <div *ngFor="let item of orders;let i = index;" class="order-status" [ngClass]="{'selected': i == selectedIndex}">
           <tr>
             <div (click)="expandItem($event, item, i)">
-              <td style="width: 25%;"><b>Order Id: </b></td>
-              <td class="label">{{item.orderID}}</td>
+              <td style="width: calc(100vw - 145px);"><b>Order Id: </b>{{item.orderID}}</td>
+              <!-- <td class="label"></td> -->
             </div>
             <td class="view-invoice"><span (click)="viewReceipt(item)">View Invoice</span></td>
           </tr>
