@@ -7,9 +7,13 @@
 
   <ion-row class="btn-action" *ngIf="merchantList.length > 0">
     <ion-col size="6">
-    <ion-button size="small" (click)="mapView()">Map View</ion-button></ion-col>
-    <ion-col size="6"><ion-button size="small" (click)="listView()">List View</ion-button></ion-col>
-    <ion-col size="12"><ion-button size="small" (click)="presentModal('Change Neighbourhood')">Change Neighborhood</ion-button>
+      <ion-button size="small" (click)="mapView()">Map View</ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button size="small" (click)="listView()">List View</ion-button>
+    </ion-col>
+    <ion-col size="12">
+      <ion-button size="small" (click)="presentModal('Change Neighbourhood')">Change Neighborhood</ion-button>
     </ion-col>
   </ion-row>
 

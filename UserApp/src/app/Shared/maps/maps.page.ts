@@ -122,9 +122,9 @@ export class MapsPage implements OnInit {
       );
   }
 
-  dismiss() {
+  dismiss(isDismissed: false) {
     this.modalCtrl.dismiss({
-      dismissed: true,
+      dismissed: isDismissed,
     });
   }
 
@@ -361,8 +361,8 @@ export class MapsPage implements OnInit {
         dataObj = {
           UserId: Number(await this.storageService.get('UserId')),
           Address: this.userSelectedAddress,
-          Latitude: this.isAddressChange,
-          Longitude: this.isAddressChange,
+          Latitude: this.addrlat.toString(),
+          Longitude: this.addrlng.toString()
         };
       }
       else {
@@ -392,12 +392,16 @@ export class MapsPage implements OnInit {
         'New delivery address selected!',
         'success'
       );
-      this.dismiss();
+      this.dismiss(false);
     }
     else {
+      if (this.isAddressChange == false) {
+        this.storageService.set('lat', this.currentLocationLat.toString());
+        this.storageService.set('lng', this.currentLocationLng.toString());
+      }
       this.helperService.presentToast('New neighborhood selected!', 'success');
-      this.getUserStores();
-      this.dismiss();
+      //this.getUserStores();
+      this.dismiss(false);
     }
   }
 

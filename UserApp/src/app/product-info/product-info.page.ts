@@ -47,7 +47,7 @@ export class ProductInfoPage implements OnInit {
   style = [];
   iDataTransferBetweenPages: iDataTransferBetweenPages;
   markers = [];
-  merchantList = [];
+  merchantList: Array<any>;
   latitude: number;
   longitude: number;
   public masterData: any = [];
@@ -63,6 +63,7 @@ export class ProductInfoPage implements OnInit {
     public modalController: ModalController,
     private virutalFootFallService: VirtualFootFallService
   ) {
+    this.merchantList = new Array<any>();
     if (google) {
       this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
     }
@@ -70,7 +71,7 @@ export class ProductInfoPage implements OnInit {
     this.autocompleteItems = [];
   }
   displayListView: boolean;
-  currentPage: PageType;
+  currentPage: PageType = PageType.ListPage;
   pageType: StorePageType = StorePageType.storeByName;
   categoryName: string;
   productSearchString: string;
@@ -94,7 +95,7 @@ export class ProductInfoPage implements OnInit {
 
   async pageLoad() {
     this.displayListView = true;
-
+    this.helperService.setProducts([]);
     this.googleMapStyle();
     if (this.pageType == StorePageType.storesByCategory) {
       await this.getMerchantList(this.categoryName, undefined);
@@ -104,28 +105,27 @@ export class ProductInfoPage implements OnInit {
       await this.getMerchantList(undefined, undefined);
     }
 
-    this.helperService.getProducts().subscribe((merchants) => {
-      if (merchants != null) {
-        this.masterData = [];
-        this.merchantList = merchants;
-        Object.assign(this.masterData, this.merchantList);
-        this.merchantList.forEach((marker) => {
-          this.latitude = parseFloat(marker.latitude);
-          this.longitude = parseFloat(marker.longitude);
-          const markerObject = {
-            position: {
-              lat: parseFloat(marker.latitude),
-              lng: parseFloat(marker.longitude),
-            },
-            title: marker.name,
-            data: marker,
-          };
-          this.markers.push(markerObject);
-        });
-      } else {
-        this.getMerchantList();
-      }
-    });
+    // this.helperService.getProducts().subscribe((merchants) => {
+    //   if (merchants != null && merchants.length > 0) {
+    //     this.merchantList = merchants;
+    //     Object.assign(this.masterData, this.merchantList);
+    //     this.merchantList.forEach((marker) => {
+    //       this.latitude = parseFloat(marker.latitude);
+    //       this.longitude = parseFloat(marker.longitude);
+    //       const markerObject = {
+    //         position: {
+    //           lat: parseFloat(marker.latitude),
+    //           lng: parseFloat(marker.longitude),
+    //         },
+    //         title: marker.name,
+    //         data: marker,
+    //       };
+    //       this.markers.push(markerObject);
+    //     });
+    //   } else {
+    //     // this.getMerchantList();
+    //   }
+    // });
   }
 
   async getMerchantListByCategory(category: string) {
@@ -140,51 +140,62 @@ export class ProductInfoPage implements OnInit {
     const dataObj = {
       Latitude: (await this.storageService.get('lat')).toString(),
       Longitude: (await this.storageService.get('lng')).toString(),
-      StoreCategory: storeCategory,
-      searchKey: productSearchString,
+      StoreCategory: storeCategory?.trim(),
+      searchKey: productSearchString?.trim(),
     };
     await this.productInfoService
       .getMerchantList('UserMerchantSelect', dataObj)
       .subscribe(
         (data: any) => {
-          data.forEach(d => {
-            var storeFromTime = moment(d.fromTime).toDate();
-            var storeToTime = moment(d.toTime).toDate();
-            let currentTime = new Date();
-            storeFromTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeFromTime.getHours(), storeFromTime.getMinutes());
-            storeToTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeToTime.getHours(), storeToTime.getMinutes());
-            moment(storeFromTime).format("hh:mm")
-            d.isStoreClosed = !((currentTime >= storeFromTime) && (currentTime <= storeToTime));
-          });
+          if (data != null && data.length > 0) {
+            this.merchantList.splice(0, this.merchantList.length);
+            data.forEach(d => {
+              var storeFromTime = moment(d.fromTime).toDate();
+              var storeToTime = moment(d.toTime).toDate();
+              let currentTime = new Date();
+              storeFromTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeFromTime.getHours(), storeFromTime.getMinutes());
+              storeToTime = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), storeToTime.getHours(), storeToTime.getMinutes());
+              moment(storeFromTime).format("hh:mm")
+              d.isStoreClosed = !((currentTime >= storeFromTime) && (currentTime <= storeToTime));
+            });
 
-          data.sort(function (x, y) {
-            return (x.isStoreClosed === y.isStoreClosed) ? 0 : x.isStoreClosed ? 1 : -1;
-          });
+            data.sort(function (x, y) {
+              return (x.isStoreClosed === y.isStoreClosed) ? 0 : x.isStoreClosed ? 1 : -1;
+            });
 
-          this.merchantList = data;
-          Object.assign(this.masterData, this.merchantList);
-          this.merchantList.forEach((marker) => {
-            if (this.latitude == undefined && this.longitude == undefined) {
-              this.latitude = parseFloat(marker.latitude);
-              this.longitude = parseFloat(marker.longitude);
-            }
-            const markerObject = {
-              position: {
-                lat: parseFloat(marker.latitude),
-                lng: parseFloat(marker.longitude),
-              },
-              title: marker.name,
-              data: marker,
-            };
-            this.markers.push(markerObject);
-          });
-          loadingController.dismiss();
+            this.merchantList = data;
+            Object.assign(this.masterData, this.merchantList);
+            this.merchantList.forEach((marker) => {
+              if (this.latitude == undefined && this.longitude == undefined) {
+                this.latitude = parseFloat(marker.latitude);
+                this.longitude = parseFloat(marker.longitude);
+              }
+              const markerObject = {
+                position: {
+                  lat: parseFloat(marker.latitude),
+                  lng: parseFloat(marker.longitude),
+                },
+                title: marker.name,
+                data: marker,
+              };
+              this.markers.push(markerObject);
+            });
+            loadingController.dismiss();
+          }
+          else {
+            this.merchantList = [];
+            this.masterData = [];
+            loadingController.dismiss();
+          }
         },
         (error: any) => {
+          this.merchantList = [];
+          this.masterData = [];
           loadingController.dismiss();
         }
       );
   }
+
   filterItems() {
     this.masterData = this.merchantList.filter((item) => {
       return (
@@ -206,6 +217,7 @@ export class ProductInfoPage implements OnInit {
     this.iDataTransferBetweenPages = {
       storeId: Number(merchant.merchantID),
       MerchantName: merchant.name,
+      productSearchString: this.productSearchString
     };
     await this.storageService.remove('Key');
     await this.storageService.remove('DelCharge');
@@ -216,11 +228,13 @@ export class ProductInfoPage implements OnInit {
       this.iDataTransferBetweenPages
     );
   }
+
   mapView(): void {
     this.currentPage = PageType.MapPage;
     this.displayListView = false;
     this.loadMap();
   }
+
   listView(): void {
     this.currentPage = PageType.ListPage;
     const mapEle: HTMLElement = document.getElementById('map');
@@ -266,12 +280,22 @@ export class ProductInfoPage implements OnInit {
     });
     modal.onDidDismiss().then(async (data) => {
       console.log(data);
-      this.latitude = (await this.storageService.get('lat')).toString();
-      this.longitude = (await this.storageService.get('lng')).toString();
-      if (this.currentPage == PageType.ListPage) {
-        this.listView();
-      } else {
-        this.loadMap();
+      if (data.data.dismissed == false) {
+        this.latitude = (await this.storageService.get('lat')).toString();
+        this.longitude = (await this.storageService.get('lng')).toString();
+        if (this.pageType == StorePageType.storesByCategory) {
+          await this.getMerchantList(this.categoryName, undefined);
+        } else if (this.pageType == StorePageType.storesByProduct) {
+          await this.getMerchantList(undefined, this.productSearchString);
+        } else if (this.pageType == StorePageType.storeByName) {
+          await this.getMerchantList(undefined, undefined);
+        }
+
+        if (this.currentPage == PageType.ListPage) {
+          this.listView();
+        } else {
+          this.loadMap();
+        }
       }
     });
 
@@ -329,9 +353,11 @@ export class ProductInfoPage implements OnInit {
   }
 
   renderMarkers() {
-    this.markers.forEach((marker) => {
-      this.addMarker(marker);
-    });
+    if (this.markers.length > 0) {
+      this.markers.forEach((marker) => {
+        this.addMarker(marker);
+      });
+    }
   }
 
   private googleMapStyle() {

@@ -24,6 +24,7 @@ export class ProductListPage implements OnInit {
   public masterData: any = [];
   merchantName: string;
   iDataTransferBetweenPages: iDataTransferBetweenPages;
+  productSearchString: string;
   constructor(
     private helperService: HelperService,
     private productListService: ProductListService,
@@ -40,6 +41,7 @@ export class ProductListPage implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.iDataTransferBetweenPages = this.helperService.getPageData();
       this.merchantName = this.iDataTransferBetweenPages.MerchantName;
+      this.productSearchString = this.iDataTransferBetweenPages.productSearchString;
     });
 
     this.getProductList();
@@ -96,20 +98,22 @@ export class ProductListPage implements OnInit {
         .getProductList('UserMerchantProdSelect', dataObject)
         .subscribe(
           (data: any) => {
-            this.productList = data.provideMerchantProdList;
-            Object.assign(this.masterData, this.productList);
-            this.masterData.forEach((product) => {
-              console.log(product);
-              product['isAvailable'] = Number(product.availableQty) > 0;
-              product['itemCount'] = 0;
-              product['addedToCart'] = false;
-              this.cartItems.forEach((item) => {
-                if (item.productID == product.productID) {
-                  product['addedToCart'] = true;
-                  product['itemCount'] = item.itemCount;
-                }
+            if (data != null && data.provideMerchantProdList != null) {
+              this.productList = data.provideMerchantProdList.sort((x, y) => { return x.productName.trim().toLowerCase() == this.productSearchString.trim().toLowerCase() ? -1 : y.productName.trim().toLowerCase() == this.productSearchString.trim().toLowerCase() ? 1 : 0; });
+              Object.assign(this.masterData, this.productList);
+              this.masterData.forEach((product) => {
+                console.log(product);
+                product['isAvailable'] = Number(product.availableQty) > 0;
+                product['itemCount'] = 0;
+                product['addedToCart'] = false;
+                this.cartItems.forEach((item) => {
+                  if (item.productID == product.productID) {
+                    product['addedToCart'] = true;
+                    product['itemCount'] = item.itemCount;
+                  }
+                });
               });
-            });
+            }
             loadingController.dismiss();
           },
           (error: any) => {
