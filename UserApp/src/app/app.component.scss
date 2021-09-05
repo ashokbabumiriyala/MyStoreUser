@@ -145,10 +145,10 @@ box-shadow:5px 5px 5px 8px #bbb;
       // padding-bottom: 21px;
   }
   ion-label {
-    font-size: x-small;
+    font-size: 12px;
     display: block;
     color: orangered;
-    font-family: cursive !important;
+    font-family: sans-serif !important;
     width: min-content;
     margin: auto;
   }
@@ -167,7 +167,7 @@ box-shadow:5px 5px 5px 8px #bbb;
   ion-img {
     filter: drop-shadow(0 0 0 orangered);
     object-fit: contain;
-    height: 40px;
+    height: 30px;
     width: 100%;
   }
 }

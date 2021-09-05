@@ -70,7 +70,7 @@ q::after {
 q {
   quotes: "‘" "’" "“" "”" "‘" "’" "“" "”";
   color: #FFF;
-  font-family: cursive !important;
+  font-family: sans-serif !important;
 }
 
 blockquote {
@@ -78,8 +78,8 @@ blockquote {
     // font-weight: bold;
     text-align: center;
     width: auto;
-    font-family: cursive !important;
-    font-size: 3.4vw;
+    font-family: sans-serif !important;
+    font-size: 3.7vw;
 }
 .search-bar {
   ion-item {
@@ -89,8 +89,8 @@ blockquote {
 }
 #product, #category, #productName {
   position: absolute;
-  right: -20px;
-  top: -3px;
+  right: -25px;
+  top: -9px;
 }
 .search-by {
   // position: relative;
@@ -99,38 +99,39 @@ blockquote {
   border: 1px solid;
   border-radius: 15px;
   width: 31%;
+  height:60px;
 }
 .byCategory {
   background-image:url('/assets/images/1.jpg');
   cursor: pointer;
-  background-size: 100% 100%;
+  background-size: 100% 74%;
   background-repeat: no-repeat;
   display: inline-block;
-  height: 70px;
+  height: 60px;
   position: relative;
-  top: 10px;
+  top: 0px;
   bottom: 2px;
 }
 .byProduct {
   background-image:url('/assets/images/2.jpg');
   cursor: pointer;
-  background-size: 100% 100%;
+  background-size: 100% 74%;
   background-repeat: no-repeat;
   display: inline-block;
-  height: 70px;
+  height: 60px;
   position: relative;
-  top: 10px;
+  top: 0px;
   bottom: 2px;
 }
 .byproductName {
   background-image:url('/assets/images/3.jpg');
   cursor: pointer;
-  background-size: 100% 100%;
+  background-size: 100% 74%;
   background-repeat: no-repeat;
   display: inline-block;
-  height: 70px;
+  height: 60px;
   position: relative;
-  top: 10px;
+  top: 0px;
   bottom: 2px;
 }
 .line {
@@ -146,4 +147,10 @@ blockquote {
 }
 .line-img {
   width: 100%;
+}
+.arrow-right {
+  font-size: 7vw;
+  position: relative;
+  top: 8px;
+  left: 6px;
 }
