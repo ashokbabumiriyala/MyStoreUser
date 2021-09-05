@@ -22,7 +22,7 @@
               <td style="width: calc(100vw - 145px);"><b>Order Id: </b>{{item.orderID}}</td>
               <!-- <td class="label"></td> -->
             </div>
-            <td class="view-invoice"><span (click)="viewReceipt(item)">View Invoice</span></td>
+            <td class="view-invoice"><span (click)="viewReceipt(item)">Receipt</span></td>
           </tr>
           <app-product-order-row-expand *ngIf="showStoreOrders && item.expand" [orderDetails]="item" [items]="orderedItems" [expanded]="item.expand"></app-product-order-row-expand>
         </div>

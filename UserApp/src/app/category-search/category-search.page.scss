@@ -19,7 +19,7 @@
 .img-icon {
   position: absolute;
     left: 0;
-    top: 18vw;
+    top: 19vw;
     bottom: auto;
     right: 0;
     margin: auto;
@@ -28,10 +28,10 @@
 .img-arrow {
   position: absolute;
   left: 0;
-  height: 40px;
+  height: 63px;
   bottom: auto;
   right: 0;
-  top: 36vw;
+  top: 34vw;
   margin: auto;
 }
 .shop {
@@ -45,7 +45,24 @@ q::after {
   display: inline-block;
   transform: rotate(13deg);
 }
-
+.animation-effect {
+  animation: heartbeat 1s infinite;
+}
+@keyframes heartbeat
+{
+  0%
+  {
+    transform: scale( .9 );
+  }
+  50%
+  {
+    transform: scale( 1 );
+  }
+  100%
+  {
+    transform: scale( .9 );
+  }
+}
 @keyframes dancing {
   0% {
     transform: rotate(13deg) scale(2);
@@ -79,7 +96,7 @@ blockquote {
     text-align: center;
     width: auto;
     font-family: sans-serif !important;
-    font-size: 3.7vw;
+    font-size: 4.6vw;
 }
 .search-bar {
   ion-item {
