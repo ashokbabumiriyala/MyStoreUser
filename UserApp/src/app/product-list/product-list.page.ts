@@ -99,7 +99,12 @@ export class ProductListPage implements OnInit {
         .subscribe(
           (data: any) => {
             if (data != null && data.provideMerchantProdList != null) {
-              this.productList = data.provideMerchantProdList.sort((x, y) => { return x.productName.trim().toLowerCase() == this.productSearchString.trim().toLowerCase() ? -1 : y.productName.trim().toLowerCase() == this.productSearchString.trim().toLowerCase() ? 1 : 0; });
+              if (this.productSearchString != undefined) {
+                this.productList = data.provideMerchantProdList.sort((x, y) => { return x.productName.trim().toLowerCase() == this.productSearchString.trim().toLowerCase() ? -1 : y.productName.trim().toLowerCase() == this.productSearchString.trim().toLowerCase() ? 1 : 0; });
+              }
+              else {
+                this.productList = data.provideMerchantProdList;
+              }
               Object.assign(this.masterData, this.productList);
               this.masterData.forEach((product) => {
                 console.log(product);

@@ -1,6 +1,6 @@
 <ion-content class="invoice-box">
   <ion-toolbar class="after-login-bg">
-    <ion-title class="ion-text-center"><strong>Invoice</strong></ion-title>
+    <ion-title class="ion-text-center"><strong>Receipt</strong></ion-title>
     <ion-buttons slot="end">
       <ion-icon name="close-circle-outline" (click)="dismiss()" size="large"></ion-icon>
     </ion-buttons>
@@ -84,8 +84,9 @@
       <td colspan="5">
         <table>
           <tr>
-            <td>Store Address :</td>
-            <td style="max-width: 190px;text-align: left;">{{orderItem.storeAddress}}</td>
+            <td>Store Address:</td>
+            <td style="max-width: 190px;text-align: left;">{{orderItem.storeAddress}} Ph:{{orderItem.storeManagerNumber}}</td>
+
           </tr>
         </table>
       </td>
