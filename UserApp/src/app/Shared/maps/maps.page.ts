@@ -46,6 +46,7 @@ export class MapsPage implements OnInit {
   searchLocation: boolean;
   userAddressData: any[];
   userSelectedAddress: string;
+  currentLocation: any;
   currentLocationLat: number;
   currentLocationLng: number;
   style = [];
